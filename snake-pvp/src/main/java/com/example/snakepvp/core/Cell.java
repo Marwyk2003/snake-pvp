@@ -32,8 +32,11 @@ public class Cell {
     }
 
     void effect() {
-        if (edible != null)
+        if (edible != null) {
             edible.takeEffect();
+            edible = null;
+            //TODO sent event generate edible
+        }
     }
 
     boolean removeEdible() {

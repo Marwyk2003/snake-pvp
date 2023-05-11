@@ -40,48 +40,28 @@ public class SimpleBoardState implements BoardState {
 
     @Override
     public boolean makeMove(Direction dir) {
-        SnakeDirection sDir = snake.getDirection();
-        Cell head = snake.getHead();
-        int nextRow = head.getRow();
-        int nextCol = head.getCol();
-        if (sDir == SnakeDirection.UP) {
-            if (dir == Direction.FORWARD)
-                nextRow++;
-            else if (dir == Direction.RIGHT)
-                nextCol++;
-            else //LEFT
-                nextCol--;
-        } else if (sDir == SnakeDirection.DOWN) {
-            if (dir == Direction.FORWARD)
-                nextRow--;
-            else if (dir == Direction.RIGHT)
-                nextCol--;
-            else //LEFT
-                nextCol++;
-        } else if (sDir == SnakeDirection.RIGHT) {
-            if (dir == Direction.FORWARD)
-                nextCol++;
-            else if (dir == Direction.RIGHT)
-                nextRow--;
-            else //LEFT
-                nextRow++;
-        } else { //LEFT
-            if (dir == Direction.FORWARD)
-                nextCol--;
-            else if (dir == Direction.RIGHT)
-                nextRow++;
-            else //LEFT
-                nextRow--;
+        int nextRow = snake.getRowDirection();
+        int nextCol = snake.getColDirection();
+        if (dir != Direction.FORWARD) {
+            int temp = nextRow;
+            nextRow = nextCol;
+            nextCol = temp;
         }
+        switch (dir) {
+            case RIGHT -> nextCol *= -1;
+            case LEFT -> nextRow *= -1;
+        }
+        nextRow += snake.getHead().getRow();
+        nextCol += snake.getHead().getCol();
+
         if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).getGoThrough()) {
             return false;
         }
 
-        snake.moveToCell(board.getCell(nextRow, nextCol));
+        snake.moveToCell(board.getCell(nextRow, nextCol)).setGoThrough(true);
         snake.getHead().setGoThrough(false);
 
         snake.getHead().effect();
-        snake.getHead().setEdible(null);
         return true;
     }
 
