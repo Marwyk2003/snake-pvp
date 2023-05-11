@@ -45,12 +45,11 @@ public class Cell {
         return true;
     }
 
-    boolean setGoThrough(boolean goThrough) {
-        this.goThrough = goThrough;
-        return true;
+    boolean isGoThrough() {
+        return goThrough;
     }
 
-    boolean getGoThrough() {
-        return goThrough;
+    void setGoThrough(boolean goThrough) {
+        this.goThrough = goThrough;
     }
 }

@@ -54,7 +54,7 @@ public class SimpleBoardState implements BoardState {
         nextRow += snake.getHead().getRow();
         nextCol += snake.getHead().getCol();
 
-        if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).getGoThrough()) {
+        if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough()) {
             return false;
         }
 
