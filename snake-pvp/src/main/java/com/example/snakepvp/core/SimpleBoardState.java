@@ -40,8 +40,49 @@ public class SimpleBoardState implements BoardState {
 
     @Override
     public boolean makeMove(Direction dir) {
-        // TODO
-        return false;
+        SnakeDirection sDir = snake.getDirection();
+        Cell head = snake.getHead();
+        int nextRow = head.getRow();
+        int nextCol = head.getCol();
+        if (sDir == SnakeDirection.UP) {
+            if (dir == Direction.FORWARD)
+                nextRow++;
+            else if (dir == Direction.RIGHT)
+                nextCol++;
+            else //LEFT
+                nextCol--;
+        } else if (sDir == SnakeDirection.DOWN) {
+            if (dir == Direction.FORWARD)
+                nextRow--;
+            else if (dir == Direction.RIGHT)
+                nextCol--;
+            else //LEFT
+                nextCol++;
+        } else if (sDir == SnakeDirection.RIGHT) {
+            if (dir == Direction.FORWARD)
+                nextCol++;
+            else if (dir == Direction.RIGHT)
+                nextRow--;
+            else //LEFT
+                nextRow++;
+        } else { //LEFT
+            if (dir == Direction.FORWARD)
+                nextCol--;
+            else if (dir == Direction.RIGHT)
+                nextRow++;
+            else //LEFT
+                nextRow--;
+        }
+        if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).getGoThrough()) {
+            return false;
+        }
+
+        snake.moveToCell(board.getCell(nextRow, nextCol));
+        snake.getHead().setGoThrough(false);
+
+        snake.getHead().effect();
+        snake.getHead().setEdible(null);
+        return true;
     }
 
     @Override

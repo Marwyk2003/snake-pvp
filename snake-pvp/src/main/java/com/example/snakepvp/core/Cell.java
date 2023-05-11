@@ -31,6 +31,11 @@ public class Cell {
         return true;
     }
 
+    void effect() {
+        if (edible != null)
+            edible.takeEffect();
+    }
+
     boolean removeEdible() {
         if (this.edible == null) return false;
         this.edible = null;
@@ -39,6 +44,7 @@ public class Cell {
 
     boolean setGoThrough(boolean goThrough) {
         this.goThrough = goThrough;
+        return true;
     }
 
     boolean getGoThrough() {
