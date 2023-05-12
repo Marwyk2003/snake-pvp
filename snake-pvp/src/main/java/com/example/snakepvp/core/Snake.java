@@ -6,8 +6,8 @@ import java.util.List;
 public class Snake {
     private final List<Cell> snake;
 
-    Snake() {
-        snake = new LinkedList<>();
+    Snake(LinkedList<Cell> snake) {
+        this.snake = snake;
     }
 
     int getRowDirection() {
@@ -22,6 +22,11 @@ public class Snake {
         snake.add(next);
         return snake.remove(1);
     }
+
+    void moveWithGrowToCell(Cell next) {
+        snake.add(next);
+    }
+
 
     Cell getHead() {
         return snake.get(snake.size() - 1);

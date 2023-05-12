@@ -5,6 +5,7 @@ public class Board {
     private final Cell[][] board;
 
     public Board(int width, int height) {
+        if (width < 6 || height < 6) throw new IllegalArgumentException();
         this.width = width;
         this.height = height;
         board = new Cell[height][width];

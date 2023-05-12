@@ -1,16 +1,24 @@
 package com.example.snakepvp.core;
 
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class SimpleBoardState implements BoardState {
     private final Board board;
     private final Snake snake;
     private final Player player;
     private final Score score;
+    private int growCounter;
 
     public SimpleBoardState(int width, int height) {
         this.board = new Board(width, height);
-        this.snake = new Snake();
+        this.snake = new Snake(Stream.of(1, 2, 3)
+                .map(x -> board.getCell(board.getHeight() / 2, x))
+                .collect(Collectors.toCollection(LinkedList<Cell>::new)));
         this.player = new Player();
         this.score = new Score();
+        this.growCounter = 0;
     }
 
     @Override
@@ -40,6 +48,7 @@ public class SimpleBoardState implements BoardState {
 
     @Override
     public boolean makeMove(Direction dir) {
+        //TODO return status instead of boolean (gameOver, eatenEdible(type), success)
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
         if (dir != Direction.FORWARD) {
@@ -58,12 +67,21 @@ public class SimpleBoardState implements BoardState {
             return false;
         }
 
-        snake.moveToCell(board.getCell(nextRow, nextCol)).setGoThrough(true);
+        if (growCounter > 0) {
+            growCounter--;
+            snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
+        } else
+            snake.moveToCell(board.getCell(nextRow, nextCol)).setGoThrough(true);// resets tail to normal cell
         snake.getHead().setGoThrough(false);
 
         snake.getHead().effect();
         return true;
     }
+
+    public void grow() {
+        growCounter++;
+    }
+
 
     @Override
     public boolean isGameOver() {
