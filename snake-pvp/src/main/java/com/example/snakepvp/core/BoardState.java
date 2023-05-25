@@ -10,11 +10,9 @@ public interface BoardState {
 
     Snake getSnake();
 
-    void generateEdible(Edible edible);
+    void generateEdible();
 
-    MoveStatus makeMove(Direction dir);
-
-    boolean invokeEdibleEffect(Edible edible);
+    boolean makeMove(Direction dir);
 
     boolean isGameOver();
 
