@@ -31,12 +31,8 @@ public class Cell {
         return true;
     }
 
-    void effect() {
-        if (edible != null) {
-            edible.takeEffect();
-            edible = null;
-            //TODO sent event generate edible
-        }
+    Edible getEdible(){
+        return this.edible;
     }
 
     boolean removeEdible() {

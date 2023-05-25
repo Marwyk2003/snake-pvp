@@ -1,6 +1,9 @@
 package com.example.snakepvp.core;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,9 +13,12 @@ public class SimpleBoardState implements BoardState {
     private final Player player;
     private final Score score;
     private int growCounter;
+    boolean isEnded;
 
     public SimpleBoardState(int width, int height) {
+        this.isEnded = false;
         this.board = new Board(width, height);
+        //TODO change snake generation
         this.snake = new Snake(Stream.of(1, 2, 3)
                 .map(x -> board.getCell(board.getHeight() / 2, x))
                 .collect(Collectors.toCollection(LinkedList<Cell>::new)));
@@ -42,13 +48,23 @@ public class SimpleBoardState implements BoardState {
     }
 
     @Override
-    public void generateEdible() {
-        // TODO
+    public void generateEdible(Edible edible) {
+        List<Cell> emptyCells = new ArrayList<>();
+        for (int row = 0; row < board.getHeight(); row++) {
+            for (int col = 0; col < board.getWidth(); col++) {
+                if (board.getCell(row, col).getEdible() == null)
+                    emptyCells.add(board.getCell(row, col));
+            }
+        }
+
+        Random random = new Random();
+        int index = random.nextInt(emptyCells.size());
+
+        emptyCells.get(index).setEdible(edible);
     }
 
     @Override
-    public boolean makeMove(Direction dir) {
-        //TODO return status instead of boolean (gameOver, eatenEdible(type), success)
+    public MoveStatus makeMove(Direction dir) {
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
         if (dir != Direction.FORWARD) {
@@ -64,7 +80,8 @@ public class SimpleBoardState implements BoardState {
         nextCol += snake.getHead().getCol();
 
         if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough()) {
-            return false;
+            isEnded = true;
+            return new MoveStatus(false, null);
         }
 
         if (growCounter > 0) {
@@ -74,19 +91,30 @@ public class SimpleBoardState implements BoardState {
             snake.moveToCell(board.getCell(nextRow, nextCol)).setGoThrough(true);// resets tail to normal cell
         snake.getHead().setGoThrough(false);
 
-        snake.getHead().effect();
-        return true;
+        Edible eaten = snake.getHead().getEdible();
+        snake.getHead().removeEdible();
+        if (eaten != null)
+            this.score.increment(1); //TODO change score system
+
+        return new MoveStatus(true, eaten);
     }
 
-    public void grow() {
-        growCounter++;
+    @Override
+    public boolean invokeEdibleEffect(Edible edible) {
+        //TODO implement more edible effects
+        switch (edible) {
+            case SIMPLE_GROWING -> growCounter++;
+            default -> {
+                return false;
+            }
+        }
+        return true;
     }
 
 
     @Override
     public boolean isGameOver() {
-        // TODO
-        return false;
+        return isEnded;
     }
 
     @Override
