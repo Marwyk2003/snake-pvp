@@ -49,7 +49,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
 
     @FXML
     private void nextSkinAction (ActionEvent event) throws IOException {
-        // change to binding
+        // TODO change to binding
+        // (am) Should it be bound to Field?
         skin = (++skin) % noSkins;
         skinButton.setGraphic(new ImageView(new Image("/skin" + skin + ".png")));
         skinNameLabel.setText(names[skin]);
@@ -63,5 +64,4 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         skinButton.setGraphic(new ImageView(new Image("/skin0.png")));
         gameNameButton.setGraphic(new ImageView(new Image("/gameName.png")));
     }
-
 }

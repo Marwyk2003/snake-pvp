@@ -1,5 +1,7 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.viewmodels.SingleGameViewModel;
+import javafx.beans.Observable;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -8,10 +10,20 @@ import javafx.scene.layout.RowConstraints;
 public class Board extends GridPane {
     int rows;
     int columns;
+    private final Field[][] fields;
+    // Alternatively, not nice:
+    // for (Node node : this.getChildren()) {
+    //    if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+    //      result = node;
+    //      break;
+    //    }
+    //  }
+    // There probably are better ways to do it
 
     Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
+        this.fields = new Field[rows][columns];
 
         for (int r = 0; r < rows; r++) {
             RowConstraints rconstraint = new RowConstraints();
@@ -29,16 +41,15 @@ public class Board extends GridPane {
     }
 
     void setBoard() {
-        // Moved to viewmodel
-        // Instead create binding with e.g. lambda Cell -> picture
-        // What if field content changes? Should we create a new field or change the picture in existing one?
         for (int i = 0; i < rows * columns; i++) {
-            Field field;
-            if (i == 13) field = new Field("/shroom.png");
-            else field = new Field("/empty.png");
+            Field field = new Field();
             field.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
             this.add(field, i % columns, i / rows);
+            fields[i % columns][i / rows] = field;
         }
+    }
+
+    Field getField(int row, int column) {
+        return fields[row][column];
     }
 }
