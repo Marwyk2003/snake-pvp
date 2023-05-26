@@ -1,4 +1,4 @@
-package com.example.snakepvp;
+package com.example.snakepvp.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,9 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.image.*;
 
-public class Program extends Application {
+public class HelloApplication extends Application {
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(Program.class.getResource("hello-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Parent root = loader.load();
         stage.setMinHeight(600);
         stage.setMinWidth(740);
@@ -22,4 +22,5 @@ public class Program extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

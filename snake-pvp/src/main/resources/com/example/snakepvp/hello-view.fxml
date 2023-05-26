@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?language javascript?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.snakepvp.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane id="AnchorPane" prefHeight="600" prefWidth="740"
+            xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.snakepvp.view.HelloController">
+    <children>
+        <Button fx:id="gameNameButton" mnemonicParsing="false" layoutX="240.0" layoutY="120.0" />
+        <Button fx:id="modeButton1" mnemonicParsing="false" AnchorPane.bottomAnchor="300d" AnchorPane.RightAnchor="100d" AnchorPane.TopAnchor="200d" AnchorPane.LeftAnchor="600d" styleClass="roundButton" onAction="#modeButtonAction1" onMouseEntered="#mouseAction" />
+        <Button fx:id="modeButton2" mnemonicParsing="false" AnchorPane.bottomAnchor="200d" AnchorPane.RightAnchor="100d" AnchorPane.TopAnchor="300d" AnchorPane.LeftAnchor="600d" styleClass="roundButton" onMouseEntered="#mouseAction" />
+        <Button fx:id="quitButton" mnemonicParsing="false" AnchorPane.bottomAnchor="100d" AnchorPane.RightAnchor="100d" AnchorPane.TopAnchor="400d" AnchorPane.LeftAnchor="600d" styleClass="roundButton" onAction="#quitButtonAction" onMouseEntered="#mouseAction" />
+        <Label fx:id="skinChoiceLabel" AnchorPane.leftAnchor="100.0" AnchorPane.TopAnchor="350.0" text="TAP TO CHANGE SKIN" />
+        <Button fx:id="skinButton" mnemonicParsing="false" AnchorPane.leftAnchor="250.0" AnchorPane.TopAnchor="450.0" onAction="#nextSkinAction" onMouseEntered="#mouseAction" />
+        <Label fx:id="skinNameLabel" AnchorPane.leftAnchor="150.0" AnchorPane.TopAnchor="500.0" text="Aqua Worm" />
+    </children>
+    <stylesheets>
+        <URL value="@../../../styles.css" />
+    </stylesheets>
+</AnchorPane>
