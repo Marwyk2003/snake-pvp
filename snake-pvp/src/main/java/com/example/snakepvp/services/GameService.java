@@ -1,7 +1,6 @@
 package com.example.snakepvp.services;
 
 import com.example.snakepvp.core.BoardState;
-import com.example.snakepvp.core.Direction;
 import com.example.snakepvp.core.Player;
 import com.example.snakepvp.core.SimpleBoardState;
 
@@ -24,9 +23,5 @@ public class GameService {
 
     Player getPlayer() {
         return player;
-    }
-
-    boolean makeMove(Direction dir) {
-        return boardState.makeMove(dir);
     }
 }
