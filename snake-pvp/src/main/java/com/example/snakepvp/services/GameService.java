@@ -1,16 +1,20 @@
 package com.example.snakepvp.services;
 
-import com.example.snakepvp.core.BoardState;
-import com.example.snakepvp.core.Direction;
-import com.example.snakepvp.core.Player;
-import com.example.snakepvp.core.SimpleBoardState;
+import com.example.snakepvp.core.*;
+
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public class GameService {
     private final Player player;
+    Direction direction;
+    CyclicBarrier cyclicBarrier;
     private BoardState boardState;
+    private Snake snake;
 
-    public GameService(Player player) {
+    public GameService(Player player, CyclicBarrier cyclicBarrier) {
         this.player = player;
+        this.cyclicBarrier = cyclicBarrier;
     }
 
     void newGame(int width, int height) {
@@ -18,15 +22,28 @@ public class GameService {
         this.boardState = new SimpleBoardState(width, height);
     }
 
-    void start() {
-        // TODO call makeMove in some fixed time interval
+    void run() {
+        try {
+            cyclicBarrier.await();
+            makeMove();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            // TODO
+        }
     }
 
-    Player getPlayer() {
+    public void setDirection(Direction dir) {
+        this.direction = dir;
+    }
+
+    public Player getPlayer() {
         return player;
     }
 
-    boolean makeMove(Direction dir) {
+    public BoardState getBoardState() {return boardState;}
+
+    MoveStatus makeMove() {
+        Direction dir = this.direction;
+        this.direction = Direction.FORWARD; // reset direction
         return boardState.makeMove(dir);
     }
 }

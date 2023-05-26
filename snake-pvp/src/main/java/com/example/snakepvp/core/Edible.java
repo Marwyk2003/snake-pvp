@@ -1,5 +1,5 @@
 package com.example.snakepvp.core;
 
-interface Edible {
-    void takeEffect();
+public enum Edible {//TODO implement different edible types
+    SIMPLE_GROWING
 }
