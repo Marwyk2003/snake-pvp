@@ -8,7 +8,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600" prefWidth="740"
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.snakepvp.views.HelloController">
+            fx:controller="com.example.snakepvp.views.Hello">
     <children>
         <Button fx:id="gameNameButton" mnemonicParsing="false" layoutX="240.0" layoutY="120.0" />
         <Button fx:id="modeButton1" mnemonicParsing="false" AnchorPane.bottomAnchor="300d" AnchorPane.RightAnchor="100d" AnchorPane.TopAnchor="200d" AnchorPane.LeftAnchor="600d" styleClass="roundButton" onAction="#modeButtonAction1" onMouseEntered="#mouseAction" />
@@ -19,6 +19,6 @@
         <Label fx:id="skinNameLabel" AnchorPane.leftAnchor="150.0" AnchorPane.TopAnchor="500.0" text="Aqua Worm" />
     </children>
     <stylesheets>
-        <URL value="@styles.css" />
+        <URL value="@../../../../styles.css" />
     </stylesheets>
 </AnchorPane>

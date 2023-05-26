@@ -17,11 +17,11 @@ public class Cell {
         this.goThrough = goThrough;
     }
 
-    int getRow() {
+    public int getRow() {
         return row;
     }
 
-    int getCol() {
+    public int getCol() {
         return col;
     }
 
@@ -31,7 +31,7 @@ public class Cell {
         return true;
     }
 
-    Edible getEdible(){
+    public Edible getEdible() {
         return this.edible;
     }
 
@@ -41,7 +41,7 @@ public class Cell {
         return true;
     }
 
-    boolean isGoThrough() {
+    public boolean isGoThrough() {
         return goThrough;
     }
 

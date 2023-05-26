@@ -1,29 +1,49 @@
 package com.example.snakepvp.views;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.atomic.*;
-import javafx.fxml.*;
+import com.example.snakepvp.viewmodels.SingleGameViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.animation.*;
 import javafx.util.Duration;
 
-public class GetReadyController implements Initializable {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Game implements FxmlView<SingleGameViewModel>, Initializable {
+
+    @InjectViewModel
+    private SingleGameViewModel viewModel; // hope it works
+
     @FXML
     private Label countDownLabel;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // initialize game board from model etc.
+        runTimer();
+    }
+
     @FXML
-    private void mouseAction (MouseEvent event) throws Exception {
+    private void mouseAction(MouseEvent event) throws Exception {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
+
     private void startGame() throws IOException {
+        // Maybe move initialization to initialize and leave only what needs to be here for starting game? (e.g. stage.show())
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
-        Board grid = new Board(10, 10);
+        Board grid = new Board(viewModel.getHeight(), viewModel.getWidth()); // The data comes from viewmodel
         grid.setMaxSize(700, 700);
         grid.setAlignment(Pos.CENTER);
         Scene scene = new Scene(grid);
@@ -49,10 +69,5 @@ public class GetReadyController implements Initializable {
                 throw new RuntimeException(ex);
             }
         });
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        runTimer();
     }
 }

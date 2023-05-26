@@ -25,7 +25,7 @@ public class GameHostService {
         gameList = new ArrayList<>();
     }
 
-    GameService connectPlayer(Player player) {
+    public GameService connectPlayer(Player player) {
         GameService game = new GameService(player, cyclicBarrier);
         this.gameList.add(game);
         return game;

@@ -15,6 +15,7 @@ public class GameService {
     public GameService(Player player, CyclicBarrier cyclicBarrier) {
         this.player = player;
         this.cyclicBarrier = cyclicBarrier;
+        this.boardState = new SimpleBoardState(10, 10); // TODO temporary fix
     }
 
     void newGame(int width, int height) {
@@ -39,7 +40,9 @@ public class GameService {
         return player;
     }
 
-    public BoardState getBoardState() {return boardState;}
+    public BoardState getBoardState() {
+        return boardState;
+    }
 
     MoveStatus makeMove() {
         Direction dir = this.direction;

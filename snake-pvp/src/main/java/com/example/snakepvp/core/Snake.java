@@ -10,6 +10,10 @@ public class Snake {
         this.snake = snake;
     }
 
+    public List<Cell> getCellList() {
+        return List.copyOf(snake);
+    }
+
     int getRowDirection() {
         return getHead().getRow() - snake.get(snake.size() - 2).getRow();
     }

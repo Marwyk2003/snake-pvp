@@ -12,8 +12,8 @@ public class SimpleBoardState implements BoardState {
     private final Snake snake;
     private final Player player;
     private final Score score;
-    private int growCounter;
     boolean isEnded;
+    private int growCounter;
 
     public SimpleBoardState(int width, int height) {
         this.isEnded = false;
@@ -120,5 +120,9 @@ public class SimpleBoardState implements BoardState {
     @Override
     public Score getScore() {
         return score;
+    }
+
+    public Cell getCell(int row, int col) {
+        return board.getCell(row, col);
     }
 }

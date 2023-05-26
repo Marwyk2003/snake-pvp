@@ -19,4 +19,6 @@ public interface BoardState {
     boolean isGameOver();
 
     Score getScore();
+
+    Cell getCell(int row, int col);
 }

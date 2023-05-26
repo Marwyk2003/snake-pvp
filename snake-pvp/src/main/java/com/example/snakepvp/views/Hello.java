@@ -4,6 +4,11 @@ import java.io.*;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import com.example.snakepvp.viewmodels.HelloViewModel;
+import com.example.snakepvp.viewmodels.SingleGameViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
@@ -13,10 +18,14 @@ import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.application.*;
 
-public class HelloController implements Initializable {
+
+public class Hello implements Initializable, FxmlView<HelloViewModel> {
+    @InjectViewModel
+    private HelloViewModel viewModel;
+
     @FXML
     private Label skinChoiceLabel, skinNameLabel;
-    String[] names = {"Aqua Worm", "Pinky Python", "Scaly Shrooms", "Mighty Puff"};
+    String[] names = {"Aqua Worm", "Pinky Python", "Scaly Shrooms", "Mighty Puff"}; // TODO (not for now) move to some config file e.g. json
 
     @FXML
     private int skin = 0, noSkins = 4;
@@ -29,10 +38,8 @@ public class HelloController implements Initializable {
     }
     @FXML
     private void modeButtonAction1 (ActionEvent event) throws IOException {
-        Stage stage = (Stage) modeButton1.getScene().getWindow();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/get-ready-view.fxml")));
-        stage.setScene(new Scene(root));
-        stage.show();
+        // TODO (marwyk) add viewmodel(done) and start the game
+        viewModel.startGame(); // TODO don't know if it should work this way
     }
 
     @FXML
@@ -42,6 +49,7 @@ public class HelloController implements Initializable {
 
     @FXML
     private void nextSkinAction (ActionEvent event) throws IOException {
+        // change to binding
         skin = (++skin) % noSkins;
         skinButton.setGraphic(new ImageView(new Image("/skin" + skin + ".png")));
         skinNameLabel.setText(names[skin]);
