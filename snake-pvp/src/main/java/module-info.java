@@ -5,4 +5,7 @@ module com.example.snakepvp {
 
     opens com.example.snakepvp to javafx.fxml;
     exports com.example.snakepvp;
+    opens com.example.snakepvp.views to javafx.fxml;
+    exports com.example.snakepvp.views;
+
 }

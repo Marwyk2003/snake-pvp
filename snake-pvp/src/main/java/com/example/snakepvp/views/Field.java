@@ -1,4 +1,4 @@
-package com.example.snakepvp.view;
+package com.example.snakepvp.views;
 
 import javafx.scene.control.*;
 import javafx.scene.image.Image;

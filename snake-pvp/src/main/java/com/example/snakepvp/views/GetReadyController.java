@@ -1,4 +1,4 @@
-package com.example.snakepvp.view;
+package com.example.snakepvp.views;
 
 import java.io.IOException;
 import java.net.URL;

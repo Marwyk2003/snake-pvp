@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 import javafx.scene.image.*;
 
 public class Program extends Application {
+    @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(Program.class.getResource("hello-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hello-view.fxml"));
         Parent root = loader.load();
         stage.setMinHeight(600);
         stage.setMinWidth(740);

@@ -1,6 +1,5 @@
-package com.example.snakepvp.view;
+package com.example.snakepvp.views;
 
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
 public class Board extends GridPane {
@@ -29,8 +28,8 @@ public class Board extends GridPane {
     void setBoard() {
         for (int i = 0; i < rows * columns; i++) {
             Field field;
-            if (i == 13) field = new Field("file:src/shroom.png");
-            else field = new Field("file:src/empty.png");
+            if (i == 13) field = new Field("/shroom.png");
+            else field = new Field("/empty.png");
             field.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             this.add(field, i % columns, i / rows);
