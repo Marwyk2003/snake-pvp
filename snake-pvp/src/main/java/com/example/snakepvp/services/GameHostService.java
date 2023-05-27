@@ -23,15 +23,16 @@ public class GameHostService {
 
     public GameHostService() {
         gameList = new ArrayList<>();
+        threadList = new ArrayList<>();
     }
 
     public GameService connectPlayer(Player player) {
-        GameService game = new GameService(player, cyclicBarrier);
+        GameService game = new GameService(player, this);
         this.gameList.add(game);
         return game;
     }
 
-    void start() {
+    public void start() {
         isGameOver = false;
         cyclicBarrier = new CyclicBarrier(gameList.size() + 1);
         gameHostThread = new Thread(this::run);
@@ -49,7 +50,9 @@ public class GameHostService {
         try {
             while (!isGameOver) {
                 TimeUnit.SECONDS.sleep(1);
+                System.out.println("GameHost await cyclic barrier...");
                 cyclicBarrier.await();
+                System.out.println("GameHost done");
                 // TODO check if game is over etc
             }
         } catch (InterruptedException | BrokenBarrierException e) {

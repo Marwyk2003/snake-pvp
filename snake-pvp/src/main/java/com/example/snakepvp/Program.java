@@ -31,7 +31,7 @@ public class Program extends Application {
         this.stage = stage;
         stage.setMinHeight(600);
         stage.setMinWidth(740);
-        stage.getIcons().add(new Image("file:src/icon.png"));
+        stage.getIcons().add(new Image("/icon.png"));
         stage.setTitle("SnakePvP");
         stage.setScene(new Scene(root));
         stage.show();
@@ -47,5 +47,6 @@ public class Program extends Application {
         Parent root = viewTuple.getView();
         stage.setScene(new Scene(root));
         stage.show();
+        gameHostService.start(); // TODO: move somewhere (start when all players connected)
     }
 }
