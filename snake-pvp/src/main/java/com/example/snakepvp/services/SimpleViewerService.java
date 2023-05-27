@@ -4,16 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class ViewService implements ViewerService {
+public class SimpleViewerService implements ViewerService {
     private final Set<Subscription> allSubscriptions;
     private final Emitter<GameStatusEvent> statusEmitter;
-    private final Emitter<SnakeEvent> snakeEmitter;
+    private final Emitter<CellEvent> cellEmitter;
     private final Emitter<EdibleEvent> edibleEmitter;
 
-    public ViewService(Emitter<GameStatusEvent> statusEmitter, Emitter<SnakeEvent> snakeEmitter, Emitter<EdibleEvent> edibleEmitter) {
+    public SimpleViewerService(Emitter<GameStatusEvent> statusEmitter, Emitter<CellEvent> cellEmitter, Emitter<EdibleEvent> edibleEmitter) {
         allSubscriptions = new HashSet<>();
         this.statusEmitter = statusEmitter;
-        this.snakeEmitter = snakeEmitter;
+        this.cellEmitter = cellEmitter;
         this.edibleEmitter = edibleEmitter;
     }
 
@@ -29,8 +29,8 @@ public class ViewService implements ViewerService {
         return sub;
     }
 
-    public Emitter<SnakeEvent> snakeEvents() {
-        return (Consumer<SnakeEvent> consumer) -> subscribe(consumer, snakeEmitter);
+    public Emitter<CellEvent> cellEvents() {
+        return (Consumer<CellEvent> consumer) -> subscribe(consumer, cellEmitter);
     }
 
     public Emitter<GameStatusEvent> statusEvents() {

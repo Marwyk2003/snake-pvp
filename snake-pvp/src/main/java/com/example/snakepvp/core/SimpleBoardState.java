@@ -81,7 +81,7 @@ public class SimpleBoardState implements BoardState {
 
         if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough()) {
             isEnded = true;
-            return new MoveStatus(false, null);
+            return new MoveStatus(false, null, null, null); // TODO
         }
 
         if (growCounter > 0) {
@@ -96,7 +96,7 @@ public class SimpleBoardState implements BoardState {
         if (eaten != null)
             this.score.increment(1); //TODO change score system
 
-        return new MoveStatus(true, eaten);
+        return new MoveStatus(true, eaten, null, null); // TODO
     }
 
     @Override

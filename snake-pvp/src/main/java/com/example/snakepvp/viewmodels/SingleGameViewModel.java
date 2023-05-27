@@ -7,7 +7,7 @@ import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.services.GameService;
 import com.example.snakepvp.services.GameStatusEvent;
-import com.example.snakepvp.services.SnakeEvent;
+import com.example.snakepvp.services.CellEvent;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -43,7 +43,7 @@ public class SingleGameViewModel implements ViewModel {
         //TODO
     }
 
-    private void processSnakeEvent(SnakeEvent event) {
+    private void processCellEvent(CellEvent event) {
         //TODO
     }
 
