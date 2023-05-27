@@ -4,7 +4,10 @@ import com.example.snakepvp.core.BoardState;
 import com.example.snakepvp.core.Cell;
 import com.example.snakepvp.core.Direction;
 import com.example.snakepvp.core.Edible;
+import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.services.GameService;
+import com.example.snakepvp.services.GameStatusEvent;
+import com.example.snakepvp.services.SnakeEvent;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -16,7 +19,7 @@ public class SingleGameViewModel implements ViewModel {
     private final int height, width;
     GameService gameService;
 
-    public SingleGameViewModel(GameService gameService) {
+    public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
         this.gameService = gameService;
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
@@ -32,6 +35,20 @@ public class SingleGameViewModel implements ViewModel {
         for (Cell cell : boardState.getSnake().getCellList()) {
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
         }
+
+        //TODO subscribe to chosen emitters via viewerService
+    }
+
+    private void processStatusEvent(GameStatusEvent event) {
+        //TODO
+    }
+
+    private void processSnakeEvent(SnakeEvent event) {
+        //TODO
+    }
+
+    private void processEdibleEvent(EdibleEvent event) {
+        //TODO
     }
 
     public VMCell getCell(int row, int col) {

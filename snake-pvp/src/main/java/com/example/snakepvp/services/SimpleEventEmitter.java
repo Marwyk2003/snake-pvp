@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class SimpleEventEmitter<E extends Event> implements Emitter<E> {
+public class SimpleEventEmitter<E> implements Emitter<E> {
     private final Set<Consumer<E>> subscriptions = new HashSet<>();
 
     @Override
