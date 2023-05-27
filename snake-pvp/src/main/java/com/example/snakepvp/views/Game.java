@@ -1,5 +1,6 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
@@ -12,10 +13,11 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import javafx.event.EventHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Game implements FxmlView<SingleGameViewModel>, Initializable {
 
     Board board;
+    int oldDirection = 0; // 0: UP, 1: RIGHT, 2: DOWN, 3: LEFT
     @InjectViewModel
     private SingleGameViewModel viewModel;
     @FXML
@@ -42,6 +45,7 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
         }
         // TODO remove, debug only!
         viewModel.getCell(5, 5).setIsGoThrough(true);  // (am) (5, 6) should change once, (5, 5) twice hence no effect
+        viewModel.getCell(6, 8).setEdible(Edible.SIMPLE_GROWING);
         board.setMaxSize(600, 740);
         board.setAlignment(Pos.CENTER);
         runTimer();
@@ -54,7 +58,25 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
 
     private void startGame() throws IOException {
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
-        stage.setScene(new Scene(board));
+        Scene scene = new Scene(board);
+        System.out.println("PREPARING FOR EVENTS");
+        scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int newDirection = 0;                       // 0: UP, 1: RIGHT, 2: DOWN, 3: LEFT
+                switch (event.getCharacter()) {
+                    case "w" -> newDirection = 0;
+                    case "d" -> newDirection = 1;
+                    case "s" -> newDirection = 2;
+                    case "a" -> newDirection = 3;
+                }
+                if (newDirection == (4 + oldDirection - 1) % 4) viewModel.noticeDirectionChange("left");
+                else if (newDirection == (oldDirection + 1) % 4) viewModel.noticeDirectionChange("right");
+                if (newDirection != (oldDirection + 2) % 4) oldDirection = newDirection; // zabrania się zawracania
+                System.out.println("NEW DIRECTION " + oldDirection);
+            }
+        });
+        stage.setScene(scene);
         stage.show();
     }
 

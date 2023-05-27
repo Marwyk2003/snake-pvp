@@ -1,7 +1,5 @@
 package com.example.snakepvp.views;
 
-import com.example.snakepvp.viewmodels.SingleGameViewModel;
-import javafx.beans.Observable;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -11,14 +9,6 @@ public class Board extends GridPane {
     int rows;
     int columns;
     private final Field[][] fields;
-    // Alternatively, not nice:
-    // for (Node node : this.getChildren()) {
-    //    if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-    //      result = node;
-    //      break;
-    //    }
-    //  }
-    // There probably are better ways to do it
 
     Board(int rows, int columns) {
         this.rows = rows;
