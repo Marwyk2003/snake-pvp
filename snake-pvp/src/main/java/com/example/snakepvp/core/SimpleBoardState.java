@@ -1,9 +1,6 @@
 package com.example.snakepvp.core;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,30 +80,34 @@ public class SimpleBoardState implements BoardState {
             isEnded = true;
             return new MoveStatus(false, null, null, null); // TODO
         }
-
+        Cell tail;
+        Cell head;
         if (growCounter > 0) {
             growCounter--;
-            snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
-        } else
-            snake.moveToCell(board.getCell(nextRow, nextCol)).setGoThrough(true);// resets tail to normal cell
-        snake.getHead().setGoThrough(false);
-
+            tail = snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
+        } else {
+            tail = snake.moveToCell(board.getCell(nextRow, nextCol));
+            tail.setGoThrough(true);// resets tail to normal cell
+        }
+        head = snake.getHead();
+        head.setGoThrough(false);
         Edible eaten = snake.getHead().getEdible();
         snake.getHead().removeEdible();
         if (eaten != null)
             this.score.increment(1); //TODO change score system
 
-        return new MoveStatus(true, eaten, null, null); // TODO
+        return new MoveStatus(true, eaten,
+                new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()),
+                new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough())); // TODO
     }
 
     @Override
     public boolean invokeEdibleEffect(Edible edible) {
         //TODO implement more edible effects
-        switch (edible) {
-            case SIMPLE_GROWING -> growCounter++;
-            default -> {
-                return false;
-            }
+        if (Objects.requireNonNull(edible) == Edible.SIMPLE_GROWING) {
+            growCounter++;
+        } else {
+            return false;
         }
         return true;
     }

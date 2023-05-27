@@ -29,7 +29,7 @@ public class MoveStatus {
         return edible;
     }
 
-    class Cell {
+    static class Cell {
         final int row;
         final int col;
         final boolean isSnake;

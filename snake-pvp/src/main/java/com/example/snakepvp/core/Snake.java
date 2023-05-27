@@ -27,8 +27,9 @@ public class Snake {
         return snake.remove(1);
     }
 
-    void moveWithGrowToCell(Cell next) {
+    Cell moveWithGrowToCell(Cell next) {
         snake.add(next);
+        return snake.get(1);
     }
 
 
