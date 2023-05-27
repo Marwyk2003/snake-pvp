@@ -54,15 +54,27 @@ public class SingleGameViewModel implements ViewModel {
         gameService.setDirection(dir);
     }
 
-    private class VMCell {
-        final SimpleBooleanProperty isGoThrough; // merge isSnake and isGoThrough into one enum (?)
-        final SimpleBooleanProperty isSnake; // snake should have a direction
-        final SimpleObjectProperty<Edible> edible;
+    public class VMCell {
+        private final SimpleBooleanProperty isGoThrough; // merge isSnake and isGoThrough into one enum (?)
+        private final SimpleBooleanProperty isSnake; // snake should have a direction
+        private final SimpleObjectProperty<Edible> edible;
 
         VMCell(int row, int col, boolean isGoThrough) {
             this.edible = new SimpleObjectProperty<>(SingleGameViewModel.this, row + ":" + col, null);
             this.isGoThrough = new SimpleBooleanProperty(SingleGameViewModel.this, row + ":" + col, isGoThrough);
             this.isSnake = new SimpleBooleanProperty(SingleGameViewModel.this, row + ":" + col, false);
+        }
+
+        public SimpleBooleanProperty isGoThroughProperty() {
+            return isGoThrough;
+        }
+
+        public SimpleBooleanProperty isSnakeProperty() {
+            return isSnake;
+        }
+
+        public SimpleObjectProperty<Edible> edibleProperty() {
+            return edible;
         }
 
         public void setIsGoThrough(boolean isGoThrough) {

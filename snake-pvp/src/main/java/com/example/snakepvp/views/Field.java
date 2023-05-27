@@ -1,17 +1,20 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.viewmodels.SingleGameViewModel.VMCell;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Field extends Button {
-    String image;
     final SimpleBooleanProperty isActive;
-    Field field = this;
+    String image;
+
+    private boolean isGoThrough;
+    private boolean isSnake;
+    private Edible edible;
+
     Field() {
         image = "/empty.png";
         isActive = new SimpleBooleanProperty(true);
@@ -20,12 +23,25 @@ public class Field extends Button {
     }
 
     void bind(VMCell cell) {
-        cell.isGoThroughProperty().addListener(new ChangeListener() {
-            Field f = field;
-            @Override public void changed(ObservableValue o, Object oldVal, Object newVal) {
-                f.image = f.image.equals("/quit.png") ? "/empty.png" : "/quit.png";
-                f.setGraphic(new ImageView(new Image(f.image)));
-            }
+        cell.isGoThroughProperty().addListener((o, oldVal, newVal) -> {
+            isGoThrough = newVal;
+            refreshImage();
         });
+        cell.isSnakeProperty().addListener((o, oldVal, newVal) -> {
+            isSnake = newVal;
+            refreshImage();
+        });
+        // TODO bind edibles
+    }
+
+    private void refreshImage() {
+        image = getImage();
+        setGraphic(new ImageView(new Image(image)));
+    }
+
+    private String getImage() {
+        if (isSnake) return "/shroom.png";
+        if (!isGoThrough) return "/quit.png";
+        return "/empty.png";
     }
 }
