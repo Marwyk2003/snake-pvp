@@ -8,7 +8,7 @@ public class GameService {
     private final Player player;
     private final SimpleEventEmitter<CellEvent> cellEvents = new SimpleEventEmitter<>();
     public SimpleViewerService viewerService = new SimpleViewerService(null, cellEvents, null);
-    Direction direction; // TODO
+    Direction direction=Direction.FORWARD; // TODO
     GameHostService gameHostService;
     private BoardState boardState;
     private Snake snake;
@@ -51,13 +51,13 @@ public class GameService {
     }
 
     MoveStatus makeMove() {
-        Direction dir = Direction.FORWARD; // TODO this.direction;
-        this.direction = Direction.FORWARD; // reset direction
-        MoveStatus moveStatus = boardState.makeMove(dir);
+//        Direction dir = Direction.FORWARD; // TODO this.direction;
+        MoveStatus moveStatus = boardState.makeMove(direction);
         if (moveStatus.getTail() != null)
             cellEvents.emit(new CellEvent(moveStatus.getTail().getCol(), moveStatus.getTail().getRow(), moveStatus.getTail().isSnake()));
         if (moveStatus.getHead() != null)
             cellEvents.emit(new CellEvent(moveStatus.getHead().getCol(), moveStatus.getHead().getRow(), moveStatus.getHead().isSnake()));
+        this.direction = Direction.FORWARD; // reset direction
         return moveStatus;
     }
 }

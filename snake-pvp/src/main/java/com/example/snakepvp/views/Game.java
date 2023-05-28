@@ -66,9 +66,9 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
             public void handle(KeyEvent event) {
                 int newDirection = 0;                       // 0: UP, 1: RIGHT, 2: DOWN, 3: LEFT
                 switch (event.getCharacter()) {
-                    case "w" -> newDirection = 0;
+                    case "w" -> newDirection = 2;
                     case "d" -> newDirection = 1;
-                    case "s" -> newDirection = 2;
+                    case "s" -> newDirection = 0;
                     case "a" -> newDirection = 3;
                 }
                 viewModel.changeDirection(newDirection);
