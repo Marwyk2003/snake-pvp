@@ -1,16 +1,14 @@
 package com.example.snakepvp.views;
 
-import com.example.snakepvp.viewmodels.SingleGameViewModel;
-import javafx.beans.Observable;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
 public class Board extends GridPane {
+    private final Field[][] fields;
     int rows;
     int columns;
-    private final Field[][] fields;
     // Alternatively, not nice:
     // for (Node node : this.getChildren()) {
     //    if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
@@ -46,6 +44,12 @@ public class Board extends GridPane {
             field.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             this.add(field, i % columns, i / rows);
             fields[i % columns][i / rows] = field;
+        }
+    }
+
+    void refreshBoard() {
+        for (int i = 0; i < rows * columns; i++) {
+            fields[i % columns][i / rows].refreshImage();
         }
     }
 

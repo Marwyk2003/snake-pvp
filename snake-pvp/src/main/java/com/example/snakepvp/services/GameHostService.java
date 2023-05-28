@@ -49,7 +49,7 @@ public class GameHostService {
             t.start();
         try {
             while (!isGameOver) {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(5);
                 System.out.println("GameHost await cyclic barrier...");
                 cyclicBarrier.await();
                 System.out.println("GameHost done");

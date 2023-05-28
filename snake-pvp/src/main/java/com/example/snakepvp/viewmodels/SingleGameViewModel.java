@@ -4,10 +4,7 @@ import com.example.snakepvp.core.BoardState;
 import com.example.snakepvp.core.Cell;
 import com.example.snakepvp.core.Direction;
 import com.example.snakepvp.core.Edible;
-import com.example.snakepvp.services.EdibleEvent;
-import com.example.snakepvp.services.GameService;
-import com.example.snakepvp.services.GameStatusEvent;
-import com.example.snakepvp.services.CellEvent;
+import com.example.snakepvp.services.*;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,9 +15,11 @@ public class SingleGameViewModel implements ViewModel {
     private final VMCell[][] cells;
     private final int height, width;
     GameService gameService;
+    SimpleViewerService viewerService;
 
-    public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
+    public SingleGameViewModel(GameService gameService, SimpleViewerService viewerService) {//TODO add viewerService to constructor
         this.gameService = gameService;
+        this.viewerService = viewerService;
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
         this.width = boardState.getWidth();
@@ -33,9 +32,10 @@ public class SingleGameViewModel implements ViewModel {
             }
         }
         for (Cell cell : boardState.getSnake().getCellList()) {
+            System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
         }
-
+        this.viewerService.cellEvents().subscribe(this::processCellEvent);
         //TODO subscribe to chosen emitters via viewerService
     }
 
@@ -44,7 +44,7 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     private void processCellEvent(CellEvent event) {
-        //TODO
+        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake());
     }
 
     private void processEdibleEvent(EdibleEvent event) {

@@ -24,12 +24,11 @@ public class Snake {
 
     Cell moveToCell(Cell next) {
         snake.add(next);
-        return snake.remove(1);
+        return snake.remove(0);
     }
 
-    Cell moveWithGrowToCell(Cell next) {
+    void moveWithGrowToCell(Cell next) {
         snake.add(next);
-        return snake.get(1);
     }
 
 

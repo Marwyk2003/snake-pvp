@@ -6,6 +6,8 @@ import java.util.concurrent.BrokenBarrierException;
 
 public class GameService {
     private final Player player;
+    private final SimpleEventEmitter<CellEvent> cellEvents = new SimpleEventEmitter<>();
+    public SimpleViewerService viewerService = new SimpleViewerService(null, cellEvents, null);
     Direction direction; // TODO
     GameHostService gameHostService;
     private BoardState boardState;
@@ -51,6 +53,11 @@ public class GameService {
     MoveStatus makeMove() {
         Direction dir = Direction.FORWARD; // TODO this.direction;
         this.direction = Direction.FORWARD; // reset direction
-        return boardState.makeMove(dir);
+        MoveStatus moveStatus = boardState.makeMove(dir);
+        if (moveStatus.getTail() != null)
+            cellEvents.emit(new CellEvent(moveStatus.getTail().getCol(), moveStatus.getTail().getRow(), moveStatus.getTail().isSnake()));
+        if (moveStatus.getHead() != null)
+            cellEvents.emit(new CellEvent(moveStatus.getHead().getCol(), moveStatus.getHead().getRow(), moveStatus.getHead().isSnake()));
+        return moveStatus;
     }
 }

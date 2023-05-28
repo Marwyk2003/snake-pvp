@@ -2,6 +2,7 @@ package com.example.snakepvp.views;
 
 import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.viewmodels.SingleGameViewModel.VMCell;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -31,12 +32,15 @@ public class Field extends Button {
             isSnake = newVal;
             refreshImage();
         });
+
+        isGoThrough = cell.isGoThroughProperty().get();
+        isSnake = cell.isSnakeProperty().get();
         // TODO bind edibles
     }
 
-    private void refreshImage() {
+    void refreshImage() {
         image = getImage();
-        setGraphic(new ImageView(new Image(image)));
+        Platform.runLater(() -> setGraphic(new ImageView(new Image(image))));
     }
 
     private String getImage() {

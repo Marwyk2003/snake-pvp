@@ -42,7 +42,7 @@ public class Program extends Application {
         Player player = new Player();
         GameHostService gameHostService = new GameHostService();
         GameService gameService = gameHostService.connectPlayer(player);
-        SingleGameViewModel singleGameVM = new SingleGameViewModel(gameService); // TODO create multiple single game viewmodels
+        SingleGameViewModel singleGameVM = new SingleGameViewModel(gameService, gameService.viewerService); // TODO create multiple single game viewmodels
         ViewTuple<Game, SingleGameViewModel> viewTuple = FluentViewLoader.fxmlView(Game.class).viewModel(singleGameVM).load();
         Parent root = viewTuple.getView();
         stage.setScene(new Scene(root));

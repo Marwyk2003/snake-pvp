@@ -29,7 +29,7 @@ public class MoveStatus {
         return edible;
     }
 
-    static class Cell {
+    public static class Cell {
         final int row;
         final int col;
         final boolean isSnake;
@@ -38,6 +38,18 @@ public class MoveStatus {
             this.row = row;
             this.col = col;
             this.isSnake = isSnake;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
+        public int getCol() {
+            return col;
+        }
+
+        public boolean isSnake() {
+            return isSnake;
         }
     }
 }

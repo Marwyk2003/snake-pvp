@@ -36,14 +36,15 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
             for (int col = 0; col < viewModel.getWidth(); ++col) {
                 board.getField(row, col).bind(viewModel.getCell(row, col));
                 // TODO remove, debug only!
-                if (row == 5 && (col == 6 || col == 5))
-                    viewModel.getCell(row, col).setIsGoThrough(false); // (am) just checking
+//                if (row == 5 && (col == 6 || col == 5))
+//                    viewModel.getCell(row, col).setIsGoThrough(false); // (am) just checking
             }
         }
         // TODO remove, debug only!
         viewModel.getCell(5, 5).setIsGoThrough(true);  // (am) (5, 6) should change once, (5, 5) twice hence no effect
         board.setMaxSize(600, 740);
         board.setAlignment(Pos.CENTER);
+        board.refreshBoard();
         runTimer();
     }
 

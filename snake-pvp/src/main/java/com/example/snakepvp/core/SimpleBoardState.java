@@ -84,7 +84,7 @@ public class SimpleBoardState implements BoardState {
         Cell head;
         if (growCounter > 0) {
             growCounter--;
-            tail = snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
+            tail = null;
         } else {
             tail = snake.moveToCell(board.getCell(nextRow, nextCol));
             tail.setGoThrough(true);// resets tail to normal cell
