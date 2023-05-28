@@ -71,10 +71,7 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
                     case "s" -> newDirection = 2;
                     case "a" -> newDirection = 3;
                 }
-                if (newDirection == (4 + oldDirection - 1) % 4) viewModel.noticeDirectionChange("left");
-                else if (newDirection == (oldDirection + 1) % 4) viewModel.noticeDirectionChange("right");
-                if (newDirection != (oldDirection + 2) % 4) oldDirection = newDirection; // zabrania się zawracania
-                System.out.println("NEW DIRECTION " + oldDirection);
+                viewModel.changeDirection(newDirection);
             }
         });
         stage.setScene(scene);

@@ -14,6 +14,7 @@ public class SingleGameViewModel implements ViewModel {
     final SimpleBooleanProperty gameOver;
     private final VMCell[][] cells;
     private final int height, width;
+    private int direction;
     GameService gameService;
     SimpleViewerService viewerService;
 
@@ -67,9 +68,16 @@ public class SingleGameViewModel implements ViewModel {
         return gameOver;
     }
 
-    protected void changeDirection(Direction dir) {
-        gameService.setDirection(dir);
+    public void changeDirection(int dir) {
+        Direction snakeDir = Direction.FORWARD;
+        if (dir == (direction + 2) % 4) return;
+        if (dir == (4 + direction - 1) % 4) snakeDir = Direction.LEFT;
+        if (dir == (direction + 1) % 4) snakeDir = Direction.RIGHT;
+        direction = dir;
+        System.out.println("NEW DIRECTION " + direction);
+        gameService.setDirection(snakeDir);
     }
+
 
     public class VMCell {
         private final SimpleBooleanProperty isGoThrough; // merge isSnake and isGoThrough into one enum (?)
