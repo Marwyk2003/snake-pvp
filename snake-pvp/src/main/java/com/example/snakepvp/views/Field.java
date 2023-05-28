@@ -32,10 +32,16 @@ public class Field extends Button {
             isSnake = newVal;
             refreshImage();
         });
+        cell.edibleProperty().addListener((o, oldVal, newVal) -> {
+            edible = newVal;
+            refreshImage();
+        });
 
         isGoThrough = cell.isGoThroughProperty().get();
         isSnake = cell.isSnakeProperty().get();
-        // TODO bind edibles
+        edible = cell.edibleProperty().get();
+
+        refreshImage();
     }
 
     void refreshImage() {
@@ -44,8 +50,16 @@ public class Field extends Button {
     }
 
     private String getImage() {
-        if (isSnake) return "/shroom.png";
-        if (!isGoThrough) return "/quit.png";
-        return "/empty.png";
+        if (isSnake) return "/skin22.png";  // 2-digit for smaller versions
+        if (!isGoThrough) return "/empty.png";
+        if (edible != null) {
+            String newImage;
+            switch (edible) {
+                case SIMPLE_GROWING -> image = "/shroom.png";
+            }
+            edible = null;
+            return "/shroom.png";
+        }
+        return "/field.png";
     }
 }

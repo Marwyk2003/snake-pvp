@@ -11,6 +11,16 @@ AnchorPane {
     -fx-background-color: transparent;
 }
 
+.header1 {
+    -fx-font-size: 90px;
+    -fx-background-color: transparent;
+}
+
+.header2 {
+    -fx-font-size: 75px;
+    -fx-background-color: transparent;
+}
+
 .roundButton {
     -fx-background-radius: 1em;
     -fx-background-color: transparent;
