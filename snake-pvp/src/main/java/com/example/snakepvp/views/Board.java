@@ -1,7 +1,6 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
-import javafx.beans.Observable;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;

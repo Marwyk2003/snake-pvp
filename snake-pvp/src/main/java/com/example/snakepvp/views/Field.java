@@ -3,23 +3,19 @@ package com.example.snakepvp.views;
 import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.viewmodels.SingleGameViewModel.VMCell;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Field extends Button {
-    final SimpleBooleanProperty isActive;
-    String image;
-
+    // TODO make snake size equal to tile size
+    int snakeSkin;
     private boolean isGoThrough;
     private boolean isSnake;
     private Edible edible;
 
     Field() {
-        image = "/empty.png";
-        isActive = new SimpleBooleanProperty(true);
-        this.setGraphic(new ImageView(new Image(image)));
+        this.setGraphic(new ImageView(new Image("/empty.png")));
         this.setStyle("-fx-background-color: transparent");
     }
 
@@ -45,17 +41,16 @@ public class Field extends Button {
     }
 
     void refreshImage() {
-        image = getImage();
-        Platform.runLater(() -> setGraphic(new ImageView(new Image(image))));
+        Platform.runLater(() -> setGraphic(new ImageView(new Image(getImage()))));
     }
 
     private String getImage() {
-        if (isSnake) return "/skin22.png";  // 2-digit for smaller versions
+        if (isSnake) return "/skin2s.png";  // s for smaller versions (50x50)
         if (!isGoThrough) return "/empty.png";
         if (edible != null) {
             String newImage;
             switch (edible) {
-                case SIMPLE_GROWING -> image = "/shroom.png";
+                case SIMPLE_GROWING -> { return "/shroom.png"; }
             }
             edible = null;
             return "/shroom.png";

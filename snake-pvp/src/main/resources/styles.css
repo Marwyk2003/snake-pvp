@@ -7,7 +7,7 @@ AnchorPane {
 }
 
 .counter {
-    -fx-font-size: 80px;
+    -fx-font-size: 100px;
     -fx-background-color: transparent;
 }
 

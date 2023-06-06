@@ -27,7 +27,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private int skin = 0, noSkins = 5;
     @FXML
-    private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3, gameNameButton;
+    private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3;
 
     @FXML
     private void mouseAction (MouseEvent event) throws IOException {
@@ -62,6 +62,5 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         skinButton1.setGraphic(new ImageView(new Image("/skin0.png")));
         skinButton2.setGraphic(new ImageView(new Image("/skin0.png")));
         skinButton3.setGraphic(new ImageView(new Image("/skin0.png")));
-//        gameNameButton.setGraphic(new ImageView(new Image("/gameName.png")));
     }
 }

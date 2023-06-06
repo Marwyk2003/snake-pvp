@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+
+<?import javafx.scene.image.ImageView?>
+<AnchorPane id="AnchorPane" prefHeight="600" prefWidth="740"
+            xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.snakepvp.views.GameWon">
+    <children>
+        <ImageView fx:id="spotlight" AnchorPane.rightAnchor="30.0" AnchorPane.BottomAnchor="50.0" />
+        <ImageView fx:id="coin2" AnchorPane.rightAnchor="300.0" AnchorPane.BottomAnchor="150.0" />
+        <ImageView fx:id="coin1" AnchorPane.rightAnchor="50.0" AnchorPane.BottomAnchor="80.0" />
+        <ImageView fx:id="coin4" AnchorPane.rightAnchor="400.0" AnchorPane.BottomAnchor="70.0" />
+        <ImageView fx:id="coin3" AnchorPane.rightAnchor="150.0" AnchorPane.BottomAnchor="300.0" />
+        <ImageView fx:id="coin5" AnchorPane.rightAnchor="470.0" AnchorPane.BottomAnchor="150.0" />
+        <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.TopAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
+        <Label AnchorPane.leftAnchor="180.0" AnchorPane.TopAnchor="100.0" text="GOOD JOB" styleClass="label" />
+        <Label AnchorPane.leftAnchor="180.0" AnchorPane.TopAnchor="130.0" text="You collected 62 points" styleClass="label" />
+    </children>
+    <stylesheets>
+        <URL value="@../../../../styles.css" />
+    </stylesheets>
+</AnchorPane>
