@@ -12,7 +12,7 @@ public interface BoardState {
 
     void generateEdible(Edible edible);
 
-    MoveStatus makeMove(Direction dir);
+    MoveStatus makeMove(SnakeDirection dir);
 
     boolean invokeEdibleEffect(Edible edible);
 

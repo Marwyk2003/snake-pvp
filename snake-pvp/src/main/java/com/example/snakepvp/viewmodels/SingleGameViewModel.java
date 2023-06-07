@@ -1,9 +1,6 @@
 package com.example.snakepvp.viewmodels;
 
-import com.example.snakepvp.core.BoardState;
-import com.example.snakepvp.core.Cell;
-import com.example.snakepvp.core.Direction;
-import com.example.snakepvp.core.Edible;
+import com.example.snakepvp.core.*;
 import com.example.snakepvp.services.*;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -68,14 +65,8 @@ public class SingleGameViewModel implements ViewModel {
         return gameOver;
     }
 
-    public void changeDirection(int dir) {
-        Direction snakeDir = Direction.FORWARD;
-        if (dir == (direction + 2) % 4) return;
-        if (dir == (4 + direction - 1) % 4) snakeDir = Direction.LEFT;
-        if (dir == (direction + 1) % 4) snakeDir = Direction.RIGHT;
-        direction = dir;
-        System.out.println("NEW DIRECTION " + direction);
-        gameService.setDirection(snakeDir);
+    public void changeDirection(Direction dir) {
+        gameService.setDirection(dir);
     }
 
 

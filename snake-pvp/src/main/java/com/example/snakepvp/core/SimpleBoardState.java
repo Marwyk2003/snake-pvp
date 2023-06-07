@@ -61,10 +61,10 @@ public class SimpleBoardState implements BoardState {
     }
 
     @Override
-    public MoveStatus makeMove(Direction dir) {
+    public MoveStatus makeMove(SnakeDirection dir) {
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
-        if (dir != Direction.FORWARD) {
+        if (dir != SnakeDirection.FORWARD) {
             int temp = nextRow;
             nextRow = nextCol;
             nextCol = temp;

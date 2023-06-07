@@ -1,12 +1,12 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.core.Direction;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -69,32 +69,26 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
         Scene scene = new Scene(hBox);
 
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                int newDirection = 0;
-                switch (event.getCode()) {
-                    case UP -> newDirection = 2;
-                    case RIGHT -> newDirection = 1;
-                    case DOWN -> newDirection = 0;
-                    case LEFT -> newDirection = 3;
-                }
-                viewModel.getSingleGameVM(0).changeDirection(newDirection);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            Direction newDirection = null;
+            switch (event.getCode()) {
+                case UP -> newDirection = Direction.UP;
+                case RIGHT -> newDirection = Direction.RIGHT;
+                case DOWN -> newDirection = Direction.DOWN;
+                case LEFT -> newDirection = Direction.LEFT;
             }
+            if (newDirection != null) viewModel.getSingleGameVM(0).changeDirection(newDirection);
         });
 
-        scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                int newDirection = 0;
-                switch (event.getCharacter()) {
-                    case "w" -> newDirection = 2;
-                    case "d" -> newDirection = 1;
-                    case "s" -> newDirection = 0;
-                    case "a" -> newDirection = 3;
-                }
-                viewModel.getSingleGameVM(1).changeDirection(newDirection);
+        scene.setOnKeyTyped(event -> {
+            Direction newDirection = null;
+            switch (event.getCharacter()) {
+                case "w" -> newDirection = Direction.UP;
+                case "d" -> newDirection = Direction.RIGHT;
+                case "s" -> newDirection = Direction.DOWN;
+                case "a" -> newDirection = Direction.LEFT;
             }
+            if (newDirection != null) viewModel.getSingleGameVM(1).changeDirection(newDirection);
         });
 
         stage.setScene(scene);

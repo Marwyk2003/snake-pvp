@@ -4,9 +4,7 @@ import com.example.snakepvp.core.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
 
 
 public class GameHostService {
@@ -16,7 +14,6 @@ public class GameHostService {
     List<GameService> gameList;
     List<Thread> threadList;
 
-    Thread gameHostThread;
     CyclicBarrier cyclicBarrier;
     boolean isGameOver;
 
@@ -27,36 +24,23 @@ public class GameHostService {
     }
 
     public GameService connectPlayer(Player player) {
-        GameService game = new GameService(player, this);
+        GameService game = new GameService(player);
         this.gameList.add(game);
         return game;
     }
 
     public void start() {
-        isGameOver = false;
-        cyclicBarrier = new CyclicBarrier(gameList.size() + 1);
-        gameHostThread = new Thread(this::run);
         for (GameService game : gameList) {
             game.newGame(WIDTH, HEIGHT);
             Thread t = new Thread(game::run);
             threadList.add(t);
+            t.start();
         }
-        gameHostThread.start();
     }
 
-    void run() {
-        for (Thread t : threadList)
-            t.start();
-        try {
-            while (!isGameOver) {
-                TimeUnit.SECONDS.sleep(1);
-                System.out.println("GameHost await cyclic barrier...");
-                cyclicBarrier.await();
-                System.out.println("GameHost done");
-                // TODO check if game is over etc
-            }
-        } catch (InterruptedException | BrokenBarrierException e) {
-            isGameOver = true;
+    private void endGame() {
+        for (Thread t : threadList) {
+            t.interrupt();
         }
     }
 }
