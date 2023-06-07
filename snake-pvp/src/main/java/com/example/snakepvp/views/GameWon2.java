@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameWon2 implements Initializable {
-    Stage stage = Program.stage;
+//    Stage stage = Program.stage;
 
     @FXML
     private Label gameWonLabel1, gameWonLabel2, gameLostLabel1, gameLostLabel2;
@@ -62,8 +62,8 @@ public class GameWon2 implements Initializable {
             gameLostLabel1.setStyle(format);
             gameLostLabel2.setStyle(format);
         };
-        stage.widthProperty().addListener(stageHeightListener);
-        stage.heightProperty().addListener(stageHeightListener);
+//        stage.widthProperty().addListener(stageHeightListener);
+//        stage.heightProperty().addListener(stageHeightListener);
 
         runAnimation();
     }

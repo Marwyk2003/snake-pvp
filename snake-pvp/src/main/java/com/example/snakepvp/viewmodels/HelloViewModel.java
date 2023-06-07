@@ -1,16 +1,16 @@
 package com.example.snakepvp.viewmodels;
 
-import com.example.snakepvp.Program;
+import com.example.snakepvp.SceneController;
 import de.saxsys.mvvmfx.ViewModel;
 
 public class HelloViewModel implements ViewModel {
-    Program program;
+    SceneController sceneController;
 
-    public HelloViewModel(Program program) {
-        this.program = program; // TODO quite ugly but good for now
+    public void setSceneController(SceneController sceneController) {
+        this.sceneController = sceneController;
     }
 
     public void startGame() {
-        program.loadGame();
+        sceneController.loadGameScene();
     }
 }

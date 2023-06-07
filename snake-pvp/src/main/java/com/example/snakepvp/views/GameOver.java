@@ -15,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class GameOver implements Initializable {
-    Stage stage = Program.stage;
+//    Stage stage = Program.stage;
     @FXML
     private Button returnButton;
 

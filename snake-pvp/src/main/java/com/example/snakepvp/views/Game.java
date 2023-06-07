@@ -1,11 +1,12 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import de.saxsys.mvvmfx.FxmlView;
-import java.io.IOException;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -18,18 +19,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.event.EventHandler;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Game implements FxmlView<SingleGameViewModel>, Initializable {
+public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     HBox hBox;
     Board board1, board2;
     private int snakeSkin;
     @InjectViewModel
-    private SingleGameViewModel viewModel;
+    private GameHostViewModel viewModel;
     @FXML
     private Label countDownLabel;
 
@@ -40,28 +42,33 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        board1 = new Board(viewModel.getHeight(), viewModel.getWidth());
-        board2 = new Board(viewModel.getHeight(), viewModel.getWidth());
-        for (int row = 0; row < viewModel.getHeight(); ++row) {
-            for (int col = 0; col < viewModel.getWidth(); ++col) {
-                board1.getField(row, col).bind(viewModel.getCell(row, col));
-                board2.getField(row, col).bind(viewModel.getCell(row, col));
+        // TODO replace with loop depending on vm playerCount property
+        Board[] boards = new Board[2];
+        for (int i = 0; i < 2; ++i) {
+            SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
+            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth());
+            for (int row = 0; row < singleGameVM.getHeight(); ++row) {
+                for (int col = 0; col < singleGameVM.getWidth(); ++col) {
+                    boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
+                }
             }
+            boards[i].setMaxSize(600, 740);
         }
-        board1.setMaxSize(600, 740);
-        board1.setAlignment(Pos.BOTTOM_LEFT);
-        board1.refreshBoard();
-        board2.setMaxSize(600, 740);
-        board2.setAlignment(Pos.BOTTOM_RIGHT);
-        board2.refreshBoard();
+        boards[0].setAlignment(Pos.BOTTOM_LEFT);
+        boards[1].setAlignment(Pos.BOTTOM_RIGHT);
         hBox = new HBox();
-        hBox.getChildren().addAll(board1, board2);
+        for (int i = 0; i < 2; ++i) {
+            boards[i].refreshBoard();
+            hBox.getChildren().add(boards[i]);
+        }
+
         runTimer();
     }
 
     private void startGame() throws IOException {
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
         Scene scene = new Scene(hBox);
+
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -72,26 +79,27 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
                     case DOWN -> newDirection = 0;
                     case LEFT -> newDirection = 3;
                 }
-                viewModel.changeDirection(newDirection);
+                viewModel.getSingleGameVM(0).changeDirection(newDirection);
             }
         });
 
-//        scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent event) {
-//                int newDirection = 0;
-//                switch (event.getCharacter()) {
-//                    case "w" -> newDirection = 2;
-//                    case "d" -> newDirection = 1;
-//                    case "s" -> newDirection = 0;
-//                    case "a" -> newDirection = 3;
-//                }
-//                viewModel.changeDirection(newDirection);
-//            }
-//        });
+        scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                int newDirection = 0;
+                switch (event.getCharacter()) {
+                    case "w" -> newDirection = 2;
+                    case "d" -> newDirection = 1;
+                    case "s" -> newDirection = 0;
+                    case "a" -> newDirection = 3;
+                }
+                viewModel.getSingleGameVM(1).changeDirection(newDirection);
+            }
+        });
 
         stage.setScene(scene);
         stage.show();
+        viewModel.startGame();
     }
 
     public void runTimer() {
