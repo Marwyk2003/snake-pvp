@@ -1,6 +1,7 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -28,10 +29,7 @@ public class Board extends GridPane {
             cconstraint.setHgrow(Priority.NEVER);
             this.getColumnConstraints().add(cconstraint);
         }
-        setBoard();
-    }
 
-    void setBoard() {
         for (int i = 0; i < rows * columns; i++) {
             Field field = new Field();
             field.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

@@ -2,10 +2,10 @@ package com.example.snakepvp.views;
 
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import de.saxsys.mvvmfx.FxmlView;
-import java.io.IOException;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -15,53 +15,45 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.event.EventHandler;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Game implements FxmlView<SingleGameViewModel>, Initializable {
+public class Game1 implements FxmlView<SingleGameViewModel>, Initializable {
 
-    HBox hBox;
-    Board board1, board2;
+    Board board;
     private int snakeSkin;
     @InjectViewModel
     private SingleGameViewModel viewModel;
     @FXML
     private Label countDownLabel;
 
-    @FXML
-    private void mouseAction(MouseEvent event) {
-        ((Button) event.getSource()).setCursor(Cursor.HAND);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        board1 = new Board(viewModel.getHeight(), viewModel.getWidth());
-        board2 = new Board(viewModel.getHeight(), viewModel.getWidth());
+        board = new Board(viewModel.getHeight(), viewModel.getWidth());
         for (int row = 0; row < viewModel.getHeight(); ++row) {
             for (int col = 0; col < viewModel.getWidth(); ++col) {
-                board1.getField(row, col).bind(viewModel.getCell(row, col));
-                board2.getField(row, col).bind(viewModel.getCell(row, col));
+                board.getField(row, col).bind(viewModel.getCell(row, col));
             }
         }
-        board1.setMaxSize(600, 740);
-        board1.setAlignment(Pos.BOTTOM_LEFT);
-        board1.refreshBoard();
-        board2.setMaxSize(600, 740);
-        board2.setAlignment(Pos.BOTTOM_RIGHT);
-        board2.refreshBoard();
-        hBox = new HBox();
-        hBox.getChildren().addAll(board1, board2);
+        board.setMaxSize(600, 740);
+        board.setAlignment(Pos.CENTER);
+        board.refreshBoard();
         runTimer();
+    }
+
+    @FXML
+    private void mouseAction(MouseEvent event) throws Exception {
+        ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
 
     private void startGame() throws IOException {
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
-        Scene scene = new Scene(hBox);
+        Scene scene = new Scene(board);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -120,3 +112,20 @@ public class Game implements FxmlView<SingleGameViewModel>, Initializable {
         });
     }
 }
+
+
+// 15 3(120)
+// 14 3(110)
+// 13 3(100)
+// 12 3(90)
+// 11 3(80)
+// 10 2(120)
+// 9 2(110)
+// 8 2(100)
+// 7 2(90)
+// 6 2(80)
+// 5 1(120)
+// 4 1(110)
+// 3 1(100)
+// 2 1(90)
+// 1 1(80)
