@@ -15,11 +15,11 @@ public class Snake {
     }
 
     int getRowDirection() {
-        return getHead().getRow() - snake.get(snake.size() - 2).getRow();
+        return getHead().getRow() - getNeck().getRow();
     }
 
     int getColDirection() {
-        return getHead().getCol() - snake.get(snake.size() - 2).getCol();
+        return getHead().getCol() - getNeck().getCol();
     }
 
     Cell moveToCell(Cell next) {
@@ -31,6 +31,9 @@ public class Snake {
         snake.add(next);
     }
 
+    Cell getNeck() {
+        return snake.get(snake.size() - 2);
+    }
 
     Cell getHead() {
         return snake.get(snake.size() - 1);

@@ -1,6 +1,9 @@
 package com.example.snakepvp.core;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,17 +64,23 @@ public class SimpleBoardState implements BoardState {
     }
 
     @Override
-    public MoveStatus makeMove(SnakeDirection dir) {
+    public MoveStatus makeMove(Direction dir) {
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
-        if (dir != SnakeDirection.FORWARD) {
-            int temp = nextRow;
-            nextRow = nextCol;
-            nextCol = temp;
+
+        if (nextRow != 0 && (dir == Direction.UP || dir == Direction.DOWN)) {
+            nextRow = 0;
+            switch (dir) {
+                case UP -> nextCol = -1;
+                case DOWN -> nextCol = 1;
+            }
         }
-        switch (dir) {
-            case RIGHT -> nextCol *= -1;
-            case LEFT -> nextRow *= -1;
+        if (nextCol != 0 && (dir == Direction.LEFT || dir == Direction.RIGHT)) {
+            nextCol = 0;
+            switch (dir) {
+                case RIGHT -> nextRow = 1;
+                case LEFT -> nextRow = -1;
+            }
         }
         nextRow += snake.getHead().getRow();
         nextCol += snake.getHead().getCol();
@@ -96,6 +105,12 @@ public class SimpleBoardState implements BoardState {
         if (eaten != null)
             this.score.increment(1); //TODO change score system
 
+        if (tail == null) {
+            return new MoveStatus(true, eaten, null,
+                    new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()));
+
+        }
+
         return new MoveStatus(true, eaten,
                 new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()),
                 new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough())); // TODO
@@ -104,7 +119,8 @@ public class SimpleBoardState implements BoardState {
     @Override
     public boolean invokeEdibleEffect(Edible edible) {
         //TODO implement more edible effects
-        if (Objects.requireNonNull(edible) == Edible.SIMPLE_GROWING) {
+        if (edible == null) return false;
+        if (edible == Edible.SIMPLE_GROWING) {
             growCounter++;
         } else {
             return false;
