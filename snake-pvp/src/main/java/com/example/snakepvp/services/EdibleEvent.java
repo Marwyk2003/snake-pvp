@@ -3,19 +3,25 @@ package com.example.snakepvp.services;
 import com.example.snakepvp.core.Edible;
 
 public class EdibleEvent {
-    GameService owner;
     Edible edible;
+    int row;
+    int col;
 
-    EdibleEvent(Edible edible, GameService owner) {
+    EdibleEvent(Edible edible, int row, int col) {
         this.edible = edible;
-        this.owner = owner;
+        this.row = col;
+        this.col = row;
     }
 
     public Edible getEdible() {
         return edible;
     }
 
-    public GameService getOwner() {
-        return owner;
+    public int getCol() {
+        return col;
+    }
+
+    public int getRow() {
+        return row;
     }
 }

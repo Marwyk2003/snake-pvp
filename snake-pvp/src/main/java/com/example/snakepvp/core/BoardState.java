@@ -10,7 +10,7 @@ public interface BoardState {
 
     Snake getSnake();
 
-    void generateEdible(Edible edible);
+    Cell generateEdible(Edible edible);
 
     MoveStatus makeMove(Direction dir);
 

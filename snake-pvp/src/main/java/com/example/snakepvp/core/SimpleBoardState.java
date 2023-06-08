@@ -48,11 +48,11 @@ public class SimpleBoardState implements BoardState {
     }
 
     @Override
-    public void generateEdible(Edible edible) {
+    public Cell generateEdible(Edible edible) {
         List<Cell> emptyCells = new ArrayList<>();
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
-                if (board.getCell(row, col).getEdible() == null)
+                if (board.getCell(row, col).getEdible() == null && board.getCell(row, col).isGoThrough())
                     emptyCells.add(board.getCell(row, col));
             }
         }
@@ -61,6 +61,8 @@ public class SimpleBoardState implements BoardState {
         int index = random.nextInt(emptyCells.size());
 
         emptyCells.get(index).setEdible(edible);
+        System.out.println("new edible " + emptyCells.get(index).getRow() + " " + emptyCells.get(index).getCol());
+        return emptyCells.get(index);
     }
 
     @Override
@@ -94,13 +96,15 @@ public class SimpleBoardState implements BoardState {
         if (growCounter > 0) {
             growCounter--;
             tail = null;
+            snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
         } else {
             tail = snake.moveToCell(board.getCell(nextRow, nextCol));
             tail.setGoThrough(true);// resets tail to normal cell
         }
+
         head = snake.getHead();
         head.setGoThrough(false);
-        Edible eaten = snake.getHead().getEdible();
+        Edible eaten = head.getEdible();
         snake.getHead().removeEdible();
         if (eaten != null)
             this.score.increment(1); //TODO change score system
