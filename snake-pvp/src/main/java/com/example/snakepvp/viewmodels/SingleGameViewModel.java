@@ -1,10 +1,10 @@
 package com.example.snakepvp.viewmodels;
 
-import com.example.snakepvp.core.BoardState;
-import com.example.snakepvp.core.Cell;
-import com.example.snakepvp.core.Direction;
-import com.example.snakepvp.core.Edible;
-import com.example.snakepvp.services.*;
+import com.example.snakepvp.core.*;
+import com.example.snakepvp.services.CellEvent;
+import com.example.snakepvp.services.EdibleEvent;
+import com.example.snakepvp.services.GameService;
+import com.example.snakepvp.services.SimpleViewerService;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -82,38 +82,42 @@ public class SingleGameViewModel implements ViewModel {
 
 
     public class VMCell {
-        private final SimpleBooleanProperty isGoThrough; // merge isSnake and isGoThrough into one enum (?)
-        private final SimpleBooleanProperty isSnake; // snake should have a direction
-        private final SimpleObjectProperty<Edible> edible;
+
+        private final SimpleObjectProperty<CellContent> cellContent;
+
+        private boolean isGoThrough;
+        private boolean isSnake;
+        private Edible edible;
 
         VMCell(int row, int col, boolean isGoThrough) {
-            this.edible = new SimpleObjectProperty<>(SingleGameViewModel.this, row + ":" + col, null);
-            this.isGoThrough = new SimpleBooleanProperty(SingleGameViewModel.this, row + ":" + col, isGoThrough);
-            this.isSnake = new SimpleBooleanProperty(SingleGameViewModel.this, row + ":" + col, false);
+            this.cellContent = new SimpleObjectProperty<>(SingleGameViewModel.this, row + ":" + col, CellContent.EMPTY);
+            setIsGoThrough(isGoThrough);
         }
 
-        public SimpleBooleanProperty isGoThroughProperty() {
-            return isGoThrough;
-        }
-
-        public SimpleBooleanProperty isSnakeProperty() {
-            return isSnake;
-        }
-
-        public SimpleObjectProperty<Edible> edibleProperty() {
-            return edible;
+        public SimpleObjectProperty<CellContent> cellContentProperty() {
+            return cellContent;
         }
 
         public void setIsGoThrough(boolean isGoThrough) {
-            this.isGoThrough.set(isGoThrough);
+            this.isGoThrough = isGoThrough;
+            updateContent();
         }
 
         public void setIsSnake(boolean isSnake) {
-            this.isSnake.set(isSnake);
+            this.isSnake = isSnake;
+            updateContent();
         }
 
         public void setEdible(Edible edible) {
-            this.edible.set(edible);
+            this.edible = edible;
+            updateContent();
+        }
+
+        private void updateContent() {
+            if (isSnake) cellContent.set(CellContent.SNAKE);
+            else if (edible != null) cellContent.set(CellContent.EDIBLE_GROW);
+            else if (!isGoThrough) cellContent.set(CellContent.WALL);
+            else cellContent.set(CellContent.EMPTY);
         }
     }
 }
