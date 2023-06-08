@@ -20,8 +20,8 @@ public class Program extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setMinHeight(600);
-        stage.setMinWidth(740);
+        stage.setMinHeight(700);
+        stage.setMinWidth(1000);
         stage.getIcons().add(new Image("/icon.png"));
         stage.setTitle("SnakePvP");
 

@@ -7,17 +7,22 @@ AnchorPane {
 }
 
 .counter {
-    -fx-font-size: 100px;
+    -fx-font-size: 60px;
+    -fx-background-color: transparent;
+}
+
+.label {
+    -fx-font-size: 50px;
     -fx-background-color: transparent;
 }
 
 .header1 {
-    -fx-font-size: 90px;
+    -fx-font-size: 110px;
     -fx-background-color: transparent;
 }
 
 .header2 {
-    -fx-font-size: 75px;
+    -fx-font-size: 95px;
     -fx-background-color: transparent;
 }
 

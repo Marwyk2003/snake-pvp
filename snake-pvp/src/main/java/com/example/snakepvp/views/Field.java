@@ -8,11 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Field extends Button {
-    // TODO make snake size equal to tile size
     CellContent cellContent;
 
     Field() {
-        this.setGraphic(new ImageView(new Image("/empty.png")));
+        this.setGraphic(new ImageView(new Image("/emptyS.png")));
         this.setStyle("-fx-background-color: transparent");
     }
 
@@ -30,9 +29,9 @@ public class Field extends Button {
     }
 
     private String getImage() {
-        if (cellContent == CellContent.SNAKE) return "/skin2s.png";  // s for smaller versions (50x50)
-        if (cellContent == CellContent.WALL) return "/empty.png";
-        if (cellContent == CellContent.EDIBLE_GROW) return "/shroom.png";
-        return "/field.png";
+        if (cellContent == CellContent.SNAKE) return "/skin0S.png";
+        if (cellContent == CellContent.WALL) return "/emptyS.png";
+        if (cellContent == CellContent.EDIBLE_GROW) return "/growthEdibleS.png";
+        return "/fieldS.png";
     }
 }

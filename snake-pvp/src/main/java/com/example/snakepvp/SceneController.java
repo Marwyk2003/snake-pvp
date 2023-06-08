@@ -4,7 +4,7 @@ import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.GameOverViewModel;
 import com.example.snakepvp.viewmodels.HelloViewModel;
 import com.example.snakepvp.views.Game;
-import com.example.snakepvp.views.GameOver;
+import com.example.snakepvp.views.GameOver1P;
 import com.example.snakepvp.views.Hello;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
@@ -31,6 +31,9 @@ public class SceneController {
         gameHostVM.setSceneController(this);
         gameOverVM.setSceneController(this);
     }
+    public Stage getStage() {
+        return stage;
+    }
 
     public void loadHelloScene() {
         ViewTuple<Hello, HelloViewModel> viewTuple = FluentViewLoader.fxmlView(Hello.class).viewModel(helloVM).load();
@@ -43,7 +46,7 @@ public class SceneController {
     }
 
     public void loadGameOverScene() {
-        ViewTuple<GameOver, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(GameOver.class).viewModel(gameOverVM).load();
+        ViewTuple<GameOver1P, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(GameOver1P.class).viewModel(gameOverVM).load();
         loadScene(viewTuple);
     }
 

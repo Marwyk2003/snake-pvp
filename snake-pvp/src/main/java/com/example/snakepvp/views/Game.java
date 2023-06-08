@@ -14,9 +14,16 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,16 +31,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
-    HBox hBox;
+    private AnchorPane hBox;
     Board board1, board2;
     private int snakeSkin;
     @InjectViewModel
     private GameHostViewModel viewModel;
     @FXML
-    private Label countDownLabel;
+    private Label countDownLabel, pointCountLabel1, lengthCountLabel1, pointCountLabel2, lengthCountLabel2;
+    @FXML
+    private Polygon arrow1, arrow2;
+    @FXML
+    ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2;
 
     @FXML
     private void mouseAction(MouseEvent event) {
@@ -42,6 +54,13 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        arrow1.getPoints().setAll(0.0, 0.0, 50.0, 0.0, 50.0, 200.0, 0.0, 200.0);
+        arrow2.getPoints().setAll(0.0, 0.0, 120.0, 100.0, 0.0, 200.0);
+        arrow1.setFill(Color.WHITE);
+        arrow2.setFill(Color.WHITE);
+        arrow1.toBack();
+        arrow2.toBack();
+
         viewModel.initGame();
         Board[] boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
@@ -52,22 +71,26 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
                 }
             }
-            boards[i].setMaxSize(600, 740);
+//            boards[i].setMaxSize(200, 200);
         }
-        boards[0].setAlignment(Pos.BOTTOM_LEFT);
-        boards[1].setAlignment(Pos.BOTTOM_RIGHT);
-        hBox = new HBox();
-
+        AnchorPane.setLeftAnchor(boards[0], 50.0);
+        AnchorPane.setBottomAnchor(boards[0], 50.0);
+        AnchorPane.setRightAnchor(boards[1], 50.0);
+        AnchorPane.setBottomAnchor(boards[1], 50.0);
+        hBox = new AnchorPane();
         for (int i = 0; i < 2; ++i) {
             boards[i].refreshBoard();
             hBox.getChildren().add(boards[i]);
         }
+
         runTimer();
     }
 
     private void startGame() throws IOException {
+        setCounters();
+
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
-        Scene scene = new Scene(hBox);
+        Scene scene = new Scene(hBox, 1400, 700);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             Direction newDirection = null;
             switch (event.getCode()) {
@@ -76,7 +99,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 case DOWN -> newDirection = Direction.DOWN;
                 case LEFT -> newDirection = Direction.LEFT;
             }
-            if (newDirection != null) viewModel.getSingleGameVM(0).changeDirection(newDirection);
+            if (newDirection != null) viewModel.getSingleGameVM(1).changeDirection(newDirection);
         });
 
         scene.setOnKeyTyped(event -> {
@@ -87,7 +110,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 case "s" -> newDirection = Direction.DOWN;
                 case "a" -> newDirection = Direction.LEFT;
             }
-            if (newDirection != null) viewModel.getSingleGameVM(1).changeDirection(newDirection);
+            if (newDirection != null) viewModel.getSingleGameVM(0).changeDirection(newDirection);
         });
 
         stage.setScene(scene);
@@ -96,19 +119,17 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     }
 
     public void runTimer() {
-        AtomicInteger timeToStart = new AtomicInteger(21);
+        AtomicInteger timeToStart = new AtomicInteger(161);
         AtomicInteger timeValue = new AtomicInteger(4);
-        AtomicInteger fontSize = new AtomicInteger(80);
+        AtomicReference<Double> fontSize = new AtomicReference<>(60.0);
         Timeline timeLine = new Timeline();
         timeLine.setCycleCount(timeToStart.get());
-        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.1), e -> {
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.016), e -> {
             timeToStart.decrementAndGet();
-            if (timeToStart.get() % 5 == 0) {
-                fontSize.set(80);
-                countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
-            } else {
-                fontSize.set(fontSize.get() + 5);
-            }
+            if (timeToStart.get() == 40) { countDownLabel.setText("Play!"); AnchorPane.setLeftAnchor(countDownLabel, 290.0); }
+            else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
+            AnchorPane.setTopAnchor(countDownLabel, AnchorPane.getTopAnchor(countDownLabel) - 0.15);
+            fontSize.set(fontSize.get() + 0.25);
             countDownLabel.setStyle("-fx-font-size: " + fontSize.get() + "px");
         }));
         timeLine.play();
@@ -119,5 +140,19 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 throw new RuntimeException(ex);
             }
         });
+    }
+
+    private void setCounters() {
+        pointCounter1.setImage(new Image("/points.png"));
+        pointCounter2.setImage(new Image("/points.png"));
+        lengthCounter1.setImage(new Image("/length.png"));
+        lengthCounter2.setImage(new Image("/length.png"));
+
+        pointCountLabel1.setText("0");
+        pointCountLabel1.setText("0");
+        lengthCountLabel1.setText("3");
+        lengthCountLabel2.setText("3");
+
+        hBox.getChildren().addAll(pointCounter1, pointCounter2, pointCountLabel1, pointCountLabel2, lengthCounter1, lengthCounter2, lengthCountLabel1, lengthCountLabel2);
     }
 }

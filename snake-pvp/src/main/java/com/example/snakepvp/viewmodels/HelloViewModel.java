@@ -9,6 +9,9 @@ public class HelloViewModel implements ViewModel {
     public void setSceneController(SceneController sceneController) {
         this.sceneController = sceneController;
     }
+    public SceneController getSceneController() {
+        return sceneController;
+    }
 
     public void startGame() {
         sceneController.loadGameScene();

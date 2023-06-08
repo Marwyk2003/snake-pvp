@@ -1,7 +1,5 @@
 package com.example.snakepvp.views;
 
-import com.example.snakepvp.Program;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,10 +14,9 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GameWon2 implements Initializable {
+public class GameWon1P implements Initializable {
 //    Stage stage = Program.stage;
 
     @FXML

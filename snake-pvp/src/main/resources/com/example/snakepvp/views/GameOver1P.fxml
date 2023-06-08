@@ -6,9 +6,9 @@
 <?import java.net.*?>
 
 <?import javafx.scene.image.ImageView?>
-<AnchorPane id="AnchorPane" prefHeight="600" prefWidth="740"
+<AnchorPane id="AnchorPane" prefHeight="700" prefWidth="1000"
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.snakepvp.views.GameOver">
+            fx:controller="com.example.snakepvp.views.GameOver1P">
     <children>
         <ImageView fx:id="spotlight" AnchorPane.rightAnchor="30.0" AnchorPane.BottomAnchor="50.0" />
         <ImageView fx:id="cup" AnchorPane.rightAnchor="100.0" AnchorPane.BottomAnchor="40.0" />
