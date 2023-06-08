@@ -3,19 +3,28 @@ package com.example.snakepvp.services;
 import com.example.snakepvp.core.*;
 
 public class GameService {
-    public final int timeout = 500;
     public final SimpleViewerService viewerService;
     private final int gameId;
+
+    private final SimpleEventEmitter<GameStatusEvent> statusEvents;
     private final SimpleEventEmitter<CellEvent> cellEvents = new SimpleEventEmitter<>();
     private final SimpleEventEmitter<EdibleEvent> edibleEvents;
-    private final BoardState boardState;
-    Direction direction = Direction.DOWN;
 
-    public GameService(int gameId, SimpleEventEmitter<EdibleEvent> edibleEvents) {
+    private Direction direction;
+    private int timeout;
+    private BoardState boardState;
+
+    public GameService(int gameId, SimpleEventEmitter<GameStatusEvent> statusEvents, SimpleEventEmitter<EdibleEvent> edibleEvents) {
         this.gameId = gameId;
-        this.boardState = new SimpleBoardState(10, 10); // TODO temporary fix
         this.edibleEvents = edibleEvents;
-        this.viewerService = new SimpleViewerService(null, cellEvents, edibleEvents);
+        this.statusEvents = statusEvents;
+        this.viewerService = new SimpleViewerService(statusEvents, cellEvents, edibleEvents);
+    }
+
+    public void initGame() {
+        this.boardState = new SimpleBoardState(10 + 2, 10 + 2); // TODO temporary fix
+        direction = Direction.DOWN;
+        timeout = 500;
     }
 
     public void setDirection(Direction dir) {
@@ -26,11 +35,15 @@ public class GameService {
         return boardState;
     }
 
+    public int getTimeout() {
+        return timeout;
+    }
+
     public void grow(Edible edible) {
         boardState.invokeEdibleEffect(edible);//TODO inform gameHostService
     }
 
-    public MoveStatus makeMove() {
+    public void makeMove() {
         MoveStatus moveStatus = boardState.makeMove(direction);
         Edible eaten = moveStatus.getEdible();
         if (eaten != null) {
@@ -42,6 +55,6 @@ public class GameService {
             cellEvents.emit(new CellEvent(moveStatus.getTail().getCol(), moveStatus.getTail().getRow(), moveStatus.getTail().isSnake()));
         if (moveStatus.getHead() != null)
             cellEvents.emit(new CellEvent(moveStatus.getHead().getCol(), moveStatus.getHead().getRow(), moveStatus.getHead().isSnake()));
-        return moveStatus;
+        if (!moveStatus.isSuccess()) statusEvents.emit(new GameEndedEvent(gameId));
     }
 }

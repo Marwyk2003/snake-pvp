@@ -42,7 +42,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO replace with loop depending on vm playerCount property
+        viewModel.initGame();
         Board[] boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
@@ -57,18 +57,17 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards[0].setAlignment(Pos.BOTTOM_LEFT);
         boards[1].setAlignment(Pos.BOTTOM_RIGHT);
         hBox = new HBox();
+
         for (int i = 0; i < 2; ++i) {
             boards[i].refreshBoard();
             hBox.getChildren().add(boards[i]);
         }
-
         runTimer();
     }
 
     private void startGame() throws IOException {
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
         Scene scene = new Scene(hBox);
-
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             Direction newDirection = null;
             switch (event.getCode()) {

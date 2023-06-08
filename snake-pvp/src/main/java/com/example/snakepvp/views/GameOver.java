@@ -1,21 +1,26 @@
 package com.example.snakepvp.views;
 
-import com.example.snakepvp.Program;
+import com.example.snakepvp.viewmodels.GameOverViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.fxml.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-public class GameOver implements Initializable {
-//    Stage stage = Program.stage;
+public class GameOver implements Initializable, FxmlView<GameOverViewModel> {
+    //    Stage stage = Program.stage;
+    @InjectViewModel
+    private GameOverViewModel viewModel;
+
     @FXML
     private Button returnButton;
 
@@ -26,11 +31,13 @@ public class GameOver implements Initializable {
     private Label gameOverLabel;
 
     @FXML
-    private void mouseAction (MouseEvent event) {
+    private void mouseAction(MouseEvent event) {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
+
     @FXML
-    private void returnButtonAction (ActionEvent event) {
+    private void returnButtonAction(ActionEvent event) {
+        viewModel.getSceneController().loadHelloScene();
 //        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Hello.fxml")));
 //        stage.setScene(new Scene(root));
 //        stage.show();
@@ -39,10 +46,10 @@ public class GameOver implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        returnButton.setGraphic(new ImageView(new Image("/return.png")));
+        returnButton.setGraphic(new ImageView(new Image("/quit.png")));
         spotlight.setImage(new Image("/spotlightB.png"));
         gameOverLabel.setStyle("-fx-font-size: 60px");
-        cup.setImage(new Image("/trashcup-500.png"));
+        cup.setImage(new Image("/trashcup-300.png"));
 
 //        AtomicInteger fontSize = new AtomicInteger(80);
 //        AtomicInteger imageSize = new AtomicInteger(180);

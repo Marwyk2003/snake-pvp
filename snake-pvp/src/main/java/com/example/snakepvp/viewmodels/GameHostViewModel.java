@@ -4,16 +4,20 @@ import com.example.snakepvp.SceneController;
 import com.example.snakepvp.services.*;
 import de.saxsys.mvvmfx.ViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameHostViewModel implements ViewModel {
     private final GameHostService gameHostService;
-    private final SingleGameViewModel[] singleGameVMs;
+    private final List<SingleGameViewModel> singleGameVMs;
     private final SimpleViewerService viewerService;
     private SceneController sceneController;
     private boolean isStarted;
+    private int activeGames;
 
-    public GameHostViewModel(GameHostService gameHostService, SingleGameViewModel[] singleGameVMs) {
+    public GameHostViewModel(GameHostService gameHostService) {
         this.gameHostService = gameHostService;
-        this.singleGameVMs = singleGameVMs;
+        this.singleGameVMs = new ArrayList<>();
         this.viewerService = gameHostService.viewerService;
 
         this.viewerService.statusEvents().subscribe(this::processGameStatusEvents);
@@ -24,29 +28,42 @@ public class GameHostViewModel implements ViewModel {
         this.sceneController = sceneController;
     }
 
+    public void connectSingleGameVM(SingleGameViewModel viewModel) {
+        singleGameVMs.add(viewModel);
+    }
+
     void processGameStatusEvents(GameStatusEvent event) {
-        if (event instanceof GameStartedEvent && !isStarted) {
-            for (SingleGameViewModel game : singleGameVMs) {
-                Thread t = new Thread(game::run);
-                t.start();
-                isStarted = true;
-            }
+        if (event instanceof GameEndedEvent e && isStarted) {
+            singleGameVMs.get(e.getGameId()).endGame();
+            activeGames--;
+            if (activeGames == 0) sceneController.loadGameOverScene();
         }
     }
 
     private void processEdibleEvent(EdibleEvent event) {
         int gameId = event.getGameId();
-        int nextGameId = (gameId + 1) % singleGameVMs.length;
-        singleGameVMs[gameId].generateEdibleEvent(event);
-        singleGameVMs[nextGameId].growSnakeEvent(event);
+        int nextGameId = (gameId + 1) % singleGameVMs.size();
+        singleGameVMs.get(gameId).generateEdibleEvent(event);
+        singleGameVMs.get(nextGameId).growSnakeEvent(event);
     }
 
 
     public SingleGameViewModel getSingleGameVM(int i) {
-        return singleGameVMs[i];
+        return singleGameVMs.get(i);
     }
 
     public void startGame() {
-        gameHostService.start();
+        for (SingleGameViewModel game : singleGameVMs) {
+            Thread t = new Thread(game::run);
+            t.start();
+            isStarted = true;
+        }
+    }
+
+    public void initGame() {
+        activeGames = singleGameVMs.size();
+        for (SingleGameViewModel sg : singleGameVMs) {
+            sg.initialize();
+        }
     }
 }

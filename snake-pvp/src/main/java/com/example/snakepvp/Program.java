@@ -3,6 +3,7 @@ package com.example.snakepvp;
 import com.example.snakepvp.services.GameHostService;
 import com.example.snakepvp.services.GameService;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
+import com.example.snakepvp.viewmodels.GameOverViewModel;
 import com.example.snakepvp.viewmodels.HelloViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import javafx.application.Application;
@@ -25,15 +26,17 @@ public class Program extends Application {
         stage.setTitle("SnakePvP");
 
         GameHostService gameHostService = new GameHostService();
-        SingleGameViewModel[] gameVMs = new SingleGameViewModel[PLAYER_COUNT];
+        GameHostViewModel gameHostVM = new GameHostViewModel(gameHostService);
+
         for (int i = 0; i < PLAYER_COUNT; ++i) {
             GameService gameService = gameHostService.connectNewGame();
-            gameVMs[i] = new SingleGameViewModel(gameService);
+            SingleGameViewModel singleGameVM = new SingleGameViewModel(gameService);
+            gameHostVM.connectSingleGameVM(singleGameVM);
         }
-        GameHostViewModel gameHostVM = new GameHostViewModel(gameHostService, gameVMs);
 
         HelloViewModel helloVM = new HelloViewModel();
-        SceneController sceneController = new SceneController(stage, helloVM, gameHostVM);
+        GameOverViewModel gameOverVM = new GameOverViewModel();
+        SceneController sceneController = new SceneController(stage, helloVM, gameHostVM, gameOverVM);
         sceneController.loadHelloScene();
     }
 }

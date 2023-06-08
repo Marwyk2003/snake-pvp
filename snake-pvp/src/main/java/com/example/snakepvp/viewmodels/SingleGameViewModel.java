@@ -6,31 +6,38 @@ import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.services.GameService;
 import com.example.snakepvp.services.SimpleViewerService;
 import de.saxsys.mvvmfx.ViewModel;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.concurrent.TimeUnit;
 
 public class SingleGameViewModel implements ViewModel {
-    final SimpleBooleanProperty gameOver;
-    private final VMCell[][] cells;
-    private final int height, width;
     private final GameService gameService;
     private final SimpleViewerService viewerService;
+    private VMCell[][] cells;
+    private int height, width;
+    private Thread gameThread;
 
     public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
         this.gameService = gameService;
         this.viewerService = gameService.viewerService;
+        this.viewerService.cellEvents().subscribe(this::processCellEvent);
+    }
+
+    public void initialize() {
+        gameService.initGame();
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
         this.width = boardState.getWidth();
-        this.gameOver = new SimpleBooleanProperty(this, "gameOver", boardState.isGameOver());
         this.cells = new VMCell[height][width];
         for (int row = 0; row < height; ++row) {
             for (int col = 0; col < width; ++col) {
+                this.cells[row][col] = new VMCell(row, col, false);
+            }
+        }
+        for (int row = 0; row < height; ++row) {
+            for (int col = 0; col < width; ++col) {
                 Cell cell = boardState.getCell(row, col);
-                this.cells[row][col] = new VMCell(row, col, cell.isGoThrough());
+                this.cells[row][col].setIsGoThrough(cell.isGoThrough());
                 this.cells[row][col].setEdible(cell.getEdible());
             }
         }
@@ -38,19 +45,21 @@ public class SingleGameViewModel implements ViewModel {
             System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
         }
-        this.viewerService.cellEvents().subscribe(this::processCellEvent);
-        //TODO subscribe to chosen emitters via viewerService
     }
 
     public void run() {
-        while (true) {
-            try {
+        gameThread = Thread.currentThread();
+        try {
+            while (true) {
+                TimeUnit.MILLISECONDS.sleep(gameService.getTimeout());
                 gameService.makeMove();
-                TimeUnit.MILLISECONDS.sleep(gameService.timeout);
-            } catch (InterruptedException ignored) {
-                // TODO gameover
             }
+        } catch (InterruptedException ignored) {
         }
+    }
+
+    public void endGame() {
+        gameThread.interrupt();
     }
 
     private void processCellEvent(CellEvent event) {
@@ -75,10 +84,6 @@ public class SingleGameViewModel implements ViewModel {
 
     public int getWidth() {
         return width;
-    }
-
-    public ReadOnlyBooleanProperty gameOverProperty() {
-        return gameOver;
     }
 
     public void changeDirection(Direction dir) {
