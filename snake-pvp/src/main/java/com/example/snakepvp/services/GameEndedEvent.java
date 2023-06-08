@@ -1,5 +1,5 @@
 package com.example.snakepvp.services;
 
-public interface GameEndedEvent extends GameStatusEvent {
+public class GameEndedEvent implements GameStatusEvent {
 
 }

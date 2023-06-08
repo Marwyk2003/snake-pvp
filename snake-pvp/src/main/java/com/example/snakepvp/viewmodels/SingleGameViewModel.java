@@ -1,17 +1,21 @@
 package com.example.snakepvp.viewmodels;
 
-import com.example.snakepvp.core.*;
+import com.example.snakepvp.core.BoardState;
+import com.example.snakepvp.core.Cell;
+import com.example.snakepvp.core.Direction;
+import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.services.*;
 import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.concurrent.TimeUnit;
+
 public class SingleGameViewModel implements ViewModel {
     final SimpleBooleanProperty gameOver;
     private final VMCell[][] cells;
     private final int height, width;
-    private int direction;
     GameService gameService;
     SimpleViewerService viewerService;
 
@@ -37,8 +41,15 @@ public class SingleGameViewModel implements ViewModel {
         //TODO subscribe to chosen emitters via viewerService
     }
 
-    private void processStatusEvent(GameStatusEvent event) {
-        //TODO
+    public void run() {
+        while (true) {
+            try {
+                gameService.makeMove();
+                TimeUnit.MILLISECONDS.sleep(gameService.timeout);
+            } catch (InterruptedException ignored) {
+                // TODO gameover
+            }
+        }
     }
 
     private void processCellEvent(CellEvent event) {
