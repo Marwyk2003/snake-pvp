@@ -16,12 +16,12 @@ public class SingleGameViewModel implements ViewModel {
     final SimpleBooleanProperty gameOver;
     private final VMCell[][] cells;
     private final int height, width;
-    GameService gameService;
-    SimpleViewerService viewerService;
+    private final GameService gameService;
+    private final SimpleViewerService viewerService;
 
-    public SingleGameViewModel(GameService gameService, SimpleViewerService viewerService) {//TODO add viewerService to constructor
+    public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
         this.gameService = gameService;
-        this.viewerService = viewerService;
+        this.viewerService = gameService.viewerService;
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
         this.width = boardState.getWidth();
@@ -39,7 +39,6 @@ public class SingleGameViewModel implements ViewModel {
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
         }
         this.viewerService.cellEvents().subscribe(this::processCellEvent);
-        this.viewerService.edibleEvents().subscribe(this::processEdibleEvent);
         //TODO subscribe to chosen emitters via viewerService
     }
 
@@ -58,8 +57,11 @@ public class SingleGameViewModel implements ViewModel {
         SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake());
     }
 
-    private void processEdibleEvent(EdibleEvent event) {
-        System.out.println("set to edible" + event.getRow() + " " + event.getCol());
+    public void growSnakeEvent(EdibleEvent event) {
+        gameService.grow(event.getEdible());
+    }
+
+    public void generateEdibleEvent(EdibleEvent event) {
         SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setEdible(event.getEdible());
     }
 

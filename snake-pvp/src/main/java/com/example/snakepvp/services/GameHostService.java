@@ -1,33 +1,26 @@
 package com.example.snakepvp.services;
 
-import com.example.snakepvp.core.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameHostService {
     private final SimpleEventEmitter<GameStatusEvent> gameEmitter = new SimpleEventEmitter<>();
-    public SimpleViewerService viewerService = new SimpleViewerService(gameEmitter, null, null);
-    int WIDTH = 10; // TODO Move somewhere
-    int HEIGHT = 10;
+    private final SimpleEventEmitter<EdibleEvent> edibleEmitter = new SimpleEventEmitter<>();
+    public SimpleViewerService viewerService = new SimpleViewerService(gameEmitter, null, edibleEmitter);
     List<GameService> gameList;
-
 
     public GameHostService() {
         gameList = new ArrayList<>();
     }
 
-    public GameService connectPlayer(Player player) {
-        GameService game = new GameService(player);
+    public GameService connectNewGame() {
+        GameService game = new GameService(gameList.size(), edibleEmitter);
         this.gameList.add(game);
         return game;
     }
 
     public void start() {
-        for (GameService game : gameList) {
-            game.newGame(WIDTH, HEIGHT);
-        }
         gameEmitter.emit(new GameStartedEvent());
     }
 

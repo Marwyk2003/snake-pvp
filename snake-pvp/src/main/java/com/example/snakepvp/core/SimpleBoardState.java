@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 public class SimpleBoardState implements BoardState {
     private final Board board;
     private final Snake snake;
-    private final Player player;
     private final Score score;
     boolean isEnded;
     private int growCounter;
@@ -19,12 +18,12 @@ public class SimpleBoardState implements BoardState {
         this.isEnded = false;
         this.board = new Board(width, height);
         //TODO change snake generation
+        this.score = new Score();
+        this.growCounter = 0;
         this.snake = new Snake(Stream.of(1, 2, 3)
                 .map(x -> board.getCell(board.getHeight() / 2, x))
                 .collect(Collectors.toCollection(LinkedList<Cell>::new)));
-        this.player = new Player();
-        this.score = new Score();
-        this.growCounter = 0;
+        generateEdible(Edible.SIMPLE_GROWING);
     }
 
     @Override
@@ -35,11 +34,6 @@ public class SimpleBoardState implements BoardState {
     @Override
     public int getHeight() {
         return board.getHeight();
-    }
-
-    @Override
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

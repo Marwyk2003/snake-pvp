@@ -1,10 +1,7 @@
 package com.example.snakepvp.viewmodels;
 
 import com.example.snakepvp.SceneController;
-import com.example.snakepvp.services.GameHostService;
-import com.example.snakepvp.services.GameStartedEvent;
-import com.example.snakepvp.services.GameStatusEvent;
-import com.example.snakepvp.services.SimpleViewerService;
+import com.example.snakepvp.services.*;
 import de.saxsys.mvvmfx.ViewModel;
 
 public class GameHostViewModel implements ViewModel {
@@ -20,6 +17,7 @@ public class GameHostViewModel implements ViewModel {
         this.viewerService = gameHostService.viewerService;
 
         this.viewerService.statusEvents().subscribe(this::processGameStatusEvents);
+        this.viewerService.edibleEvents().subscribe(this::processEdibleEvent);
     }
 
     public void setSceneController(SceneController sceneController) {
@@ -34,6 +32,13 @@ public class GameHostViewModel implements ViewModel {
                 isStarted = true;
             }
         }
+    }
+
+    private void processEdibleEvent(EdibleEvent event) {
+        int gameId = event.getGameId();
+        int nextGameId = (gameId + 1) % singleGameVMs.length;
+        singleGameVMs[gameId].generateEdibleEvent(event);
+        singleGameVMs[nextGameId].growSnakeEvent(event);
     }
 
 

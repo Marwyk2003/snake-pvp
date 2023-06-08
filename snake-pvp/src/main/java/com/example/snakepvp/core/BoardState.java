@@ -6,8 +6,6 @@ public interface BoardState {
 
     int getHeight();
 
-    Player getPlayer();
-
     Snake getSnake();
 
     Cell generateEdible(Edible edible);
