@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Polygon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.snakepvp.views.GameOverWon2P"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane id="AnchorPane" prefHeight="700" prefWidth="1000"
+            xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.snakepvp.views.GameOverWon2P">
+    <children>
+        <Polygon fx:id="spotlight" styleClass="polygon" AnchorPane.RightAnchor="0.0" AnchorPane.TopAnchor="0.0" />
+        <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
 
+        <!--        winner          -->
+        <ImageView fx:id="coin1" AnchorPane.RightAnchor="40.0" AnchorPane.BottomAnchor="140.0" />
+        <ImageView fx:id="coin2" AnchorPane.RightAnchor="140.0" AnchorPane.BottomAnchor="140.0" />
+        <ImageView fx:id="coin3" AnchorPane.RightAnchor="240.0" AnchorPane.BottomAnchor="140.0" />
+        <Label fx:id="gameWonLabel1" AnchorPane.RightAnchor="50.0" AnchorPane.TopAnchor="100.0" text="GAME WON" style="-fx-font-size: 55px" />
+        <Label fx:id="gameWonLabel2" AnchorPane.RightAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: 62" style="-fx-font-size: 55px" />
+
+        <!--        looser          -->
+        <ImageView fx:id="trash" AnchorPane.LeftAnchor="60.0" AnchorPane.BottomAnchor="70.0" />
+        <Label fx:id="gameLostLabel1" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="100.0" text="GAME OVER" style="-fx-font-size: 55px" />
+        <Label fx:id="gameLostLabel2" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: 34" style="-fx-font-size: 55px" />
+    </children>
+    <stylesheets>
+        <URL value="@../../../../styles.css" />
+    </stylesheets>
 </AnchorPane>

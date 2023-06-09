@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.application.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -23,6 +25,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @InjectViewModel
     private HelloViewModel viewModel;
     private Stage stage;
+    @FXML
+    private Circle circle;
     @FXML
     private Label header1, header2, tapLabel, skinChoiceLabel, skinNameLabel;
     String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms", "Mighty Puff", "Stainless Speed"}; // TODO (not for now) move to some config file e.g. json
@@ -61,6 +65,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stage = viewModel.getSceneController().getStage();
+        circle.setRadius(340.0);
+        circle.setFill(Color.WHITE);
         anchors = new HashMap<>() {{
             put(header1, new Double[]{100.0, 0.0, 8.0, 0.0});      // left, right, top, bottom
             put(header2, new Double[]{100.0, 0.0, 126.0, 0.0});

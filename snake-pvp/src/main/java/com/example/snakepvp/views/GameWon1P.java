@@ -1,6 +1,8 @@
 package com.example.snakepvp.views;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,14 +26,13 @@ public class GameWon1P implements Initializable {
     private Stage stage;
     @InjectViewModel
     private GameOverViewModel viewModel;
-
     @FXML
     private Label gameWonLabel1, gameWonLabel2, gameLostLabel1, gameLostLabel2;
     @FXML
     private Button returnButton;
-
     @FXML
     private ImageView coin1, coin2, coin3, trash;
+    private Map<Node, Double[]> anchors;
 
     @FXML
     private void mouseAction (MouseEvent event) {
@@ -48,22 +49,27 @@ public class GameWon1P implements Initializable {
         stage = viewModel.getSceneController().getStage();
 
         returnButton.setGraphic(new ImageView(new Image("/return.png")));
+        anchors = new HashMap<>() {{
+            put(gameWonLabel1, new Double[]{0.0, 60.0, 100.0, 0.0});      // left, right, top, bottom
+            put(gameWonLabel2, new Double[]{0.0, 60.0, 145.0, 0.0});
+            put(gameLostLabel1, new Double[]{60.0, 00.0, 100.0, 00.0});
+            put(gameLostLabel2, new Double[]{60.0, 0.0, 145.0, 0.0});
+            put(coin1, new Double[]{0.0, 50.0, 0.0, 0.0});
+            put(coin2, new Double[]{0.0, 150.0, 0.0, 0.0});
+            put(coin3, new Double[]{0.0, 250.0, 0.0, 0.0});
+            put(trash, new Double[]{60.0, 0.0, 0.0, 0.0});
+        }};
 
         AtomicInteger fontSize = new AtomicInteger(55);
         ChangeListener<Number> stageHeightListener = (observable, oldValue, newValue) -> {
             double ratio = newValue.doubleValue() / 740.0;
             if (newValue.doubleValue() > oldValue.doubleValue()) {
                 fontSize.set((int) Math.max(fontSize.get(), 55 * ratio));
-                refreshAnchors(ratio, true);
             } else {
                 fontSize.set((int) Math.min(fontSize.get(), 55 * ratio));
-                refreshAnchors(ratio, false);
             }
-            String format = "-fx-font-size: " + fontSize + "px";
-            gameWonLabel1.setStyle(format);
-            gameWonLabel2.setStyle(format);
-            gameLostLabel1.setStyle(format);
-            gameLostLabel2.setStyle(format);
+            refreshAnchors(ratio);
+            setLabels(fontSize.get());
         };
         stage.widthProperty().addListener(stageHeightListener);
         stage.heightProperty().addListener(stageHeightListener);
@@ -71,33 +77,25 @@ public class GameWon1P implements Initializable {
         runAnimation();
     }
 
-    void refreshAnchors(double ratio, boolean increasing) {
-        if (increasing) {
-            AnchorPane.setTopAnchor(gameWonLabel1, Math.max(AnchorPane.getTopAnchor(gameWonLabel1), 100.0 * ratio));
-            AnchorPane.setRightAnchor(gameWonLabel1, Math.max(AnchorPane.getRightAnchor(gameWonLabel1), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameWonLabel2, Math.max(AnchorPane.getTopAnchor(gameWonLabel2), 145.0 * ratio));
-            AnchorPane.setRightAnchor(gameWonLabel2, Math.max(AnchorPane.getRightAnchor(gameWonLabel2), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameLostLabel1, Math.max(AnchorPane.getTopAnchor(gameLostLabel1), 100.0 * ratio));
-            AnchorPane.setLeftAnchor(gameLostLabel1, Math.max(AnchorPane.getLeftAnchor(gameLostLabel1), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameLostLabel2, Math.max(AnchorPane.getTopAnchor(gameLostLabel2), 145.0 * ratio));
-            AnchorPane.setLeftAnchor(gameLostLabel2, Math.max(AnchorPane.getLeftAnchor(gameLostLabel2), 60.0 * ratio));
-            AnchorPane.setRightAnchor(coin1, Math.max(AnchorPane.getRightAnchor(coin1), 50.0 * ratio));
-            AnchorPane.setRightAnchor(coin2, Math.max(AnchorPane.getRightAnchor(coin2), 150.0 * ratio));
-            AnchorPane.setRightAnchor(coin3, Math.max(AnchorPane.getRightAnchor(coin3), 250.0 * ratio));
-            AnchorPane.setLeftAnchor(trash, Math.max(AnchorPane.getLeftAnchor(trash), 60.0 * ratio));
+    void refreshAnchors(double ratio) {
+        if (ratio > 1) {
+            for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
+                Node node = entry.getKey();
+                Double[] original_anchors = entry.getValue();
+                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+            }
         } else {
-            AnchorPane.setTopAnchor(gameWonLabel1, Math.min(AnchorPane.getTopAnchor(gameWonLabel1), 100.0 * ratio));
-            AnchorPane.setRightAnchor(gameWonLabel1, Math.min(AnchorPane.getRightAnchor(gameWonLabel1), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameWonLabel2, Math.min(AnchorPane.getTopAnchor(gameWonLabel2), 145.0 * ratio));
-            AnchorPane.setRightAnchor(gameWonLabel2, Math.min(AnchorPane.getRightAnchor(gameWonLabel2), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameLostLabel1, Math.min(AnchorPane.getTopAnchor(gameLostLabel1), 100.0 * ratio));
-            AnchorPane.setLeftAnchor(gameLostLabel1, Math.min(AnchorPane.getLeftAnchor(gameLostLabel1), 60.0 * ratio));
-            AnchorPane.setTopAnchor(gameLostLabel2, Math.min(AnchorPane.getTopAnchor(gameLostLabel2), 145.0 * ratio));
-            AnchorPane.setLeftAnchor(gameLostLabel2, Math.min(AnchorPane.getLeftAnchor(gameLostLabel2), 60.0 * ratio));
-            AnchorPane.setRightAnchor(coin1, Math.min(AnchorPane.getRightAnchor(coin1), 50.0 * ratio));
-            AnchorPane.setRightAnchor(coin2, Math.min(AnchorPane.getRightAnchor(coin2), 150.0 * ratio));
-            AnchorPane.setRightAnchor(coin3, Math.min(AnchorPane.getRightAnchor(coin3), 250.0 * ratio));
-            AnchorPane.setLeftAnchor(trash, Math.min(AnchorPane.getLeftAnchor(trash), 60.0 * ratio));
+            for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
+                Node node = entry.getKey();
+                Double[] original_anchors = entry.getValue();
+                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+            }
         }
     }
 
@@ -141,5 +139,13 @@ public class GameWon1P implements Initializable {
         } else if (time <= 17) {
             coin2.setImage(new Image(image));
         }
+    }
+
+    void setLabels(int fontSize) {
+        String format = "-fx-font-size: " + fontSize + "px";
+        gameWonLabel1.setStyle(format);
+        gameWonLabel2.setStyle(format);
+        gameLostLabel1.setStyle(format);
+        gameLostLabel2.setStyle(format);
     }
 }

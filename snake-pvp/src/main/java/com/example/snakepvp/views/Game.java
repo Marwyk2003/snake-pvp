@@ -1,7 +1,6 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.core.Direction;
-import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
@@ -41,21 +40,30 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
 
+    // TODO add more Edibles and communicate this somehow - it's just some way to do this
     public void edibleAction(EdibleEvent event) {
-        ImageView imageView = null;
         switch (event.getEdible()) {
             case SIMPLE_GROWING -> {
                 if (event.getGameId() == 1) {
-                    imageView = lengthCounter2;
+                    blink(lengthCounter2);
                     lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
                 }
                 else  {
-                    imageView = lengthCounter1;
+                    blink(lengthCounter1);
                     lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
                 }
             }
+//            case SOME_POINTS_EDIBLE -> {
+//                if (event.getGameId() == 1) {
+//                    blink(pointCounter1);
+//                    pointCountLabel1.setText(String.valueOf(Integer.valueOf(pointCountLabel1.getText())) + 1);
+//                }
+//                else  {
+//                    blink(pointCounter2);
+//                    pointCountLabel2.setText(String.valueOf(Integer.valueOf(pointCountLabel2.getText())) + 1);
+//                }
+//            }
         }
-        blink(imageView);
     }
 
     @Override

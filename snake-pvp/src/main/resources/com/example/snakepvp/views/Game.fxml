@@ -11,8 +11,8 @@
             fx:controller="com.example.snakepvp.views.Game">
     <children>
         <Label fx:id="countDownLabel" styleClass="counter" text="3" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="310.0" />
-        <Polygon fx:id="arrow1"  styleClass="polygon" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0"/>
-        <Polygon fx:id="arrow2"  styleClass="polygon" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
+        <Polygon fx:id="arrow1" styleClass="polygon" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0"/>
+        <Polygon fx:id="arrow2" styleClass="polygon" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
 
         <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="50.0" />
         <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="100.0" />

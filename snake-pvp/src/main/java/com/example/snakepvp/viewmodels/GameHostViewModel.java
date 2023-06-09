@@ -66,4 +66,8 @@ public class GameHostViewModel implements ViewModel {
             sg.initialize();
         }
     }
+
+    public SceneController getSceneController() {
+        return sceneController;
+    }
 }
