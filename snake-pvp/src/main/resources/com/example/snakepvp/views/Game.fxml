@@ -14,14 +14,14 @@
         <Polygon fx:id="arrow1" styleClass="polygon" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0"/>
         <Polygon fx:id="arrow2" styleClass="polygon" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
 
-        <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="50.0" />
-        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="100.0" />
-        <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="60.0" />
-        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="110.0" />
-        <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0" />
-        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="100.0" />
-        <Label fx:id="pointCountLabel2" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="60.0" />
-        <Label fx:id="lengthCountLabel2" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="110.0" />
+        <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="80.0" />
+        <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="80.0" />
+        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="80.0"  />
+        <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="80.0" />
+        <Label fx:id="pointCountLabel2" text=" "  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="80.0"/>
+        <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="80.0"/>
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

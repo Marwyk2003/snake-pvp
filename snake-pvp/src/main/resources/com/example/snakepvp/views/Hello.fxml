@@ -3,14 +3,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
 <?import java.net.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="700" prefWidth="1000"
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.Hello">
     <children>
-        <Circle fx:id="circle"  styleClass="polygon" AnchorPane.rightAnchor="-200.0" AnchorPane.bottomAnchor="-80.0" />
+        <Polygon fx:id="spotlight" styleClass="polygon" AnchorPane.RightAnchor="0.0" AnchorPane.TopAnchor="0.0" />
         <Label fx:id="header1" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="20.0" text="SNAKE" styleClass="header1" />
         <Label fx:id="header2" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="120.0" text="PvP" styleClass="header2" />
         <Button fx:id="modeButton1" mnemonicParsing="false" AnchorPane.bottomAnchor="340.0" AnchorPane.rightAnchor="120.0" styleClass="roundButton" onAction="#modeButtonAction1" onMouseEntered="#mouseAction" />

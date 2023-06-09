@@ -26,12 +26,12 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private HelloViewModel viewModel;
     private Stage stage;
     @FXML
-    private Circle circle;
+    private Polygon spotlight;
     @FXML
-    private Label header1, header2, tapLabel, skinChoiceLabel, skinNameLabel;
-    String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms", "Mighty Puff", "Stainless Speed"}; // TODO (not for now) move to some config file e.g. json
+    private Label header1, header2, skinChoiceLabel, skinNameLabel;
+    String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms"}; // TODO (not for now) move to some config file e.g. json
     @FXML
-    private int skin = 0, noSkins = 5;
+    private int skin = 0, noSkins = 4;
     @FXML
     private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3;
 
@@ -56,17 +56,16 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private void nextSkinAction (ActionEvent event) {
         // TODO change to binding
         skin = (++skin) % noSkins;
-        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "MH.png")));
-        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "M.png")));
-        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + "M.png")));
+        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "LH.png")));
+        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
+        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
         skinNameLabel.setText(names[skin]);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stage = viewModel.getSceneController().getStage();
-        circle.setRadius(340.0);
-        circle.setFill(Color.WHITE);
+        spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0, 10.0, 700.0);
         anchors = new HashMap<>() {{
             put(header1, new Double[]{100.0, 0.0, 8.0, 0.0});      // left, right, top, bottom
             put(header2, new Double[]{100.0, 0.0, 126.0, 0.0});
@@ -80,9 +79,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             put(skinNameLabel, new Double[]{150.0, 0.0, 0.0, 40.0});
         }};
 
-        modeButton1.setGraphic(new ImageView(new Image("/mode1S.png")));
-        modeButton2.setGraphic(new ImageView(new Image("/mode2S.png")));
-        quitButton.setGraphic(new ImageView(new Image("/quitS.png")));
         skinButton1.setGraphic(new ImageView(new Image("/skin0LH.png"))); // TODO snake's head here
         skinButton2.setGraphic(new ImageView(new Image("/skin0L.png")));
         skinButton3.setGraphic(new ImageView(new Image("/skin0L.png")));
@@ -123,6 +119,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
                 if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
+        spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0 * ratio, 10.0, 700. * ratio);
     }
 
     void refreshHorizontalAnchors(double ratio) {
@@ -141,6 +138,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
                 if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
             }
         }
+        spotlight.getPoints().setAll(125.0 * ratio, 0.0, 320.0 * ratio, 0.0, 320.0 * ratio, 700.0, 10.0 * ratio, 700.0);
     }
 
     void refreshButtons() {
@@ -156,7 +154,11 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     }
 
     void refreshLabels(double ratio, AtomicInteger fontSizeLabel, AtomicInteger fontSizeHeader1, AtomicInteger fontSizeHeader2) {
-        if (ratio > 1) {
+        if (stage.getHeight() < 720 || stage.getWidth() < 1050) {
+            fontSizeLabel.set(50);
+            fontSizeHeader1.set(110);
+            fontSizeHeader2.set(95);
+        } else if (ratio > 1) {
             fontSizeLabel.set((int) Math.max(fontSizeLabel.get(), 50 * ratio));
             fontSizeHeader1.set((int) Math.max(fontSizeHeader1.get(), 110 * ratio));
             fontSizeHeader2.set((int) Math.max(fontSizeHeader2.get(), 95 * ratio));
@@ -165,9 +167,9 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             fontSizeHeader1.set((int) Math.min(fontSizeHeader1.get(), 110 * ratio));
             fontSizeHeader2.set((int) Math.min(fontSizeHeader2.get(), 95 * ratio));
         }
-        if (skinChoiceLabel != null) skinChoiceLabel.setStyle("-fx-font-size: " + fontSizeLabel + "px");
-        if (skinNameLabel != null) skinNameLabel.setStyle("-fx-font-size: " + fontSizeLabel + "px");
-        if (header1 != null)  header1.setStyle("-fx-font-size: " + fontSizeHeader1.doubleValue() * 0.8 + "px");
-        if (header2 != null) header2.setStyle("-fx-font-size: " + fontSizeHeader1.doubleValue() * 0.8 + "px");
+        skinChoiceLabel.setStyle("-fx-font-size: " + fontSizeLabel + "px");
+        skinNameLabel.setStyle("-fx-font-size: " + fontSizeLabel + "px");
+        header1.setStyle("-fx-font-size: " + fontSizeHeader1.doubleValue() * 0.8 + "px");
+        header2.setStyle("-fx-font-size: " + fontSizeHeader1.doubleValue() * 0.8 + "px");
     }
 }
