@@ -18,5 +18,9 @@ public interface BoardState {
 
     Score getScore();
 
+    int getTimeout();
+
+    int getTimeoutCooldown();
+
     Cell getCell(int row, int col);
 }

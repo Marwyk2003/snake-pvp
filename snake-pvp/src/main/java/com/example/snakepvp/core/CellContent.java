@@ -1,5 +1,5 @@
 package com.example.snakepvp.core;
 
 public enum CellContent {
-    EMPTY, SNAKE, WALL, EDIBLE_GROW
+    EMPTY, SNAKE, WALL, EDIBLE_GROW, EDIBLE_SPEED
 }

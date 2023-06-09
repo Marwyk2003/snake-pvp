@@ -11,7 +11,6 @@ public class GameService {
     private final SimpleEventEmitter<EdibleEvent> edibleEvents;
 
     private Direction direction;
-    private int timeout;
     private BoardState boardState;
 
     public GameService(int gameId, SimpleEventEmitter<GameStatusEvent> statusEvents, SimpleEventEmitter<EdibleEvent> edibleEvents) {
@@ -24,7 +23,6 @@ public class GameService {
     public void initGame() {
         this.boardState = new SimpleBoardState(10 + 2, 10 + 2); // TODO temporary fix
         direction = Direction.DOWN;
-        timeout = 500;
     }
 
     public void setDirection(Direction dir) {
@@ -35,12 +33,13 @@ public class GameService {
         return boardState;
     }
 
-    public int getTimeout() {
-        return timeout;
-    }
 
     public void grow(Edible edible) {
-        boardState.invokeEdibleEffect(edible);//TODO inform gameHostService
+        boardState.invokeEdibleEffect(edible);
+    }
+
+    public int getTimeout() {
+        return boardState.getTimeout();
     }
 
     public void makeMove() {

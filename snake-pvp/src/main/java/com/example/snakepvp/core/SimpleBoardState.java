@@ -8,11 +8,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SimpleBoardState implements BoardState {
+    static private final int TIMEOUT_NORMAL = 500;
+    static private final int TIMEOUT_FAST = 250;
+    static private final int TIMEOUT_COOLDOWN = 20;
+
     private final Board board;
     private final Snake snake;
     private final Score score;
     boolean isEnded;
     private int growCounter;
+
+    private int timeout = TIMEOUT_NORMAL;
+    private int timeoutCooldown;
 
     public SimpleBoardState(int width, int height) {
         this.isEnded = false;
@@ -24,6 +31,7 @@ public class SimpleBoardState implements BoardState {
                 .map(x -> board.getCell(board.getHeight() / 2, x))
                 .collect(Collectors.toCollection(LinkedList<Cell>::new)));
         generateEdible(Edible.SIMPLE_GROWING);
+        generateEdible(Edible.SPEED_UP);
     }
 
     @Override
@@ -61,6 +69,9 @@ public class SimpleBoardState implements BoardState {
 
     @Override
     public MoveStatus makeMove(Direction dir) {
+        if (timeoutCooldown > 0) timeoutCooldown--;
+        else if (timeoutCooldown == 0) timeout = TIMEOUT_NORMAL;
+
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
 
@@ -120,6 +131,10 @@ public class SimpleBoardState implements BoardState {
         if (edible == null) return false;
         if (edible == Edible.SIMPLE_GROWING) {
             growCounter++;
+        } else if (edible == Edible.SPEED_UP) {
+            timeout = TIMEOUT_FAST;
+            timeoutCooldown = TIMEOUT_COOLDOWN;
+            System.out.println("speed up!");
         } else {
             return false;
         }
@@ -136,6 +151,16 @@ public class SimpleBoardState implements BoardState {
     public Score getScore() {
         return score;
     }
+
+    @Override
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public int getTimeoutCooldown() {
+        return timeoutCooldown;
+    }
+
 
     public Cell getCell(int row, int col) {
         return board.getCell(row, col);

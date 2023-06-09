@@ -135,7 +135,8 @@ public class SingleGameViewModel implements ViewModel {
 
         private void updateContent() {
             if (isSnake) cellContent.set(CellContent.SNAKE);
-            else if (edible != null) cellContent.set(CellContent.EDIBLE_GROW);
+            else if (edible == Edible.SIMPLE_GROWING) cellContent.set(CellContent.EDIBLE_GROW);
+            else if (edible == Edible.SPEED_UP) cellContent.set(CellContent.EDIBLE_SPEED);
             else if (!isGoThrough) cellContent.set(CellContent.WALL);
             else cellContent.set(CellContent.EMPTY);
         }
