@@ -95,6 +95,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             put(modeButton1, new Double[]{0.0, 120.0, 0.0, 340.0});
             put(modeButton2, new Double[]{0.0, 120.0, 0.0, 220.0});
             put(quitButton, new Double[]{0.0, 120.0, 0.0, 100.0});
+            put(approveButton, new Double[]{440.0, 0.0, 0.0, 160.0});
             put(skinChoiceLabel, new Double[]{80.0, 0.0, 0.0, 200.0});
             put(skinButton1, new Double[]{170.0, 0.0, 0.0, 160.0});
             put(skinButton2, new Double[]{250.0, 0.0, 0.0, 160.0});
@@ -124,6 +125,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         };
         stage.widthProperty().addListener(stageWidthListener);
         stage.heightProperty().addListener(stageHeightListener);
+
+        refreshButtons();
     }
 
     void refreshVerticalAnchors(double ratio) {
