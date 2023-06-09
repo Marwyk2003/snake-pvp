@@ -35,17 +35,17 @@ public class SingleGameViewModel implements ViewModel {
                 this.cells[row][col] = new VMCell(row, col, false);
             }
         }
-        for (int row = 0; row < height; ++row) {
-            for (int col = 0; col < width; ++col) {
-                Cell cell = boardState.getCell(row, col);
-                this.cells[row][col].setIsGoThrough(cell.isGoThrough());
-                this.cells[row][col].setEdible(cell.getEdible());
-            }
-        }
         Cell head = boardState.getSnake().getHead();
         for (Cell cell : boardState.getSnake().getCellList()) {
             System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true, cell == head);
+        }
+        for (int row = 0; row < height; ++row) {
+            for (int col = 0; col < width; ++col) {
+                Cell cell = boardState.getCell(row, col);
+                this.cells[row][col].setIsGoThrough(cell.isGoThrough() || this.cells[row][col].isSnake);
+                this.cells[row][col].setEdible(cell.getEdible());
+            }
         }
 
     }
