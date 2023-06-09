@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 public class SceneController {
 
     private final HelloViewModel helloVM;
+    private final Integer[] snakeSkins = new Integer[]{null, null}; // TODO pas trop elegant, mais c'est ainsi
     private final GameHostViewModel gameHostVM;
     private final GameOverViewModel gameOverVM;
     private final Stage stage;
@@ -56,5 +57,19 @@ public class SceneController {
             stage.setScene(new Scene(root));
             stage.show();
         });
+        System.out.println(snakeSkins[0] + " " + snakeSkins[1]);
+    }
+
+    public void addSkin(int skin) {
+        for (int i = 0; i < snakeSkins.length; i++) {
+            if (snakeSkins[i] == null) {
+                snakeSkins[i] = skin;
+                break;
+            }
+        }
+    }
+
+    public int getSkin(int i) {
+        return snakeSkins[i];
     }
 }

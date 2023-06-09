@@ -8,13 +8,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
 public class Board extends GridPane {
+    int skin;
     int rows;
     int columns;
     private final Field[][] fields;
 
-    Board(int rows, int columns) {
+    Board(int rows, int columns, int skin) {
         this.rows = rows;
         this.columns = columns;
+        this.skin = skin;
         this.fields = new Field[rows][columns];
 
         for (int r = 0; r < rows; r++) {
@@ -31,7 +33,7 @@ public class Board extends GridPane {
         }
 
         for (int i = 0; i < rows * columns; i++) {
-            Field field = new Field();
+            Field field = new Field(skin);
             field.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             this.add(field, i % columns, i / rows);
             fields[i % columns][i / rows] = field;

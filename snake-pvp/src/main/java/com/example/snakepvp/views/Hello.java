@@ -31,9 +31,9 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private Label header1, header2, skinChoiceLabel, skinNameLabel;
     String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms"}; // TODO (not for now) move to some config file e.g. json
     @FXML
-    private int skin = 0, noSkins = 4;
+    private int skin = 0;
     @FXML
-    private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3;
+    private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3, approveButton;
 
     private Map<Node, Double[]> anchors;
 
@@ -44,7 +44,30 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private void modeButtonAction1 (ActionEvent event) {
         // TODO (marwyk) add viewmodel(done) and start the game
+        viewModel.getSceneController().addSkin(skin);
+        viewModel.getSceneController().addSkin(skin);
         viewModel.startGame(); // TODO don't know if it should work this way
+    }
+
+//    @FXML
+//    private void modeButtonAction2 (ActionEvent event) {
+//        viewModel.startGame();
+//    }
+
+    @FXML
+    private void chooseSkinAction (ActionEvent event) {
+        viewModel.getSceneController().addSkin(skin);
+        if (skinChoiceLabel.getText().equals("TAP TO CHANGE SKIN 1")) {
+            skinChoiceLabel.setText("TAP TO CHANGE SKIN 2");
+        } else {
+            approveButton.setVisible(false);
+            skinChoiceLabel.setText("ALL SKINS ARE CHOSEN");
+        }
+        skin = 0;
+        skinButton1.setGraphic(new ImageView(new Image("/skin0LH.png")));
+        skinButton2.setGraphic(new ImageView(new Image("/skin0L.png")));
+        skinButton3.setGraphic(new ImageView(new Image("/skin0L.png")));
+        skinNameLabel.setText(names[0]);
     }
 
     @FXML
@@ -55,7 +78,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private void nextSkinAction (ActionEvent event) {
         // TODO change to binding
-        skin = (++skin) % noSkins;
+        skin = (++skin) % names.length;
         skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "LH.png")));
         skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
         skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
@@ -79,7 +102,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             put(skinNameLabel, new Double[]{150.0, 0.0, 0.0, 40.0});
         }};
 
-        skinButton1.setGraphic(new ImageView(new Image("/skin0LH.png"))); // TODO snake's head here
+        skinButton1.setGraphic(new ImageView(new Image("/skin0LH.png")));
         skinButton2.setGraphic(new ImageView(new Image("/skin0L.png")));
         skinButton3.setGraphic(new ImageView(new Image("/skin0L.png")));
         header1.setStyle("header1");
@@ -151,6 +174,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             modeButton2.setGraphic(new ImageView(new Image("/mode2S.png")));
             quitButton.setGraphic(new ImageView(new Image("/quitS.png")));
         }
+        approveButton.setGraphic(new ImageView("/approve.png"));
     }
 
     void refreshLabels(double ratio, AtomicInteger fontSizeLabel, AtomicInteger fontSizeHeader1, AtomicInteger fontSizeHeader2) {

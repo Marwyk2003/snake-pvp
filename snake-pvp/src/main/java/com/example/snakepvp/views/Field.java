@@ -9,8 +9,10 @@ import javafx.scene.image.ImageView;
 
 public class Field extends Button {
     CellContent cellContent;
+    final int skin;
 
-    Field() {
+    Field(int skin) {
+        this.skin = skin;
         this.setGraphic(new ImageView(new Image("/emptyS.png")));
         this.setStyle("-fx-background-color: transparent");
     }
@@ -29,7 +31,7 @@ public class Field extends Button {
     }
 
     private String getImage() {
-        if (cellContent == CellContent.SNAKE) return "/skin0S.png";
+        if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
         if (cellContent == CellContent.WALL) return "/emptyS.png";
         if (cellContent == CellContent.EDIBLE_GROW) return "/growthEdibleS.png";
         return "/fieldS.png";

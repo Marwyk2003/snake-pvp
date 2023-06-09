@@ -10,16 +10,18 @@
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.Hello">
     <children>
-        <Polygon fx:id="spotlight" styleClass="polygon" AnchorPane.RightAnchor="0.0" AnchorPane.TopAnchor="0.0" />
+        <Polygon fx:id="spotlight" styleClass="polygon" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <Label fx:id="header1" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="20.0" text="SNAKE" styleClass="header1" />
         <Label fx:id="header2" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="120.0" text="PvP" styleClass="header2" />
         <Button fx:id="modeButton1" mnemonicParsing="false" AnchorPane.bottomAnchor="340.0" AnchorPane.rightAnchor="120.0" styleClass="roundButton" onAction="#modeButtonAction1" onMouseEntered="#mouseAction" />
         <Button fx:id="modeButton2" mnemonicParsing="false" AnchorPane.bottomAnchor="220.0" AnchorPane.rightAnchor="120.0" styleClass="roundButton" onMouseEntered="#mouseAction" />
+<!--        TODO add onAction="#modeButtonAction2" to modeButton2-->
         <Button fx:id="quitButton" mnemonicParsing="false" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="120.0" styleClass="roundButton" onAction="#quitButtonAction" onMouseEntered="#mouseAction" />
-        <Label fx:id="skinChoiceLabel" AnchorPane.leftAnchor="80.0" AnchorPane.bottomAnchor="200.0" text="TAP TO CHANGE SKIN" />
+        <Label fx:id="skinChoiceLabel" AnchorPane.leftAnchor="80.0" AnchorPane.bottomAnchor="200.0" text="TAP TO CHANGE SKIN 1" />
         <Button fx:id="skinButton1" mnemonicParsing="false" AnchorPane.leftAnchor="170.0" AnchorPane.bottomAnchor="160.0" onAction="#nextSkinAction" onMouseEntered="#mouseAction" />
         <Button fx:id="skinButton2" mnemonicParsing="false" AnchorPane.leftAnchor="250.0" AnchorPane.bottomAnchor="160.0" onAction="#nextSkinAction" onMouseEntered="#mouseAction" />
         <Button fx:id="skinButton3" mnemonicParsing="false" AnchorPane.leftAnchor="330.0" AnchorPane.bottomAnchor="160.0" onAction="#nextSkinAction" onMouseEntered="#mouseAction" />
+        <Button fx:id="approveButton" mnemonicParsing="false" AnchorPane.leftAnchor="440.0" AnchorPane.bottomAnchor="160.0" onAction="#chooseSkinAction" onMouseEntered="#mouseAction" />
         <Label fx:id="skinNameLabel" AnchorPane.leftAnchor="150.0" AnchorPane.bottomAnchor="40.0" text="Aqua Worm" />
     </children>
     <stylesheets>

@@ -43,7 +43,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
 
-    // TODO add more Edibles and communicate this somehow - it's just some way to do this
+    // TODO add more Edibles and communicate this somehow, maybe here...
     public void edibleAction(EdibleEvent event) {
         switch (event.getEdible()) {
             case SIMPLE_GROWING -> {
@@ -82,7 +82,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
-            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth());
+            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), viewModel.getSceneController().getSkin(i));
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {
                 for (int col = 0; col < singleGameVM.getWidth(); ++col) {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
