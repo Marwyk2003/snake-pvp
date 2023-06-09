@@ -10,20 +10,18 @@
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.Game">
     <children>
-        <Label fx:id="countDownLabel" styleClass="counter" text="3" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="300.0" />
-        <Polygon fx:id="arrow1" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0" />
-        <Polygon fx:id="arrow2" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
+        <Label fx:id="countDownLabel" styleClass="counter" text="3" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="310.0" />
+        <Polygon fx:id="arrow1"  styleClass="polygon" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0"/>
+        <Polygon fx:id="arrow2"  styleClass="polygon" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
 
         <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="50.0" />
         <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="100.0" />
-
-        <!--        hey font size, why you not change :(      -->
-        <Label fx:id="pointCountLabel1" styleClass="label" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="70.0" />
-        <Label fx:id="lengthCountLabel1" styleClass="label" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="120.0" />
+        <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="60.0" />
+        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="110.0" />
         <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0" />
         <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="100.0" />
-        <Label fx:id="pointCountLabel2" styleClass="label" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="70.0" />
-        <Label fx:id="lengthCountLabel2" styleClass="label" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="120.0" />
+        <Label fx:id="pointCountLabel2" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="60.0" />
+        <Label fx:id="lengthCountLabel2" text=" " AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="110.0" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

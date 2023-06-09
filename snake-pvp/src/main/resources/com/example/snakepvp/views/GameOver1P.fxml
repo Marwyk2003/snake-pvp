@@ -10,10 +10,10 @@
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.GameOver1P">
     <children>
-        <ImageView fx:id="spotlight" AnchorPane.rightAnchor="30.0" AnchorPane.BottomAnchor="50.0" />
-        <ImageView fx:id="cup" AnchorPane.rightAnchor="100.0" AnchorPane.BottomAnchor="40.0" />
+        <ImageView fx:id="spotlight" AnchorPane.rightAnchor="50.0" AnchorPane.BottomAnchor="80.0" />
+        <ImageView fx:id="cup" AnchorPane.rightAnchor="120.0" AnchorPane.BottomAnchor="60.0" />
         <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.TopAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
-        <Label fx:id="gameOverLabel" AnchorPane.leftAnchor="200.0" AnchorPane.TopAnchor="100.0" text="GAME OVER" styleClass="label" />
+        <Label fx:id="gameOverLabel" AnchorPane.leftAnchor="200.0" AnchorPane.TopAnchor="100.0" text="GAME OVER" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

@@ -29,14 +29,15 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
-    private AnchorPane hBox;
-    Board board1, board2;
+    private AnchorPane pane;
     private int snakeSkin;
     @InjectViewModel
     private GameHostViewModel viewModel;
@@ -56,8 +57,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         arrow1.getPoints().setAll(0.0, 0.0, 50.0, 0.0, 50.0, 200.0, 0.0, 200.0);
         arrow2.getPoints().setAll(0.0, 0.0, 120.0, 100.0, 0.0, 200.0);
-        arrow1.setFill(Color.WHITE);
-        arrow2.setFill(Color.WHITE);
         arrow1.toBack();
         arrow2.toBack();
 
@@ -71,16 +70,15 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
                 }
             }
-//            boards[i].setMaxSize(200, 200);
         }
         AnchorPane.setLeftAnchor(boards[0], 50.0);
         AnchorPane.setBottomAnchor(boards[0], 50.0);
         AnchorPane.setRightAnchor(boards[1], 50.0);
         AnchorPane.setBottomAnchor(boards[1], 50.0);
-        hBox = new AnchorPane();
+        pane = new AnchorPane();
         for (int i = 0; i < 2; ++i) {
             boards[i].refreshBoard();
-            hBox.getChildren().add(boards[i]);
+            pane.getChildren().add(boards[i]);
         }
 
         runTimer();
@@ -90,7 +88,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         setCounters();
 
         Stage stage = (Stage) countDownLabel.getScene().getWindow();
-        Scene scene = new Scene(hBox, 1400, 700);
+        Scene scene = new Scene(pane, 1300, 700);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             Direction newDirection = null;
             switch (event.getCode()) {
@@ -126,7 +124,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         timeLine.setCycleCount(timeToStart.get());
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.016), e -> {
             timeToStart.decrementAndGet();
-            if (timeToStart.get() == 40) { countDownLabel.setText("Play!"); AnchorPane.setLeftAnchor(countDownLabel, 290.0); }
+            if (timeToStart.get() == 40) { countDownLabel.setText("Play!"); AnchorPane.setLeftAnchor(countDownLabel, 390.0); }
             else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
             AnchorPane.setTopAnchor(countDownLabel, AnchorPane.getTopAnchor(countDownLabel) - 0.15);
             fontSize.set(fontSize.get() + 0.25);
@@ -143,16 +141,25 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     }
 
     private void setCounters() {
+        Label[] labels = { pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2 };
+        for (int i = 0; i < 4; i++) {
+            labels[i].setStyle("-fx-font-size: 32px");
+            if (i < 2) {
+                labels[i].setText("0");
+                AnchorPane.setTopAnchor(labels[i], 60.0);
+            } else {
+                labels[i].setText("3");
+                AnchorPane.setTopAnchor(labels[i], 100.0);
+            }
+
+        }
+
         pointCounter1.setImage(new Image("/points.png"));
         pointCounter2.setImage(new Image("/points.png"));
         lengthCounter1.setImage(new Image("/length.png"));
         lengthCounter2.setImage(new Image("/length.png"));
 
-        pointCountLabel1.setText("0");
-        pointCountLabel1.setText("0");
-        lengthCountLabel1.setText("3");
-        lengthCountLabel2.setText("3");
-
-        hBox.getChildren().addAll(pointCounter1, pointCounter2, pointCountLabel1, pointCountLabel2, lengthCounter1, lengthCounter2, lengthCountLabel1, lengthCountLabel2);
+        pane.getChildren().addAll(labels);
+        pane.getChildren().addAll(pointCounter1, pointCounter2, lengthCounter1, lengthCounter2);
     }
 }

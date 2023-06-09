@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.example.snakepvp.viewmodels.GameOverViewModel;
+import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -14,10 +17,13 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameWon1P implements Initializable {
-//    Stage stage = Program.stage;
+    private Stage stage;
+    @InjectViewModel
+    private GameOverViewModel viewModel;
 
     @FXML
     private Label gameWonLabel1, gameWonLabel2, gameLostLabel1, gameLostLabel2;
@@ -33,14 +39,14 @@ public class GameWon1P implements Initializable {
     }
     @FXML
     private void returnButtonAction (ActionEvent event) {
-//        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Hello.fxml")));
-//        stage.setScene(new Scene(root));
-//        stage.show();
+        viewModel.getSceneController().loadHelloScene();
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        stage = viewModel.getSceneController().getStage();
+
         returnButton.setGraphic(new ImageView(new Image("/return.png")));
 
         AtomicInteger fontSize = new AtomicInteger(55);
@@ -59,8 +65,8 @@ public class GameWon1P implements Initializable {
             gameLostLabel1.setStyle(format);
             gameLostLabel2.setStyle(format);
         };
-//        stage.widthProperty().addListener(stageHeightListener);
-//        stage.heightProperty().addListener(stageHeightListener);
+        stage.widthProperty().addListener(stageHeightListener);
+        stage.heightProperty().addListener(stageHeightListener);
 
         runAnimation();
     }

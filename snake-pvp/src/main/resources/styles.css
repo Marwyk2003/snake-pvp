@@ -49,3 +49,7 @@ AnchorPane {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
+.polygon {
+    -fx-fill: white;
+}
