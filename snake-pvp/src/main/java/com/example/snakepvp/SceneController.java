@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 public class SceneController {
 
     private final HelloViewModel helloVM;
@@ -64,11 +66,14 @@ public class SceneController {
         for (int i = 0; i < snakeSkins.length; i++) {
             if (snakeSkins[i] == null) {
                 snakeSkins[i] = skin;
-                break;
+                return;
             }
         }
     }
 
+    public void resetSkins() {
+        Arrays.fill(snakeSkins, null);
+    }
     public int getSkin(int i) {
         return snakeSkins[i];
     }

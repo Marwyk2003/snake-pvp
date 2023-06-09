@@ -77,7 +77,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
 
     @FXML
     private void nextSkinAction (ActionEvent event) {
-        // TODO change to binding
         skin = (++skin) % names.length;
         skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "LH.png")));
         skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
@@ -88,6 +87,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stage = viewModel.getSceneController().getStage();
+        viewModel.getSceneController().resetSkins();
+
         spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0, 10.0, 700.0);
         anchors = new HashMap<>() {{
             put(header1, new Double[]{100.0, 0.0, 8.0, 0.0});      // left, right, top, bottom
