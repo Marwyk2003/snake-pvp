@@ -47,7 +47,7 @@ public class GameService {
         Edible eaten = moveStatus.getEdible();
         if (eaten != null) {
             System.out.println("just ate");
-            Cell cell = boardState.generateEdible(eaten);//TODO randomize edibles
+            Cell cell = boardState.generateEdible();//TODO randomize edibles
             edibleEvents.emit(new EdibleEvent(eaten, cell.getRow(), cell.getCol(), gameId));
         }
         if (moveStatus.getTail() != null)

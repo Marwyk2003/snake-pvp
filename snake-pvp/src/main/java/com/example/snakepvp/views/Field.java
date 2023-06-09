@@ -36,6 +36,8 @@ public class Field extends Button {
         if (cellContent == CellContent.WALL) return "/emptyS.png";
         if (cellContent == CellContent.EDIBLE_GROW) return "/growthEdibleS.png";
         if (cellContent == CellContent.EDIBLE_SPEED) return "/bonusEdible.png";
+        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/pointsEdible.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/shroom.png";
         return "/fieldS.png";
     }
 }

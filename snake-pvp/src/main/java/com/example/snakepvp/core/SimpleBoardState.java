@@ -30,8 +30,8 @@ public class SimpleBoardState implements BoardState {
         this.snake = new Snake(Stream.of(1, 2, 3)
                 .map(x -> board.getCell(board.getHeight() / 2, x))
                 .collect(Collectors.toCollection(LinkedList<Cell>::new)));
-        generateEdible(Edible.SIMPLE_GROWING);
-        generateEdible(Edible.SPEED_UP);
+        generateEdible();
+        generateEdible();
     }
 
     @Override
@@ -49,26 +49,46 @@ public class SimpleBoardState implements BoardState {
         return snake;
     }
 
+    private Edible randomEdible() {
+        double[] weights = {Edible.SIMPLE_GROWING.getWeight(), Edible.GROW_TWICE.getWeight(),
+                Edible.SPEED_UP.getWeight(), Edible.REVERSE.getWeight()};
+        Edible[] edibles = {Edible.SIMPLE_GROWING, Edible.GROW_TWICE, Edible.SPEED_UP, Edible.REVERSE};
+        Random generator = new Random();
+        double rand = generator.nextDouble();
+        double sum = 0.0;
+        double currentSum = 0.0;
+        for (int i = 0; i < edibles.length; i++)
+            sum += weights[i];
+        for (int i = 0; i < edibles.length; i++) {
+            currentSum += weights[i] / sum;
+            if (rand <= currentSum)
+                return edibles[i];
+        }
+        return edibles[edibles.length - 1];
+    }
+
     @Override
-    public Cell generateEdible(Edible edible) {
+    public Cell generateEdible() {
         List<Cell> emptyCells = new ArrayList<>();
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
-                if (board.getCell(row, col).getEdible() == null && board.getCell(row, col).isGoThrough())
+                if (board.getCell(row, col).getEdible() == null && board.getCell(row, col).isGoThrough()
+                        && board.getCell(row, col).getEdible() == null)
                     emptyCells.add(board.getCell(row, col));
             }
         }
 
         Random random = new Random();
         int index = random.nextInt(emptyCells.size());
-
+        Edible edible = randomEdible();
         emptyCells.get(index).setEdible(edible);
-        System.out.println("new edible " + emptyCells.get(index).getRow() + " " + emptyCells.get(index).getCol());
+        System.out.println("new " + edible + " " + emptyCells.get(index).getRow() + " " + emptyCells.get(index).getCol());
         return emptyCells.get(index);
     }
 
     @Override
     public MoveStatus makeMove(Direction dir) {
+
         if (timeoutCooldown > 0) timeoutCooldown--;
         else if (timeoutCooldown == 0) timeout = TIMEOUT_NORMAL;
 
@@ -131,15 +151,18 @@ public class SimpleBoardState implements BoardState {
     @Override
     public boolean invokeEdibleEffect(Edible edible) {
         //TODO implement more edible effects
-        if (edible == null) return false;
-        if (edible == Edible.SIMPLE_GROWING) {
-            growCounter++;
-        } else if (edible == Edible.SPEED_UP) {
-            timeout = TIMEOUT_FAST;
-            timeoutCooldown = TIMEOUT_COOLDOWN;
-            System.out.println("speed up!");
-        } else {
-            return false;
+        switch (edible) {
+            case SIMPLE_GROWING -> growCounter++;
+            case SPEED_UP -> {
+                timeout = TIMEOUT_FAST;
+                timeoutCooldown = TIMEOUT_COOLDOWN;
+                System.out.println("speed up!");
+            }
+            case GROW_TWICE -> growCounter += 2;
+            case REVERSE -> snake.reverse();
+            default -> {
+                return false;
+            }
         }
         return true;
     }
