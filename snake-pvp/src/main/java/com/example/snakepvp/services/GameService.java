@@ -53,7 +53,9 @@ public class GameService {
         if (moveStatus.getTail() != null)
             cellEvents.emit(new CellEvent(moveStatus.getTail().getCol(), moveStatus.getTail().getRow(), moveStatus.getTail().isSnake()));
         if (moveStatus.getHead() != null)
-            cellEvents.emit(new CellEvent(moveStatus.getHead().getCol(), moveStatus.getHead().getRow(), moveStatus.getHead().isSnake()));
+            cellEvents.emit(new CellEvent(moveStatus.getHead().getCol(), moveStatus.getHead().getRow(), moveStatus.getHead().isSnake(), true));
+        if (moveStatus.getNeck() != null)
+            cellEvents.emit(new CellEvent(moveStatus.getNeck().getCol(), moveStatus.getNeck().getRow(), moveStatus.getNeck().isSnake(), false));
         if (!moveStatus.isSuccess()) statusEvents.emit(new GameEndedEvent(gameId));
     }
 }

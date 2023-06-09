@@ -42,10 +42,12 @@ public class SingleGameViewModel implements ViewModel {
                 this.cells[row][col].setEdible(cell.getEdible());
             }
         }
+        Cell head = boardState.getSnake().getHead();
         for (Cell cell : boardState.getSnake().getCellList()) {
             System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
-            this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
+            this.cells[cell.getRow()][cell.getCol()].setIsSnake(true, cell == head);
         }
+
     }
 
     public int getSkin() {
@@ -72,7 +74,7 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     private void processCellEvent(CellEvent event) {
-        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake());
+        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
@@ -106,6 +108,7 @@ public class SingleGameViewModel implements ViewModel {
 
         private boolean isGoThrough;
         private boolean isSnake;
+        private boolean isSnakeHead;
         private Edible edible;
 
         VMCell(int row, int col, boolean isGoThrough) {
@@ -122,9 +125,10 @@ public class SingleGameViewModel implements ViewModel {
             updateContent();
         }
 
-        public void setIsSnake(boolean isSnake) {
+        public void setIsSnake(boolean isSnake, boolean isSnakeHead) {
             if (isSnake) setEdible(null);
             this.isSnake = isSnake;
+            this.isSnakeHead = isSnakeHead;
             updateContent();
         }
 
@@ -134,7 +138,8 @@ public class SingleGameViewModel implements ViewModel {
         }
 
         private void updateContent() {
-            if (isSnake) cellContent.set(CellContent.SNAKE);
+            if (isSnakeHead) cellContent.set(CellContent.SNAKE_HEAD);
+            else if (isSnake) cellContent.set(CellContent.SNAKE);
             else if (edible == Edible.SIMPLE_GROWING) cellContent.set(CellContent.EDIBLE_GROW);
             else if (edible == Edible.SPEED_UP) cellContent.set(CellContent.EDIBLE_SPEED);
             else if (!isGoThrough) cellContent.set(CellContent.WALL);

@@ -8,6 +8,8 @@ public class Snake {
 
     Snake(LinkedList<Cell> snake) {
         this.snake = snake;
+        for (Cell cell: snake)
+            cell.setGoThrough(false);
     }
 
     public List<Cell> getCellList() {
@@ -31,11 +33,11 @@ public class Snake {
         snake.add(next);
     }
 
-    Cell getNeck() {
+    public Cell getNeck() {
         return snake.get(snake.size() - 2);
     }
 
-    Cell getHead() {
+    public Cell getHead() {
         return snake.get(snake.size() - 1);
     }
 }

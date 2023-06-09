@@ -3,14 +3,16 @@ package com.example.snakepvp.core;
 public class MoveStatus {
     private final Cell tail;
     private final Cell head;
+    private final Cell neck;
     private final boolean success;
     private final Edible edible;
 
-    MoveStatus(boolean success, Edible edible, Cell tail, Cell head) {
+    MoveStatus(boolean success, Edible edible, Cell tail, Cell head, Cell neck) {
         this.success = success;
         this.edible = edible;
         this.tail = tail;
         this.head = head;
+        this.neck = neck;
     }
 
     public Cell getTail() {
@@ -19,6 +21,10 @@ public class MoveStatus {
 
     public Cell getHead() {
         return head;
+    }
+
+    public Cell getNeck() {
+        return neck;
     }
 
     public boolean isSuccess() {

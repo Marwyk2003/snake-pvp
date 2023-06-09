@@ -94,10 +94,11 @@ public class SimpleBoardState implements BoardState {
 
         if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough()) {
             isEnded = true;
-            return new MoveStatus(false, null, null, null); // TODO
+            return new MoveStatus(false, null, null, null, null); // TODO
         }
         Cell tail;
         Cell head;
+        Cell neck;
         if (growCounter > 0) {
             growCounter--;
             tail = null;
@@ -106,7 +107,7 @@ public class SimpleBoardState implements BoardState {
             tail = snake.moveToCell(board.getCell(nextRow, nextCol));
             tail.setGoThrough(true);// resets tail to normal cell
         }
-
+        neck = snake.getNeck();
         head = snake.getHead();
         head.setGoThrough(false);
         Edible eaten = head.getEdible();
@@ -116,13 +117,15 @@ public class SimpleBoardState implements BoardState {
 
         if (tail == null) {
             return new MoveStatus(true, eaten, null,
-                    new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()));
+                    new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()),
+                    new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough()));
 
         }
 
         return new MoveStatus(true, eaten,
                 new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()),
-                new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough())); // TODO
+                new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()),
+                new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
     }
 
     @Override
