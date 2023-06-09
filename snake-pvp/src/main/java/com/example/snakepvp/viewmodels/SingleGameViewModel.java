@@ -16,6 +16,7 @@ public class SingleGameViewModel implements ViewModel {
     private VMCell[][] cells;
     private int height, width;
     private Thread gameThread;
+    private int skin;
 
     public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
         this.gameService = gameService;
@@ -45,6 +46,14 @@ public class SingleGameViewModel implements ViewModel {
             System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
             this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
         }
+    }
+
+    public int getSkin() {
+        return skin;
+    }
+
+    public void setSkin(int skin) {
+        this.skin = skin;
     }
 
     public void run() {

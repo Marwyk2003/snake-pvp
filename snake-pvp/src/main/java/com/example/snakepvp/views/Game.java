@@ -4,36 +4,46 @@ import com.example.snakepvp.core.Direction;
 import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
-
-import de.saxsys.mvvmfx.*;
-import javafx.animation.*;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.*;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-import java.util.concurrent.atomic.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Game implements FxmlView<GameHostViewModel>, Initializable {
+    @FXML
+    ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2;
     @InjectViewModel
     private GameHostViewModel viewModel;
     private Stage stage;
     private AnchorPane pane;
-    private int snakeSkin;
     @FXML
     private Label countDownLabel, pointCountLabel1, lengthCountLabel1, pointCountLabel2, lengthCountLabel2;
     @FXML
     private Polygon arrow1, arrow2;
-    @FXML
-    ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2;
     private Map<ImageView, String[]> images = null;
     private Map<Node, Double[]> anchors = null;
     private Board[] boards;
@@ -50,8 +60,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 if (event.getGameId() == 1) {
                     blink(lengthCounter2);
                     lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
-                }
-                else  {
+                } else {
                     blink(lengthCounter1);
                     lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
                 }
@@ -82,7 +91,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
-            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), viewModel.getSceneController().getSkin(i));
+            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin());
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {
                 for (int col = 0; col < singleGameVM.getWidth(); ++col) {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
@@ -163,8 +172,10 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         timeLine.setCycleCount(timeToStart.get());
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.016), e -> {
             timeToStart.decrementAndGet();
-            if (timeToStart.get() == 40) { countDownLabel.setText("Play!"); AnchorPane.setLeftAnchor(countDownLabel, 390.0); }
-            else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
+            if (timeToStart.get() == 40) {
+                countDownLabel.setText("Play!");
+                AnchorPane.setLeftAnchor(countDownLabel, 390.0);
+            } else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
             AnchorPane.setTopAnchor(countDownLabel, AnchorPane.getTopAnchor(countDownLabel) - 0.15);
             fontSize.set(fontSize.get() + 0.25);
             countDownLabel.setStyle("-fx-font-size: " + fontSize.get() + "px");
@@ -184,19 +195,27 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
     }
@@ -216,7 +235,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     }
 
     private void setCounters() {
-        Label[] labels = { pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2 };
+        Label[] labels = {pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2};
         for (int i = 0; i < 4; i++) {
             labels[i].setStyle("-fx-font-size: 32px");
             if (i < 2) labels[i].setText("0");

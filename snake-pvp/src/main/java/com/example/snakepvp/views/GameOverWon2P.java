@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.example.snakepvp.viewmodels.GameOverViewModel;
+import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,7 +24,7 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GameOverWon2P implements Initializable {
+public class GameOverWon2P implements Initializable, FxmlView<GameOverViewModel> {
     private Stage stage;
     @InjectViewModel
     private GameOverViewModel viewModel;

@@ -5,6 +5,7 @@ import com.example.snakepvp.viewmodels.GameOverViewModel;
 import com.example.snakepvp.viewmodels.HelloViewModel;
 import com.example.snakepvp.views.Game;
 import com.example.snakepvp.views.GameOver1P;
+import com.example.snakepvp.views.GameOverWon2P;
 import com.example.snakepvp.views.Hello;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
@@ -13,10 +14,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class SceneController {
 
     private final HelloViewModel helloVM;
-    private final Integer[] snakeSkins = new Integer[]{null, null}; // TODO pas trop elegant, mais c'est ainsi
     private final GameHostViewModel gameHostVM;
     private final GameOverViewModel gameOverVM;
     private final Stage stage;
@@ -41,13 +43,14 @@ public class SceneController {
         loadScene(viewTuple);
     }
 
-    public void loadGameScene() {
+    public void loadGameScene(List<Integer> skins) {
+        gameHostVM.setSkins(skins);
         ViewTuple<Game, GameHostViewModel> viewTuple = FluentViewLoader.fxmlView(Game.class).viewModel(gameHostVM).load();
         loadScene(viewTuple);
     }
 
     public void loadGameOverScene() {
-        ViewTuple<GameOver1P, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(GameOver1P.class).viewModel(gameOverVM).load();
+        ViewTuple<GameOverWon2P, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(GameOverWon2P.class).viewModel(gameOverVM).load();
         loadScene(viewTuple);
     }
 
@@ -57,19 +60,5 @@ public class SceneController {
             stage.setScene(new Scene(root));
             stage.show();
         });
-        System.out.println(snakeSkins[0] + " " + snakeSkins[1]);
-    }
-
-    public void addSkin(int skin) {
-        for (int i = 0; i < snakeSkins.length; i++) {
-            if (snakeSkins[i] == null) {
-                snakeSkins[i] = skin;
-                break;
-            }
-        }
-    }
-
-    public int getSkin(int i) {
-        return snakeSkins[i];
     }
 }
