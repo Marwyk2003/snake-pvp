@@ -1,39 +1,26 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.core.Direction;
+import com.example.snakepvp.core.Edible;
+import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
-import de.saxsys.mvvmfx.FxmlView;
-import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+
+import de.saxsys.mvvmfx.*;
+import javafx.animation.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.concurrent.atomic.*;
 
 public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
@@ -47,10 +34,28 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     private Polygon arrow1, arrow2;
     @FXML
     ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2;
+    private Map<ImageView, String[]> images = null;
 
     @FXML
     private void mouseAction(MouseEvent event) {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
+    }
+
+    public void edibleAction(EdibleEvent event) {
+        ImageView imageView = null;
+        switch (event.getEdible()) {
+            case SIMPLE_GROWING -> {
+                if (event.getGameId() == 1) {
+                    imageView = lengthCounter2;
+                    lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
+                }
+                else  {
+                    imageView = lengthCounter1;
+                    lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
+                }
+            }
+        }
+        blink(imageView);
     }
 
     @Override
@@ -59,6 +64,12 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         arrow2.getPoints().setAll(0.0, 0.0, 120.0, 100.0, 0.0, 200.0);
         arrow1.toBack();
         arrow2.toBack();
+        images = new HashMap<>() {{
+            put(pointCounter1, new String[]{"/points1.png", "/points2.png"});
+            put(pointCounter2, new String[]{"/points1.png", "/points2.png"});
+            put(lengthCounter1, new String[]{"/length1.png", "/length2.png"});
+            put(lengthCounter2, new String[]{"/length1.png", "/length2.png"});
+        }};
 
         viewModel.initGame();
         Board[] boards = new Board[2];
@@ -140,6 +151,20 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         });
     }
 
+    public void blink(ImageView imageView) {
+        AtomicInteger timeToStart = new AtomicInteger(2);
+        Timeline timeLine = new Timeline();
+        timeLine.setCycleCount(timeToStart.get());
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.3), e -> {
+            timeToStart.decrementAndGet();
+            imageView.setImage(new Image(images.get(imageView)[1]));
+        }));
+        timeLine.play();
+        timeLine.setOnFinished(e -> {
+            imageView.setImage(new Image(images.get(imageView)[0]));
+        });
+    }
+
     private void setCounters() {
         Label[] labels = { pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2 };
         for (int i = 0; i < 4; i++) {
@@ -153,13 +178,11 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             }
 
         }
-
-        pointCounter1.setImage(new Image("/points.png"));
-        pointCounter2.setImage(new Image("/points.png"));
-        lengthCounter1.setImage(new Image("/length.png"));
-        lengthCounter2.setImage(new Image("/length.png"));
+        for (Map.Entry<ImageView, String[]> entry : images.entrySet()) {
+            entry.getKey().setImage(new Image(entry.getValue()[0]));
+        }
 
         pane.getChildren().addAll(labels);
-        pane.getChildren().addAll(pointCounter1, pointCounter2, lengthCounter1, lengthCounter2);
+        pane.getChildren().addAll(images.keySet());
     }
 }
