@@ -1,43 +1,55 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.core.Direction;
+import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
-
-import de.saxsys.mvvmfx.*;
-import javafx.animation.*;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.paint.*;
-import javafx.scene.input.*;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.*;
-import javafx.scene.effect.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-import java.util.concurrent.atomic.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Game implements FxmlView<GameHostViewModel>, Initializable {
+    @FXML
+    ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2, powerUp1, powerUp2;
     @InjectViewModel
     private GameHostViewModel viewModel;
     private Stage stage;
     private AnchorPane pane;
-    private int snakeSkin;
     @FXML
     private Label countDownLabel, pointCountLabel1, lengthCountLabel1, pointCountLabel2, lengthCountLabel2, powerUpLabel1, powerUpLabel2;
     private Label[] labels;
     @FXML
     private Polygon arrow1, arrow2, rectangle;
-    @FXML
-    ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2, powerUp1, powerUp2;
     @FXML
     private ProgressIndicator progressIndicator;
     private Map<ImageView, String[]> images = null;
@@ -51,16 +63,13 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     // TODO add more Edibles and communicate this somehow, maybe here...
     public void edibleAction(EdibleEvent event) {
-        switch (event.getEdible()) {
-            case SIMPLE_GROWING -> {
-                if (event.getGameId() == 1) {
-                    blink(lengthCounter2);
-                    lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
-                }
-                else  {
-                    blink(lengthCounter1);
-                    lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
-                }
+        if (Objects.requireNonNull(event.getOldEdible()) == Edible.SIMPLE_GROWING) {
+            if (event.getGameId() == 1) {
+                blink(lengthCounter2);
+                lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
+            } else {
+                blink(lengthCounter1);
+                lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
             }
 //            case SOME_POINTS_EDIBLE -> {
 //                if (event.getGameId() == 1) {
@@ -99,7 +108,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
-            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), viewModel.getSceneController().getSkin(i));
+            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin());
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {
                 for (int col = 0; col < singleGameVM.getWidth(); ++col) {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
@@ -139,6 +148,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         }};
         runTimer();
     }
+
     private void startGame() throws IOException {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> refreshAnchors(newValue.doubleValue() / 1150.0);
         stage.widthProperty().addListener(stageSizeListener);
@@ -174,6 +184,10 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         viewModel.startGame();
         runPowerUp(powerUp2, powerUpLabel2, "speed up!");   // TODO remove this line, it was added just for testing
     }
+//    ));
+//        timeLine.play();
+//        timeLine.setOnFinished(e ->
+
     public void runTimer() {
         AtomicInteger timeToStart = new AtomicInteger(161);
         AtomicInteger timeValue = new AtomicInteger(4);
@@ -186,8 +200,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 countDownLabel.setText("Play!");
                 progressIndicator.setVisible(true);
                 AnchorPane.setLeftAnchor(countDownLabel, 390.0);
-            }
-            else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
+            } else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
             AnchorPane.setTopAnchor(countDownLabel, AnchorPane.getTopAnchor(countDownLabel) - 0.15);
             fontSize.set(fontSize.get() + 0.25);
             countDownLabel.setStyle("-fx-font-size: " + fontSize.get() + "px");
@@ -201,6 +214,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             }
         });
     }
+
     public void runPowerUp(ImageView powerUp, Label message, String messageText) {
         AtomicInteger timeToStart = new AtomicInteger(60);
         AtomicInteger timeValue = new AtomicInteger(4);
@@ -234,24 +248,33 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             powerUp.setVisible(false);
         });
     }
+
     void refreshAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
 //        rectangle.getPoints().setAll(0.0, 0.0, 0.0, 90.0 * ratio, 1050.0 * ratio, 90.0 * ratio, 1050.0 * ratio, 0.0);
@@ -270,8 +293,9 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             imageView.setImage(new Image(images.get(imageView)[0]));
         });
     }
+
     private void setCounters() {
-        labels = new Label[]{ pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2, powerUpLabel1, powerUpLabel2 };
+        labels = new Label[]{pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2, powerUpLabel1, powerUpLabel2};
         for (int i = 0; i < labels.length; i++) {
             labels[i].setStyle("-fx-font-size: 32px;" + "-fx-font-family: Gaegu;");
             if (i < 2) labels[i].setText("0");

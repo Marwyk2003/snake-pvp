@@ -32,10 +32,12 @@ public class Field extends Button {
 
     private String getImage() {
         if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
+        if (cellContent == CellContent.SNAKE_HEAD) return "/skin" + skin + "SH.png";
         if (cellContent == CellContent.WALL) return "/emptyS.png";
-        if (cellContent == CellContent.EDIBLE_GROW) return "/doughnutS.png";
-//        else if (cellContent == CellContent.POINTS_EDIBLE) return "/appleS.png";
-//        else if (cellContent == CellContent.OTHER_EDIBLE) return "/cheeseS.png";
+        if (cellContent == CellContent.EDIBLE_GROW) return "/cheeseS.png";
+        if (cellContent == CellContent.EDIBLE_SPEED) return "/appleS.png";
+        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnutS.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/mode2S.png";
         return "/fieldS.png";
     }
 }

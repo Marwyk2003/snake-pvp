@@ -24,10 +24,6 @@ public class GameHostViewModel implements ViewModel {
         this.viewerService.edibleEvents().subscribe(this::processEdibleEvent);
     }
 
-    public void setSceneController(SceneController sceneController) {
-        this.sceneController = sceneController;
-    }
-
     public void connectSingleGameVM(SingleGameViewModel viewModel) {
         singleGameVMs.add(viewModel);
     }
@@ -40,13 +36,18 @@ public class GameHostViewModel implements ViewModel {
         }
     }
 
+    public void setSkins(List<Integer> skins) {
+        for (int i = 0; i < skins.size(); ++i) {
+            singleGameVMs.get(i).setSkin(skins.get(i));
+        }
+    }
+
     private void processEdibleEvent(EdibleEvent event) {
         int gameId = event.getGameId();
         int nextGameId = (gameId + 1) % singleGameVMs.size();
         singleGameVMs.get(gameId).generateEdibleEvent(event);
         singleGameVMs.get(nextGameId).growSnakeEvent(event);
     }
-
 
     public SingleGameViewModel getSingleGameVM(int i) {
         return singleGameVMs.get(i);
@@ -69,5 +70,9 @@ public class GameHostViewModel implements ViewModel {
 
     public SceneController getSceneController() {
         return sceneController;
+    }
+
+    public void setSceneController(SceneController sceneController) {
+        this.sceneController = sceneController;
     }
 }

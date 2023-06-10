@@ -1,27 +1,31 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.viewmodels.HelloViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import de.saxsys.mvvmfx.FxmlView;
-import de.saxsys.mvvmfx.InjectViewModel;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.fxml.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-import javafx.application.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 
 public class Hello implements Initializable, FxmlView<HelloViewModel> {
+    private final String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms"}; // TODO (not for now) move to some config file e.g. json
     @InjectViewModel
     private HelloViewModel viewModel;
     private Stage stage;
@@ -29,23 +33,23 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private Polygon spotlight;
     @FXML
     private Label header1, header2, skinChoiceLabel, skinNameLabel;
-    String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms"}; // TODO (not for now) move to some config file e.g. json
     @FXML
     private int skin = 0;
+    private List<Integer> skins;
     @FXML
     private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3, approveButton;
 
     private Map<Node, Double[]> anchors;
 
     @FXML
-    private void mouseAction (MouseEvent event) {
+    private void mouseAction(MouseEvent event) {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
+
     @FXML
-    private void modeButtonAction1 (ActionEvent event) {
+    private void modeButtonAction1(ActionEvent event) {
         // TODO (marwyk) add viewmodel(done) and start the game
-        viewModel.getSceneController().addSkin(skin);
-        viewModel.getSceneController().addSkin(skin);
+        viewModel.addSkins(skins);
         viewModel.startGame(); // TODO don't know if it should work this way
     }
 
@@ -55,8 +59,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
 //    }
 
     @FXML
-    private void chooseSkinAction (ActionEvent event) {
-        viewModel.getSceneController().addSkin(skin);
+    private void chooseSkinAction(ActionEvent event) {
+        skins.add(skin);
         if (skinChoiceLabel.getText().equals("TAP TO CHANGE SKIN 1")) {
             skinChoiceLabel.setText("TAP TO CHANGE SKIN 2");
         } else {
@@ -71,12 +75,12 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     }
 
     @FXML
-    private void quitButtonAction (ActionEvent event) {
+    private void quitButtonAction(ActionEvent event) {
         Platform.exit();
     }
 
     @FXML
-    private void nextSkinAction (ActionEvent event) {
+    private void nextSkinAction(ActionEvent event) {
         skin = (++skin) % names.length;
         skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "LH.png")));
         skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
@@ -128,6 +132,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         stage.heightProperty().addListener(stageHeightListener);
 
         refreshButtons();
+
+        skins = new ArrayList<>();
     }
 
     void refreshVerticalAnchors(double ratio) {
@@ -135,15 +141,19 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
         spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0 * ratio, 10.0, 700. * ratio);
@@ -154,15 +164,19 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
             }
         }
         spotlight.getPoints().setAll(125.0 * ratio, 0.0, 320.0 * ratio, 0.0, 320.0 * ratio, 700.0, 10.0 * ratio, 700.0);

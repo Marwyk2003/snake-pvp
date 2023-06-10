@@ -16,6 +16,7 @@ public class SingleGameViewModel implements ViewModel {
     private VMCell[][] cells;
     private int height, width;
     private Thread gameThread;
+    private int skin;
 
     public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
         this.gameService = gameService;
@@ -34,17 +35,27 @@ public class SingleGameViewModel implements ViewModel {
                 this.cells[row][col] = new VMCell(row, col, false);
             }
         }
+        Cell head = boardState.getSnake().getHead();
+        for (Cell cell : boardState.getSnake().getCellList()) {
+            System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
+            this.cells[cell.getRow()][cell.getCol()].setIsSnake(true, cell == head);
+        }
         for (int row = 0; row < height; ++row) {
             for (int col = 0; col < width; ++col) {
                 Cell cell = boardState.getCell(row, col);
-                this.cells[row][col].setIsGoThrough(cell.isGoThrough());
+                this.cells[row][col].setIsGoThrough(cell.isGoThrough() || this.cells[row][col].isSnake);
                 this.cells[row][col].setEdible(cell.getEdible());
             }
         }
-        for (Cell cell : boardState.getSnake().getCellList()) {
-            System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
-            this.cells[cell.getRow()][cell.getCol()].setIsSnake(true);
-        }
+
+    }
+
+    public int getSkin() {
+        return skin;
+    }
+
+    public void setSkin(int skin) {
+        this.skin = skin;
     }
 
     public void run() {
@@ -63,15 +74,15 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     private void processCellEvent(CellEvent event) {
-        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake());
+        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
-        gameService.grow(event.getEdible());
+        gameService.grow(event.getOldEdible());
     }
 
     public void generateEdibleEvent(EdibleEvent event) {
-        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setEdible(event.getEdible());
+        SingleGameViewModel.this.cells[event.getNewCol()][event.getNewRow()].setEdible(event.getNewEdible());
     }
 
     public VMCell getCell(int row, int col) {
@@ -97,6 +108,7 @@ public class SingleGameViewModel implements ViewModel {
 
         private boolean isGoThrough;
         private boolean isSnake;
+        private boolean isSnakeHead;
         private Edible edible;
 
         VMCell(int row, int col, boolean isGoThrough) {
@@ -113,9 +125,10 @@ public class SingleGameViewModel implements ViewModel {
             updateContent();
         }
 
-        public void setIsSnake(boolean isSnake) {
+        public void setIsSnake(boolean isSnake, boolean isSnakeHead) {
             if (isSnake) setEdible(null);
             this.isSnake = isSnake;
+            this.isSnakeHead = isSnakeHead;
             updateContent();
         }
 
@@ -125,8 +138,12 @@ public class SingleGameViewModel implements ViewModel {
         }
 
         private void updateContent() {
-            if (isSnake) cellContent.set(CellContent.SNAKE);
-            else if (edible != null) cellContent.set(CellContent.EDIBLE_GROW);
+            if (isSnakeHead) cellContent.set(CellContent.SNAKE_HEAD);
+            else if (isSnake) cellContent.set(CellContent.SNAKE);
+            else if (edible == Edible.SIMPLE_GROWING) cellContent.set(CellContent.EDIBLE_GROW);
+            else if (edible == Edible.SPEED_UP) cellContent.set(CellContent.EDIBLE_SPEED);
+            else if (edible == Edible.GROW_TWICE) cellContent.set(CellContent.EDIBLE_DOUBLE);
+            else if (edible == Edible.REVERSE) cellContent.set(CellContent.EDIBLE_REVERSE);
             else if (!isGoThrough) cellContent.set(CellContent.WALL);
             else cellContent.set(CellContent.EMPTY);
         }

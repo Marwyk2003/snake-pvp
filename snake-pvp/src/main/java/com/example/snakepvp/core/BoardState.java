@@ -8,7 +8,7 @@ public interface BoardState {
 
     Snake getSnake();
 
-    Cell generateEdible(Edible edible);
+    Cell generateEdible();
 
     MoveStatus makeMove(Direction dir);
 
@@ -17,6 +17,8 @@ public interface BoardState {
     boolean isGameOver();
 
     Score getScore();
+
+    int getTimeout();
 
     Cell getCell(int row, int col);
 }

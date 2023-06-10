@@ -3,7 +3,9 @@ package com.example.snakepvp;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.GameOverViewModel;
 import com.example.snakepvp.viewmodels.HelloViewModel;
-import com.example.snakepvp.views.*;
+import com.example.snakepvp.views.Game;
+import com.example.snakepvp.views.GameWon1P;
+import com.example.snakepvp.views.Hello;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
 import javafx.application.Platform;
@@ -12,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class SceneController {
 
@@ -32,6 +35,7 @@ public class SceneController {
         gameHostVM.setSceneController(this);
         gameOverVM.setSceneController(this);
     }
+
     public Stage getStage() {
         return stage;
     }
@@ -41,7 +45,8 @@ public class SceneController {
         loadScene(viewTuple);
     }
 
-    public void loadGameScene() {
+    public void loadGameScene(List<Integer> skins) {
+        gameHostVM.setSkins(skins);
         ViewTuple<Game, GameHostViewModel> viewTuple = FluentViewLoader.fxmlView(Game.class).viewModel(gameHostVM).load();
         loadScene(viewTuple);
     }
@@ -57,7 +62,6 @@ public class SceneController {
             stage.setScene(new Scene(root));
             stage.show();
         });
-        System.out.println(snakeSkins[0] + " " + snakeSkins[1]);
     }
 
     public void addSkin(int skin) {
@@ -72,6 +76,7 @@ public class SceneController {
     public void resetSkins() {
         Arrays.fill(snakeSkins, null);
     }
+
     public int getSkin(int i) {
         return snakeSkins[i];
     }

@@ -140,7 +140,6 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
         timeline.setOnFinished(e -> setCoins("/coin1" + imageSize + ".png", 0));
     }
     void setCoins(String image, int time) {
-        System.out.println("set coins " + image + " " + time);
         coin1.setImage(new Image(image));
         if (time <= 15) {
             coin2.setImage(new Image(image));
