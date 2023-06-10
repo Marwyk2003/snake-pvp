@@ -33,7 +33,7 @@ public class Field extends Button {
     private String getImage() {
         if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
         if (cellContent == CellContent.WALL) return "/emptyS.png";
-        if (cellContent == CellContent.EDIBLE_GROW) return "/growthEdibleS.png";
+        if (cellContent == CellContent.EDIBLE_GROW) return "/doughnutS.png";
         return "/fieldS.png";
     }
 }

@@ -4,8 +4,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 <?import java.net.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Slider?>
 
-<?import javafx.scene.shape.Polygon?>
 <AnchorPane id="AnchorPane" prefHeight="700" prefWidth="1000" minHeight="700" minWidth="1000"
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.Game">
@@ -16,12 +18,16 @@
 
         <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="80.0" />
         <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp1" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="84.0" />
         <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="80.0" />
         <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="80.0"  />
+        <Label fx:id="powerUpLabel1" text=" " AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="80.0"  />
         <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="80.0" />
         <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp2" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="80.0" />
         <Label fx:id="pointCountLabel2" text=" "  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="80.0"/>
         <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="80.0"/>
+        <Label fx:id="powerUpLabel2" text=" " AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="84.0"  />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />
