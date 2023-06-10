@@ -1,14 +1,14 @@
 package com.example.snakepvp.views;
 
+import com.example.snakepvp.core.CellContent;
 import com.example.snakepvp.core.Direction;
-import com.example.snakepvp.core.Edible;
-import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,35 +60,18 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
 
-    // TODO add more Edibles and communicate this somehow, maybe here...
-    public void edibleAction(EdibleEvent event) {
-        if (Objects.requireNonNull(event.getOldEdible()) == Edible.SIMPLE_GROWING) {
-            if (event.getGameId() == 1) {
-                blink(lengthCounter2);
-                lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
-            } else {
-                blink(lengthCounter1);
-                lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
+    public void edibleAction(CellContent cellContent, int gameId) {
+        Platform.runLater(() -> {
+            if (cellContent == CellContent.EDIBLE_GROW || cellContent == CellContent.EDIBLE_DOUBLE) {
+                blink(gameId == 0 ? lengthCounter1 : lengthCounter2);
+            } else if (cellContent == CellContent.EDIBLE_SPEED) {
+                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "speed up!");
+            } else if (cellContent == CellContent.EDIBLE_REVERSE) {
+                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "other way!");
+            } else if (cellContent == CellContent.EDIBLE_DIRECTION) {
+                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "which one is left?");
             }
-//            case SOME_POINTS_EDIBLE -> {
-//                if (event.getGameId() == 1) {
-//                    blink(pointCounter1);
-//                    pointCountLabel1.setText(String.valueOf(Integer.valueOf(pointCountLabel1.getText())) + 1);
-//                }
-//                else  {
-//                    blink(pointCounter2);
-//                    pointCountLabel2.setText(String.valueOf(Integer.valueOf(pointCountLabel2.getText())) + 1);
-//                }
-//            }
-//            case MAKE_FASTER_EDIBLE -> {
-//                if (event.getGameId() == 1) {
-//                    runPowerUp(powerUp2, powerUpLabel2, "speed up!");
-//                }
-//                else  {
-//                    runPowerUp(powerUp1, powerUpLabel1, "speed up!");
-//                }
-//            }
-        }
+        });
     }
 
     @Override
@@ -108,7 +90,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
-            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin());
+            boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin(), i, this);
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {
                 for (int col = 0; col < singleGameVM.getWidth(); ++col) {
                     boards[i].getField(row, col).bind(singleGameVM.getCell(row, col));
@@ -182,11 +164,8 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         stage.setScene(scene);
         stage.show();
         viewModel.startGame();
-        runPowerUp(powerUp2, powerUpLabel2, "speed up!");   // TODO remove this line, it was added just for testing
+//        runPowerUp(powerUp2, powerUpLabel2, "speed up!");   // TODO remove this line, it was added just for testing
     }
-//    ));
-//        timeLine.play();
-//        timeLine.setOnFinished(e ->
 
     public void runTimer() {
         AtomicInteger timeToStart = new AtomicInteger(161);

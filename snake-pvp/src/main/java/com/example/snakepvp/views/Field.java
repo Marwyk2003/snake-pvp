@@ -8,11 +8,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Field extends Button {
-    CellContent cellContent;
     final int skin;
+    private final Game game;
+    private final int gameId;
+    CellContent cellContent;
 
-    Field(int skin) {
+    Field(int skin, int gameId, Game game) {
         this.skin = skin;
+        this.gameId = gameId;
+        this.game = game;
         this.setGraphic(new ImageView(new Image("/emptyS.png")));
         this.setStyle("-fx-background-color: transparent");
     }
@@ -21,6 +25,7 @@ public class Field extends Button {
         cell.cellContentProperty().addListener((o, oldVal, newVal) -> {
             cellContent = newVal;
             refreshImage();
+            game.edibleAction(newVal, gameId);
         });
         cellContent = cell.cellContentProperty().get();
         refreshImage();
@@ -37,7 +42,8 @@ public class Field extends Button {
         if (cellContent == CellContent.EDIBLE_GROW) return "/cheeseS.png";
         if (cellContent == CellContent.EDIBLE_SPEED) return "/appleS.png";
         if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnutS.png";
-        if (cellContent == CellContent.EDIBLE_REVERSE) return "/mode2S.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/skin0S.png";
+        if (cellContent == CellContent.EDIBLE_DIRECTION) return "/skin1S.png";
         return "/fieldS.png";
     }
 }

@@ -144,6 +144,7 @@ public class SingleGameViewModel implements ViewModel {
             else if (edible == Edible.SPEED_UP) cellContent.set(CellContent.EDIBLE_SPEED);
             else if (edible == Edible.GROW_TWICE) cellContent.set(CellContent.EDIBLE_DOUBLE);
             else if (edible == Edible.REVERSE) cellContent.set(CellContent.EDIBLE_REVERSE);
+            else if (edible == Edible.REVERSE_DIR) cellContent.set(CellContent.EDIBLE_DIRECTION);
             else if (!isGoThrough) cellContent.set(CellContent.WALL);
             else cellContent.set(CellContent.EMPTY);
         }
