@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Yomogi');
+@import url('https://fonts.googleapis.com/css2?family=Gaegu');
 
 AnchorPane {
-    -fx-font-family: Yomogi;
+    -fx-font-family: Gaegu;
     -fx-background-color: whitesmoke;
     -fx-font-size: 40px;
 }
 
 .counter {
-    -fx-font-size: 60px;
+    -fx-font-size: 80px;
     -fx-background-color: transparent;
 }
 

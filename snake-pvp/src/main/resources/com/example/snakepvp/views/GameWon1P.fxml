@@ -4,21 +4,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import java.net.*?>
-
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Circle?>
+
 <AnchorPane id="AnchorPane" prefHeight="700" prefWidth="1000"
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.GameWon1P">
     <children>
-        <ImageView fx:id="spotlight" AnchorPane.rightAnchor="30.0" AnchorPane.BottomAnchor="50.0" />
-        <ImageView fx:id="coin2" AnchorPane.rightAnchor="300.0" AnchorPane.BottomAnchor="150.0" />
-        <ImageView fx:id="coin1" AnchorPane.rightAnchor="50.0" AnchorPane.BottomAnchor="80.0" />
-        <ImageView fx:id="coin4" AnchorPane.rightAnchor="400.0" AnchorPane.BottomAnchor="70.0" />
-        <ImageView fx:id="coin3" AnchorPane.rightAnchor="150.0" AnchorPane.BottomAnchor="300.0" />
-        <ImageView fx:id="coin5" AnchorPane.rightAnchor="470.0" AnchorPane.BottomAnchor="150.0" />
-        <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.TopAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
-        <Label AnchorPane.leftAnchor="180.0" AnchorPane.TopAnchor="100.0" text="GOOD JOB" styleClass="label" />
-        <Label AnchorPane.leftAnchor="180.0" AnchorPane.TopAnchor="130.0" text="You collected 62 points" styleClass="label" />
+        <Circle fx:id="spotlight" AnchorPane.leftAnchor="50.0" AnchorPane.bottomAnchor="80.0" />
+        <ImageView fx:id="coin1" AnchorPane.rightAnchor="80.0" AnchorPane.bottomAnchor="140.0" />
+        <ImageView fx:id="coin2" AnchorPane.rightAnchor="200.0" AnchorPane.bottomAnchor="140.0" />
+        <ImageView fx:id="coin3" AnchorPane.rightAnchor="320.0" AnchorPane.bottomAnchor="140.0" />
+        <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
+        <Label fx:id="gameWonLabel1" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="100.0" text="GAME WON" style="-fx-font-size: 80px" />
+        <Label fx:id="gameWonLabel2" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="170.0" text="score: 62" style="-fx-font-size: 80px" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

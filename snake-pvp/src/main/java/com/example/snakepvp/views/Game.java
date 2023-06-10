@@ -17,6 +17,7 @@ import javafx.scene.paint.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.*;
+import javafx.scene.effect.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.IOException;
@@ -34,9 +35,11 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     private Label countDownLabel, pointCountLabel1, lengthCountLabel1, pointCountLabel2, lengthCountLabel2, powerUpLabel1, powerUpLabel2;
     private Label[] labels;
     @FXML
-    private Polygon arrow1, arrow2;
+    private Polygon arrow1, arrow2, rectangle;
     @FXML
     ImageView pointCounter1, lengthCounter1, pointCounter2, lengthCounter2, powerUp1, powerUp2;
+    @FXML
+    private ProgressIndicator progressIndicator;
     private Map<ImageView, String[]> images = null;
     private Map<Node, Double[]> anchors = null;
     private Board[] boards;
@@ -88,6 +91,9 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         arrow2.getPoints().setAll(0.0, 0.0, 120.0, 100.0, 0.0, 200.0);
         arrow1.toBack();
         arrow2.toBack();
+        rectangle.toBack();
+        progressIndicator.setVisible(false);
+        progressIndicator.setStyle(" -fx-progress-color: pink;");
 
         viewModel.initGame();
         boards = new Board[2];
@@ -127,12 +133,12 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             put(pointCountLabel2, new Double[]{0.0, 140.0, 80.0, 0.0});
             put(lengthCountLabel1, new Double[]{250.0, 0.0, 80.0, 0.0});
             put(lengthCountLabel2, new Double[]{0.0, 250.0, 80.0, 0.0});
+//            put(rectangle, new Double[]{50.0, 0.0, 60.0, 0.0});
             put(boards[0], new Double[]{20.0, 0.0, 0.0, 50.0});
             put(boards[1], new Double[]{0.0, 20.0, 0.0, 50.0});
         }};
         runTimer();
     }
-
     private void startGame() throws IOException {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> refreshAnchors(newValue.doubleValue() / 1150.0);
         stage.widthProperty().addListener(stageSizeListener);
@@ -166,18 +172,21 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         stage.setScene(scene);
         stage.show();
         viewModel.startGame();
-        runPowerUp(powerUp2, powerUpLabel2, "speed up!");
+        runPowerUp(powerUp2, powerUpLabel2, "speed up!");   // TODO remove this line, it was added just for testing
     }
-
     public void runTimer() {
         AtomicInteger timeToStart = new AtomicInteger(161);
         AtomicInteger timeValue = new AtomicInteger(4);
-        AtomicReference<Double> fontSize = new AtomicReference<>(60.0);
+        AtomicReference<Double> fontSize = new AtomicReference<>(80.0);
         Timeline timeLine = new Timeline();
         timeLine.setCycleCount(timeToStart.get());
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.016), e -> {
             timeToStart.decrementAndGet();
-            if (timeToStart.get() == 40) { countDownLabel.setText("Play!"); AnchorPane.setLeftAnchor(countDownLabel, 390.0); }
+            if (timeToStart.get() == 40) {
+                countDownLabel.setText("Play!");
+                progressIndicator.setVisible(true);
+                AnchorPane.setLeftAnchor(countDownLabel, 390.0);
+            }
             else if (timeToStart.get() % 40 == 0) countDownLabel.setText(String.valueOf(timeValue.decrementAndGet()));
             AnchorPane.setTopAnchor(countDownLabel, AnchorPane.getTopAnchor(countDownLabel) - 0.15);
             fontSize.set(fontSize.get() + 0.25);
@@ -193,10 +202,9 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         });
     }
     public void runPowerUp(ImageView powerUp, Label message, String messageText) {
-
         AtomicInteger timeToStart = new AtomicInteger(60);
         AtomicInteger timeValue = new AtomicInteger(4);
-        AtomicReference<Double> fontSize = new AtomicReference<>(20.0);
+        AtomicReference<Double> fontSize = new AtomicReference<>(30.0);
         Timeline timeLine = new Timeline();
         timeLine.setCycleCount(timeToStart.get());
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(0.05), e -> {
@@ -210,9 +218,13 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 message.setText(messageText);
                 message.setVisible(true);
                 powerUp.setVisible(true);
-            } else {
-                fontSize.set(fontSize.get() + 0.06);
-                message.setStyle("-fx-font-size: " + fontSize.get() + "px");
+                message.setStyle("-fx-font-size: " + fontSize.get() + "px;" + "-fx-font-family: Gaegu;");
+                DropShadow glow = new DropShadow();
+                glow.setColor(Color.rgb(130, 219, 225));
+                glow.setHeight(60.0);
+                message.setEffect(glow);
+            } else if (timeToStart.get() <= 36) {
+                message.setEffect(null);
             }
         }));
 
@@ -222,7 +234,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             powerUp.setVisible(false);
         });
     }
-
     void refreshAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
@@ -243,6 +254,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
+//        rectangle.getPoints().setAll(0.0, 0.0, 0.0, 90.0 * ratio, 1050.0 * ratio, 90.0 * ratio, 1050.0 * ratio, 0.0);
     }
 
     public void blink(ImageView imageView) {
@@ -258,11 +270,10 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             imageView.setImage(new Image(images.get(imageView)[0]));
         });
     }
-
     private void setCounters() {
         labels = new Label[]{ pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2, powerUpLabel1, powerUpLabel2 };
         for (int i = 0; i < labels.length; i++) {
-            labels[i].setStyle("-fx-font-size: 32px");
+            labels[i].setStyle("-fx-font-size: 32px;" + "-fx-font-family: Gaegu;");
             if (i < 2) labels[i].setText("0");
             else labels[i].setText("3");
         }
@@ -274,6 +285,10 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         powerUpLabel1.setVisible(false);
         powerUpLabel2.setVisible(false);
 
+//        rectangle.getPoints().setAll(0.0, 0.0, 0.0, 90.0, 1050.0, 90.0, 1050.0, 0.0);
+//        rectangle.setFill(Color.WHITE);
+
+//        pane.getChildren().addAll(rectangle);
         pane.getChildren().addAll(labels);
         pane.getChildren().addAll(images.keySet());
     }
