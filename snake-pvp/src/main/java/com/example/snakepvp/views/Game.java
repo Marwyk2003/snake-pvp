@@ -1,6 +1,7 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.core.Direction;
+import com.example.snakepvp.core.Edible;
 import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.SingleGameViewModel;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -55,15 +57,13 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     // TODO add more Edibles and communicate this somehow, maybe here...
     public void edibleAction(EdibleEvent event) {
-        switch (event.getEdible()) {
-            case SIMPLE_GROWING -> {
-                if (event.getGameId() == 1) {
-                    blink(lengthCounter2);
-                    lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
-                } else {
-                    blink(lengthCounter1);
-                    lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
-                }
+        if (Objects.requireNonNull(event.getOldEdible()) == Edible.SIMPLE_GROWING) {
+            if (event.getGameId() == 1) {
+                blink(lengthCounter2);
+                lengthCountLabel2.setText(String.valueOf(Integer.valueOf(lengthCountLabel2.getText())) + 1);
+            } else {
+                blink(lengthCounter1);
+                lengthCountLabel1.setText(String.valueOf(Integer.valueOf(lengthCountLabel1.getText())) + 1);
             }
 //            case SOME_POINTS_EDIBLE -> {
 //                if (event.getGameId() == 1) {

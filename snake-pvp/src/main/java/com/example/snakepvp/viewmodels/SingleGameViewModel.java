@@ -78,11 +78,11 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     public void growSnakeEvent(EdibleEvent event) {
-        gameService.grow(event.getEdible());
+        gameService.grow(event.getOldEdible());
     }
 
     public void generateEdibleEvent(EdibleEvent event) {
-        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setEdible(event.getEdible());
+        SingleGameViewModel.this.cells[event.getNewCol()][event.getNewRow()].setEdible(event.getNewEdible());
     }
 
     public VMCell getCell(int row, int col) {

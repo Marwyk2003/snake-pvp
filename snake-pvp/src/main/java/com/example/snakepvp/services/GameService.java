@@ -3,6 +3,8 @@ package com.example.snakepvp.services;
 import com.example.snakepvp.core.*;
 
 public class GameService {
+    private final int BOARD_WIDTH = 8;
+    private final int BOARD_HEIGHT = 8;
     public final SimpleViewerService viewerService;
     private final int gameId;
 
@@ -21,7 +23,7 @@ public class GameService {
     }
 
     public void initGame() {
-        this.boardState = new SimpleBoardState(10 + 2, 10 + 2); // TODO temporary fix
+        this.boardState = new SimpleBoardState(1 + BOARD_WIDTH + 1, 1 + BOARD_HEIGHT + 1); // TODO temporary fix
         direction = Direction.DOWN;
     }
 
@@ -47,8 +49,8 @@ public class GameService {
         Edible eaten = moveStatus.getEdible();
         if (eaten != null) {
             System.out.println("just ate");
-            Cell cell = boardState.generateEdible();//TODO randomize edibles
-            edibleEvents.emit(new EdibleEvent(eaten, cell.getRow(), cell.getCol(), gameId));
+            Cell cell = boardState.generateEdible();
+            edibleEvents.emit(new EdibleEvent(cell.getEdible(), eaten, cell.getRow(), cell.getCol(), gameId));
         }
         if (moveStatus.getTail() != null)
             cellEvents.emit(new CellEvent(moveStatus.getTail().getCol(), moveStatus.getTail().getRow(), moveStatus.getTail().isSnake()));

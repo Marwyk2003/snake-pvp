@@ -20,7 +20,5 @@ public interface BoardState {
 
     int getTimeout();
 
-    int getTimeoutCooldown();
-
     Cell getCell(int row, int col);
 }

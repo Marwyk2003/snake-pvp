@@ -1,31 +1,31 @@
 package com.example.snakepvp.core;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SimpleBoardState implements BoardState {
     static private final int TIMEOUT_NORMAL = 500;
     static private final int TIMEOUT_FAST = 250;
-    static private final int TIMEOUT_COOLDOWN = 20;
+    static private final int STANDARD_COOL_DOWN = 20;
+
+    private final Map<Edible, Integer> coolDowns = new HashMap<>();
 
     private final Board board;
     private final Snake snake;
     private final Score score;
     boolean isEnded;
     private int growCounter;
-
     private int timeout = TIMEOUT_NORMAL;
-    private int timeoutCooldown;
+    private boolean isReversed = false;
 
     public SimpleBoardState(int width, int height) {
         this.isEnded = false;
         this.board = new Board(width, height);
         //TODO change snake generation
         this.score = new Score();
+        coolDowns.put(Edible.SPEED_UP, 0);
+        coolDowns.put(Edible.REVERSE_DIR, 0);
         this.growCounter = 0;
         this.snake = new Snake(Stream.of(1, 2, 3)
                 .map(x -> board.getCell(board.getHeight() / 2, x))
@@ -51,8 +51,10 @@ public class SimpleBoardState implements BoardState {
 
     private Edible randomEdible() {
         double[] weights = {Edible.SIMPLE_GROWING.getWeight(), Edible.GROW_TWICE.getWeight(),
-                Edible.SPEED_UP.getWeight(), Edible.REVERSE.getWeight()};
-        Edible[] edibles = {Edible.SIMPLE_GROWING, Edible.GROW_TWICE, Edible.SPEED_UP, Edible.REVERSE};
+                Edible.SPEED_UP.getWeight(), Edible.REVERSE.getWeight(),
+                Edible.POKE_HOLE.getWeight(), Edible.REVERSE_DIR.getWeight()};
+        Edible[] edibles = {Edible.SIMPLE_GROWING, Edible.GROW_TWICE,
+                Edible.SPEED_UP, Edible.REVERSE, Edible.POKE_HOLE, Edible.REVERSE_DIR};
         Random generator = new Random();
         double rand = generator.nextDouble();
         double sum = 0.0;
@@ -67,8 +69,7 @@ public class SimpleBoardState implements BoardState {
         return edibles[edibles.length - 1];
     }
 
-    @Override
-    public Cell generateEdible() {
+    private Cell getRandomUnuesedCell() {
         List<Cell> emptyCells = new ArrayList<>();
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
@@ -80,17 +81,25 @@ public class SimpleBoardState implements BoardState {
 
         Random random = new Random();
         int index = random.nextInt(emptyCells.size());
-        Edible edible = randomEdible();
-        emptyCells.get(index).setEdible(edible);
-        System.out.println("new " + edible + " " + emptyCells.get(index).getRow() + " " + emptyCells.get(index).getCol());
         return emptyCells.get(index);
     }
 
     @Override
-    public MoveStatus makeMove(Direction dir) {
+    public Cell generateEdible() {
+        Cell randCell = getRandomUnuesedCell();
+        Edible edible = randomEdible();
+        randCell.setEdible(edible);
+        System.out.println("new " + edible + " " + randCell.getRow() + " " + randCell.getCol());
+        return randCell;
+    }
 
-        if (timeoutCooldown > 0) timeoutCooldown--;
-        else if (timeoutCooldown == 0) timeout = TIMEOUT_NORMAL;
+    @Override
+    public MoveStatus makeMove(Direction dir) {
+        for (Map.Entry<Edible, Integer> entry : coolDowns.entrySet()) {
+            if (entry.getValue() == 0) endEffect(entry.getKey());
+            coolDowns.put(entry.getKey(), entry.getValue() - 1);
+        }
+        if (isReversed) dir = dir.revers();//revers direction of snake when edible REVERSED_DIR is active
 
         int nextRow = snake.getRowDirection();
         int nextCol = snake.getColDirection();
@@ -148,6 +157,13 @@ public class SimpleBoardState implements BoardState {
                 new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
     }
 
+    private void endEffect(Edible edible) {
+        switch (edible) {
+            case SPEED_UP -> timeout = TIMEOUT_NORMAL;
+            case REVERSE_DIR -> isReversed = false;
+        }
+    }
+
     @Override
     public boolean invokeEdibleEffect(Edible edible) {
         //TODO implement more edible effects
@@ -155,11 +171,20 @@ public class SimpleBoardState implements BoardState {
             case SIMPLE_GROWING -> growCounter++;
             case SPEED_UP -> {
                 timeout = TIMEOUT_FAST;
-                timeoutCooldown = TIMEOUT_COOLDOWN;
+                coolDowns.put(Edible.SPEED_UP, STANDARD_COOL_DOWN);
                 System.out.println("speed up!");
+            }
+            case REVERSE_DIR -> {
+                isReversed = true;
+                coolDowns.put(Edible.REVERSE_DIR, STANDARD_COOL_DOWN);
+                System.out.println("revers direction");
             }
             case GROW_TWICE -> growCounter += 2;
             case REVERSE -> snake.reverse();
+            case POKE_HOLE -> {
+                Cell cell = getRandomUnuesedCell();
+                cell.setGoThrough(false);
+            }
             default -> {
                 return false;
             }
@@ -182,11 +207,6 @@ public class SimpleBoardState implements BoardState {
     public int getTimeout() {
         return timeout;
     }
-
-    public int getTimeoutCooldown() {
-        return timeoutCooldown;
-    }
-
 
     public Cell getCell(int row, int col) {
         return board.getCell(row, col);
