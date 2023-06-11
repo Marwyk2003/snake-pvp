@@ -19,17 +19,17 @@
 
         <!--        game          -->
         <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="powerUp1" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp1" AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="80.0" />
         <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="90.0" />
-        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="90.0" />
-        <Label fx:id="powerUpLabel1" text=" " AnchorPane.leftAnchor="420.0" AnchorPane.topAnchor="90.0" />
+        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="325.0" AnchorPane.topAnchor="90.0" />
+        <Label fx:id="powerUpLabel1" text=" " AnchorPane.leftAnchor="455.0" AnchorPane.topAnchor="90.0" />
         <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="powerUp2" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp2" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="80.0" />
         <Label fx:id="pointCountLabel2" text=" "  AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="90.0"/>
-        <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="90.0"/>
-        <Label fx:id="powerUpLabel2" text=" " AnchorPane.rightAnchor="420.0" AnchorPane.topAnchor="90.0" />
+        <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="90.0"/>
+        <Label fx:id="powerUpLabel2" text=" " AnchorPane.rightAnchor="455.0" AnchorPane.topAnchor="90.0" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />
