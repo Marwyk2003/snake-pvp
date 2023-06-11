@@ -39,11 +39,11 @@ public class Field extends Button {
         if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
         if (cellContent == CellContent.SNAKE_HEAD) return "/skin" + skin + "SH.png";
         if (cellContent == CellContent.WALL) return "/emptyS.png";
-        if (cellContent == CellContent.EDIBLE_GROW) return "/cheeseS.png";
-        if (cellContent == CellContent.EDIBLE_SPEED) return "/appleS.png";
-        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnutS.png";
-        if (cellContent == CellContent.EDIBLE_REVERSE) return "/skin0S.png";
-        if (cellContent == CellContent.EDIBLE_DIRECTION) return "/skin1S.png";
+        if (cellContent == CellContent.EDIBLE_GROW) return "/doughnut1S.png";
+        if (cellContent == CellContent.EDIBLE_SPEED) return "/chiliS.png";
+        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2S.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/cheeseS.png";
+        if (cellContent == CellContent.EDIBLE_DIRECTION) return "/grapeS.png";
         return "/fieldS.png";
     }
 }
