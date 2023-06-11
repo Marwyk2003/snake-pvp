@@ -93,15 +93,14 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
             singleGameVM.lengthProperty().addListener((o, oldVal, newVal) -> {
                 int length = (int) newVal;
-                System.out.println(length);
                 Label label = singleGameVM.getId() == 0 ? lengthCountLabel1 : lengthCountLabel2;
                 Platform.runLater(() -> label.setText(String.valueOf(length)));
             });
             singleGameVM.scoreProperty().addListener((o, oldVal, newVal) -> {
-                System.out.println("Score");
                 int points = (int) newVal;
                 Label label = singleGameVM.getId() == 0 ? pointCountLabel1 : pointCountLabel2;
                 Platform.runLater(() -> label.setText(String.valueOf(points)));
+                blink(singleGameVM.getId() == 0 ? pointCounter1 : pointCounter2);
             });
             boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin(), i, this);
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {

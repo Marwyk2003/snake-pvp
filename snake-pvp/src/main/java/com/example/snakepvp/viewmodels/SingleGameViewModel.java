@@ -60,7 +60,7 @@ public class SingleGameViewModel implements ViewModel {
         Cell head = boardState.getSnake().getHead();
         for (Cell cell : boardState.getSnake().getCellList()) {
             System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
-            this.cells[cell.getRow()][cell.getCol()].setIsSnake(true, cell == head);
+            this.cells[cell.getRow()][cell.getCol()].setSnake(true, cell == head);
         }
         for (int row = 0; row < height; ++row) {
             for (int col = 0; col < width; ++col) {
@@ -96,7 +96,7 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     private void processCellEvent(CellEvent event) {
-        cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
+        cells[event.getCol()][event.getRow()].setSnake(event.isSnake(), event.isSnakeHead());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
@@ -105,8 +105,9 @@ public class SingleGameViewModel implements ViewModel {
             List<Cell> holes = gameService.getBoardState().getHoles();
             for (int i = holes.size() - 1; i >= 0; --i) {
                 Cell cell = holes.get(i);
-                if (!cells[cell.getRow()][cell.getCol()].isGoThrough) break;
+                if (cells[cell.getRow()][cell.getCol()].isHole) break;
                 cells[cell.getRow()][cell.getCol()].setIsGoThrough(false);
+                cells[cell.getRow()][cell.getCol()].setHole(true);
             }
         }
         length.set(gameService.getSnakeLength());
@@ -114,7 +115,6 @@ public class SingleGameViewModel implements ViewModel {
 
     public void generateEdibleEvent(EdibleEvent event) {
         SingleGameViewModel.this.cells[event.getNewCol()][event.getNewRow()].setEdible(event.getNewEdible());
-        System.out.println("Score vm");
         score.set(gameService.getPoints());
     }
 
@@ -140,6 +140,7 @@ public class SingleGameViewModel implements ViewModel {
         private final SimpleObjectProperty<CellContent> cellContent;
 
         private boolean isGoThrough;
+        private boolean isHole;
         private boolean isSnake;
         private boolean isSnakeHead;
         private Edible edible;
@@ -158,7 +159,7 @@ public class SingleGameViewModel implements ViewModel {
             updateContent();
         }
 
-        public void setIsSnake(boolean isSnake, boolean isSnakeHead) {
+        public void setSnake(boolean isSnake, boolean isSnakeHead) {
             if (isSnake) setEdible(null);
             this.isSnake = isSnake;
             this.isSnakeHead = isSnakeHead;
@@ -170,8 +171,15 @@ public class SingleGameViewModel implements ViewModel {
             updateContent();
         }
 
-        private void updateContent() {
-            if (isSnakeHead) cellContent.set(CellContent.SNAKE_HEAD);
+        public void setHole(boolean hole) {
+            isHole = hole;
+            updateContent();
+        }
+
+        private void updateContent()
+        {
+            if (isHole) cellContent.set(CellContent.HOLE);
+            else if (isSnakeHead) cellContent.set(CellContent.SNAKE_HEAD);
             else if (isSnake) cellContent.set(CellContent.SNAKE);
             else if (edible == Edible.SIMPLE_GROWING) cellContent.set(CellContent.EDIBLE_GROW);
             else if (edible == Edible.SPEED_UP) cellContent.set(CellContent.EDIBLE_SPEED);

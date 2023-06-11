@@ -39,6 +39,7 @@ public class Field extends Button {
         if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
         if (cellContent == CellContent.SNAKE_HEAD) return "/skin" + skin + "SH.png";
         if (cellContent == CellContent.WALL) return "/emptyS.png";
+        if (cellContent == CellContent.HOLE) return "/holeS.png";
         if (cellContent == CellContent.EDIBLE_GROW) return "/doughnut1S.png";
         if (cellContent == CellContent.EDIBLE_SPEED) return "/chiliS.png";
         if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2S.png";
