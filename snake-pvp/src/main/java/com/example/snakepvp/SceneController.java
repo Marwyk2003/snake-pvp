@@ -3,9 +3,7 @@ package com.example.snakepvp;
 import com.example.snakepvp.viewmodels.GameHostViewModel;
 import com.example.snakepvp.viewmodels.GameOverViewModel;
 import com.example.snakepvp.viewmodels.HelloViewModel;
-import com.example.snakepvp.views.Game;
-import com.example.snakepvp.views.GameWon1P;
-import com.example.snakepvp.views.Hello;
+import com.example.snakepvp.views.*;
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
 import javafx.application.Platform;
@@ -51,8 +49,9 @@ public class SceneController {
         loadScene(viewTuple);
     }
 
-    public void loadGameOverScene() {
-        ViewTuple<GameWon1P, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(GameWon1P.class).viewModel(gameOverVM).load();
+    public void loadGameOverScene(int loserId) {
+        Class<? extends GameEnd> gameEnd = (loserId == 0 ? GameOverWon2P.class : GameWonOver2P.class);
+        ViewTuple<? extends GameEnd, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(gameEnd).viewModel(gameOverVM).load();
         loadScene(viewTuple);
     }
 

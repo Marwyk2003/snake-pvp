@@ -8,15 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameHostViewModel implements ViewModel {
-    private final GameHostService gameHostService;
     private final List<SingleGameViewModel> singleGameVMs;
     private final SimpleViewerService viewerService;
     private SceneController sceneController;
-    private boolean isStarted;
-    private int activeGames;
 
     public GameHostViewModel(GameHostService gameHostService) {
-        this.gameHostService = gameHostService;
         this.singleGameVMs = new ArrayList<>();
         this.viewerService = gameHostService.viewerService;
 
@@ -29,10 +25,10 @@ public class GameHostViewModel implements ViewModel {
     }
 
     void processGameStatusEvents(GameStatusEvent event) {
-        if (event instanceof GameEndedEvent e && isStarted) {
-            singleGameVMs.get(e.getGameId()).endGame();
-            activeGames--;
-            if (activeGames == 0) sceneController.loadGameOverScene();
+        if (event instanceof GameEndedEvent e) {
+            for (SingleGameViewModel sg : singleGameVMs)
+                sg.endGame();
+            sceneController.loadGameOverScene(e.getGameId());
         }
     }
 
@@ -57,12 +53,10 @@ public class GameHostViewModel implements ViewModel {
         for (SingleGameViewModel game : singleGameVMs) {
             Thread t = new Thread(game::run);
             t.start();
-            isStarted = true;
         }
     }
 
     public void initGame() {
-        activeGames = singleGameVMs.size();
         for (SingleGameViewModel sg : singleGameVMs) {
             sg.initialize();
         }

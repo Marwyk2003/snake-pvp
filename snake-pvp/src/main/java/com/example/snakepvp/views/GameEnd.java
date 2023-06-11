@@ -1,29 +1,36 @@
 package com.example.snakepvp.views;
 
 import com.example.snakepvp.viewmodels.GameOverViewModel;
-
-import java.net.URL;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-import javafx.fxml.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
+import java.net.URL;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+public abstract class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
     protected Stage stage;
+    @FXML
+    protected Polygon spotlight;
     @InjectViewModel
     protected GameOverViewModel viewModel;
     @FXML
@@ -35,15 +42,19 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
     protected Map<Node, Double[]> anchors;
 
     @FXML
-    private void mouseAction (MouseEvent event) {
+    private void mouseAction(MouseEvent event) {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
     }
+
     @FXML
-    private void returnButtonAction (ActionEvent event) {
+    private void returnButtonAction(ActionEvent event) {
         viewModel.getSceneController().loadHelloScene();
     }
+
     @Override
-    public void initialize(URL location, ResourceBundle resources) { }
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
     void addChangeListener() {
         AtomicInteger fontSize = new AtomicInteger(55);
         ChangeListener<Number> stageHeightListener = (observable, oldValue, newValue) -> {
@@ -73,42 +84,57 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
         stage.widthProperty().addListener(stageWidthListener);
         stage.heightProperty().addListener(stageHeightListener);
     }
+
     void refreshVerticalAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.max(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.max(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getTopAnchor(node) != null) AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
-                if (AnchorPane.getBottomAnchor(node) != null) AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
+                if (AnchorPane.getTopAnchor(node) != null)
+                    AnchorPane.setTopAnchor(node, Math.min(AnchorPane.getTopAnchor(node), original_anchors[2] * ratio));
+                if (AnchorPane.getBottomAnchor(node) != null)
+                    AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
     }
+
     void refreshHorizontalAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.max(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.max(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
             }
         } else {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
                 Node node = entry.getKey();
                 Double[] original_anchors = entry.getValue();
-                if (AnchorPane.getLeftAnchor(node) != null) AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
-                if (AnchorPane.getRightAnchor(node) != null) AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
+                if (AnchorPane.getLeftAnchor(node) != null)
+                    AnchorPane.setLeftAnchor(node, Math.min(AnchorPane.getLeftAnchor(node), original_anchors[0] * ratio));
+                if (AnchorPane.getRightAnchor(node) != null)
+                    AnchorPane.setRightAnchor(node, Math.min(AnchorPane.getRightAnchor(node), original_anchors[1] * ratio));
             }
         }
     }
-    void refreshImages(double ratio) { }
-    void refreshShape(double ratio) { }
+
+    void refreshImages(double ratio) {
+    }
+
+    void refreshShape(double ratio) {
+    }
+
     void runTrashAnimation(String imageSize) {
         trash.setImage(new Image("/trash" + imageSize + ".png"));
         AtomicInteger timeToStart1 = new AtomicInteger(250);
@@ -123,6 +149,7 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
         timeline.play();
         timeline.setOnFinished(e -> trash.setRotate(0));
     }
+
     void runCoinAnimation(String imageSize) {
         AtomicInteger timeToStart = new AtomicInteger(20);
         Timeline timeline = new Timeline();
@@ -139,6 +166,7 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
         timeline.play();
         timeline.setOnFinished(e -> setCoins("/coin1" + imageSize + ".png", 0));
     }
+
     void setCoins(String image, int time) {
         coin1.setImage(new Image(image));
         if (time <= 15) {
@@ -148,5 +176,7 @@ public class GameEnd implements Initializable, FxmlView<GameOverViewModel> {
             coin2.setImage(new Image(image));
         }
     }
-    void setLabels(int fontSize) { }
+
+    void setLabels(int fontSize) {
+    }
 }

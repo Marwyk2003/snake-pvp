@@ -1,14 +1,11 @@
 package com.example.snakepvp.views;
 
-import com.example.snakepvp.viewmodels.GameOverViewModel;
-import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -17,9 +14,6 @@ import java.util.ResourceBundle;
 public class GameWonOver2P extends GameEnd {
     @FXML
     protected Polygon spotlight;
-    private Stage stage;
-    @InjectViewModel
-    private GameOverViewModel viewModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

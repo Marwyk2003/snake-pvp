@@ -42,7 +42,7 @@ public class Field extends Button {
         if (cellContent == CellContent.EDIBLE_GROW) return "/doughnut1S.png";
         if (cellContent == CellContent.EDIBLE_SPEED) return "/chiliS.png";
         if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2S.png";
-        if (cellContent == CellContent.EDIBLE_REVERSE) return "/mushroom.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/watermelonS.png";
         if (cellContent == CellContent.EDIBLE_DIRECTION) return "/grapeS.png";
         return "/fieldS.png";
     }
