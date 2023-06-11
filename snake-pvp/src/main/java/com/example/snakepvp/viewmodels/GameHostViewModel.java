@@ -26,9 +26,12 @@ public class GameHostViewModel implements ViewModel {
 
     void processGameStatusEvents(GameStatusEvent event) {
         if (event instanceof GameEndedEvent e) {
-            for (SingleGameViewModel sg : singleGameVMs)
+            ArrayList<Integer> score = new ArrayList<>();
+            for (SingleGameViewModel sg : singleGameVMs) {
                 sg.endGame();
-            sceneController.loadGameOverScene(e.getGameId());
+                score.add(sg.scoreProperty().get());
+            }
+            sceneController.loadGameOverScene(e.getGameId(), score);
         }
     }
 

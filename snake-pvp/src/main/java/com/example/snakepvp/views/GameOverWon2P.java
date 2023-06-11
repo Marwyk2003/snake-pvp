@@ -1,20 +1,15 @@
 package com.example.snakepvp.views;
 
-import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class GameOverWon2P extends GameEnd {
-    @FXML
-    protected Polygon spotlight;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stage = viewModel.getSceneController().getStage();

@@ -98,7 +98,8 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                 Platform.runLater(() -> label.setText(String.valueOf(length)));
             });
             singleGameVM.scoreProperty().addListener((o, oldVal, newVal) -> {
-                int points = newVal.getPoints();
+                System.out.println("Score");
+                int points = (int) newVal;
                 Label label = singleGameVM.getId() == 0 ? pointCountLabel1 : pointCountLabel2;
                 Platform.runLater(() -> label.setText(String.valueOf(points)));
             });

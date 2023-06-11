@@ -44,8 +44,8 @@ public class GameService {
         return boardState.getTimeout();
     }
 
-    public Score getScore() {
-        return boardState.getScore();
+    public int getPoints() {
+        return boardState.getScore().getPoints();
     }
 
     public int getSnakeLength() {

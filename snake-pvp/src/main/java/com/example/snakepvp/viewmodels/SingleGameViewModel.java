@@ -15,7 +15,7 @@ public class SingleGameViewModel implements ViewModel {
     private final GameService gameService;
     private final SimpleViewerService viewerService;
     private final SimpleIntegerProperty length;
-    private final SimpleObjectProperty<Score> score;
+    private final SimpleIntegerProperty score;
     private final int id;
     private VMCell[][] cells;
     private int height, width;
@@ -28,7 +28,7 @@ public class SingleGameViewModel implements ViewModel {
         this.viewerService = gameService.viewerService;
         this.viewerService.cellEvents().subscribe(this::processCellEvent);
         this.length = new SimpleIntegerProperty(this, "length", 0);
-        this.score = new SimpleObjectProperty<>(SingleGameViewModel.this, "score", null);
+        this.score = new SimpleIntegerProperty(this, "score", 0);
     }
 
     public int getId() {
@@ -39,14 +39,14 @@ public class SingleGameViewModel implements ViewModel {
         return length;
     }
 
-    public SimpleObjectProperty<Score> scoreProperty() {
+    public SimpleIntegerProperty scoreProperty() {
         return score;
     }
 
     public void initialize() {
         gameService.initGame();
         length.set(gameService.getSnakeLength());
-        score.set(gameService.getScore());
+        score.set(gameService.getPoints());
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
         this.width = boardState.getWidth();
@@ -96,16 +96,17 @@ public class SingleGameViewModel implements ViewModel {
 
     private void processCellEvent(CellEvent event) {
         SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
-        length.set(gameService.getSnakeLength());
-        score.set(gameService.getScore());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
         gameService.grow(event.getOldEdible());
+        length.set(gameService.getSnakeLength());
     }
 
     public void generateEdibleEvent(EdibleEvent event) {
         SingleGameViewModel.this.cells[event.getNewCol()][event.getNewRow()].setEdible(event.getNewEdible());
+        System.out.println("Score vm");
+        score.set(gameService.getPoints());
     }
 
     public VMCell getCell(int row, int col) {

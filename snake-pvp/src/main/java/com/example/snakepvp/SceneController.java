@@ -49,9 +49,10 @@ public class SceneController {
         loadScene(viewTuple);
     }
 
-    public void loadGameOverScene(int loserId) {
+    public void loadGameOverScene(int loserId, List<Integer> score) {
         Class<? extends GameEnd> gameEnd = (loserId == 0 ? GameOverWon2P.class : GameWonOver2P.class);
         ViewTuple<? extends GameEnd, GameOverViewModel> viewTuple = FluentViewLoader.fxmlView(gameEnd).viewModel(gameOverVM).load();
+        gameOverVM.changeScore(score);
         loadScene(viewTuple);
     }
 
