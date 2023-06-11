@@ -17,7 +17,7 @@ public class Field extends Button {
         this.skin = skin;
         this.gameId = gameId;
         this.game = game;
-        this.setGraphic(new ImageView(new Image("/emptyS.png")));
+        this.setGraphic(new ImageView(new Image("/emptyM.png")));
         this.setStyle("-fx-background-color: transparent");
     }
 
@@ -36,16 +36,16 @@ public class Field extends Button {
     }
 
     private String getImage() {
-        if (cellContent == CellContent.SNAKE) return "/skin" + skin + "S.png";
-        if (cellContent == CellContent.SNAKE_HEAD) return "/skin" + skin + "SH.png";
-        if (cellContent == CellContent.WALL) return "/emptyS.png";
-        if (cellContent == CellContent.HOLE) return "/holeS.png";
-        if (cellContent == CellContent.EDIBLE_GROW) return "/doughnut1S.png";
-        if (cellContent == CellContent.EDIBLE_SPEED) return "/chiliS.png";
-        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2S.png";
-        if (cellContent == CellContent.EDIBLE_REVERSE) return "/mushroomS.png";
-        if (cellContent == CellContent.EDIBLE_DIRECTION) return "/grapeS.png";
-        if (cellContent == CellContent.EDIBLE_HOLE) return "/cheeseS.png";
-        return "/fieldS.png";
+        if (cellContent == CellContent.SNAKE) return "/skin" + skin + "M.png";
+        if (cellContent == CellContent.SNAKE_HEAD) return "/skin" + skin + "MH.png";
+        if (cellContent == CellContent.WALL) return "/emptyM.png";
+        if (cellContent == CellContent.HOLE) return "/holeM.png";
+        if (cellContent == CellContent.EDIBLE_GROW) return "/doughnut1M.png";
+        if (cellContent == CellContent.EDIBLE_SPEED) return "/chiliM.png";
+        if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2M.png";
+        if (cellContent == CellContent.EDIBLE_REVERSE) return "/mushroomM.png";
+        if (cellContent == CellContent.EDIBLE_DIRECTION) return "/grapeM.png";
+        if (cellContent == CellContent.EDIBLE_HOLE) return "/cheeseM.png";
+        return "/fieldM.png";
     }
 }

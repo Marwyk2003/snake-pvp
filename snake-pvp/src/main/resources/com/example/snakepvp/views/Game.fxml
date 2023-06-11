@@ -11,24 +11,25 @@
             xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.snakepvp.views.Game">
     <children>
+        <!--        countdown          -->
         <Label fx:id="countDownLabel" styleClass="counter" text="3" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="310.0" />
         <ProgressIndicator fx:id="progressIndicator" styleClass="counter" AnchorPane.leftAnchor="470.0" AnchorPane.topAnchor="420.0" />
         <Polygon fx:id="arrow1" styleClass="polygon" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="280.0"/>
         <Polygon fx:id="arrow2" styleClass="polygon" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="280.0" />
-        <Polygon fx:id="rectangle" styleClass="polygon" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="60.0" />
 
+        <!--        game          -->
         <ImageView fx:id="pointCounter1" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="powerUp1" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="80.0" />
-        <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="90.0" />
-        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="90.0" />
-        <Label fx:id="powerUpLabel1" text=" " AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="90.0" />
+        <ImageView fx:id="lengthCounter1" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp1" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="80.0" />
+        <Label fx:id="pointCountLabel1" text=" " AnchorPane.leftAnchor="160.0" AnchorPane.topAnchor="90.0" />
+        <Label fx:id="lengthCountLabel1" text=" " AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="90.0" />
+        <Label fx:id="powerUpLabel1" text=" " AnchorPane.leftAnchor="420.0" AnchorPane.topAnchor="90.0" />
         <ImageView fx:id="pointCounter2" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="80.0" />
-        <ImageView fx:id="powerUp2" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="80.0" />
-        <Label fx:id="pointCountLabel2" text=" "  AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="90.0"/>
-        <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="90.0"/>
-        <Label fx:id="powerUpLabel2" text=" " AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="90.0" />
+        <ImageView fx:id="lengthCounter2" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="80.0" />
+        <ImageView fx:id="powerUp2" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="80.0" />
+        <Label fx:id="pointCountLabel2" text=" "  AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="90.0"/>
+        <Label fx:id="lengthCountLabel2" text=" "  AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="90.0"/>
+        <Label fx:id="powerUpLabel2" text=" " AnchorPane.rightAnchor="420.0" AnchorPane.topAnchor="90.0" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

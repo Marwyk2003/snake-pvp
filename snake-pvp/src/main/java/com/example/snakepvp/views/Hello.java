@@ -36,7 +36,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private int skin = 0;
     private List<Integer> skins;
     @FXML
-    private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3, approveButton;
+    private Button gameButton, quitButton, skinButton1, skinButton2, skinButton3, approveButton;
 
     private Map<Node, Double[]> anchors;
     private String skinSize = "L";
@@ -47,16 +47,11 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     }
 
     @FXML
-    private void modeButtonAction1(ActionEvent event) {
+    private void gameButtonAction(ActionEvent event) {
         // TODO (marwyk) add viewmodel(done) and start the game
         viewModel.addSkins(skins);
         viewModel.startGame(); // TODO don't know if it should work this way
     }
-
-//    @FXML
-//    private void modeButtonAction2 (ActionEvent event) {
-//        viewModel.startGame();
-//    }
 
     @FXML
     private void chooseSkinAction(ActionEvent event) {
@@ -94,8 +89,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         anchors = new HashMap<>() {{
             put(header1, new Double[]{100.0, 0.0, 8.0, 0.0});      // left, right, top, bottom
             put(header2, new Double[]{100.0, 0.0, 126.0, 0.0});
-            put(modeButton1, new Double[]{0.0, 120.0, 0.0, 340.0});
-            put(modeButton2, new Double[]{0.0, 120.0, 0.0, 220.0});
+            put(gameButton, new Double[]{0.0, 120.0, 0.0, 220.0});
             put(quitButton, new Double[]{0.0, 120.0, 0.0, 100.0});
             put(approveButton, new Double[]{440.0, 0.0, 0.0, 160.0});
             put(skinChoiceLabel, new Double[]{80.0, 0.0, 0.0, 200.0});
@@ -149,7 +143,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
                     AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
-        spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0 * ratio, 10.0, 700. * ratio);
+        spotlight.getPoints().setAll(125.0 * ratio, 0.0, 320.0 * ratio, 0.0, 320.0 * ratio, 700.0 * ratio, 10.0, 700. * ratio);
     }
     void refreshHorizontalAnchors(double ratio) {
         if (ratio > 1) {
@@ -175,12 +169,10 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     }
     void refreshButtons() {
         if (stage.getHeight() > 800.0 || stage.getWidth() > 1200.0) {
-            modeButton1.setGraphic(new ImageView(new Image("/mode1M.png")));
-            modeButton2.setGraphic(new ImageView(new Image("/mode2M.png")));
+            gameButton.setGraphic(new ImageView(new Image("/mode2M.png")));
             quitButton.setGraphic(new ImageView(new Image("/quitM.png")));
         } else {
-            modeButton1.setGraphic(new ImageView(new Image("/mode1S.png")));
-            modeButton2.setGraphic(new ImageView(new Image("/mode2S.png")));
+            gameButton.setGraphic(new ImageView(new Image("/mode2S.png")));
             quitButton.setGraphic(new ImageView(new Image("/quitS.png")));
         }
         approveButton.setGraphic(new ImageView("/approve.png"));
