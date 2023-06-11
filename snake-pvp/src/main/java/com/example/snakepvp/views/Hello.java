@@ -39,6 +39,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     private Button modeButton1, modeButton2, quitButton, skinButton1, skinButton2, skinButton3, approveButton;
 
     private Map<Node, Double[]> anchors;
+    private String skinSize = "L";
 
     @FXML
     private void mouseAction(MouseEvent event) {
@@ -81,9 +82,9 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private void nextSkinAction(ActionEvent event) {
         skin = (++skin) % names.length;
-        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + "LH.png")));
-        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
-        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + "L.png")));
+        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + "H.png")));
+        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
+        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
         skinNameLabel.setText(names[skin]);
     }
 
@@ -107,23 +108,20 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             put(skinNameLabel, new Double[]{150.0, 0.0, 0.0, 40.0});
         }};
 
-        skinButton1.setGraphic(new ImageView(new Image("/skin0LH.png")));
-        skinButton2.setGraphic(new ImageView(new Image("/skin0L.png")));
-        skinButton3.setGraphic(new ImageView(new Image("/skin0L.png")));
-        header1.setStyle("header1");
-
         AtomicInteger fontSizeLabel = new AtomicInteger(50);
         AtomicInteger fontSizeHeader1 = new AtomicInteger(110);
         AtomicInteger fontSizeHeader2 = new AtomicInteger(95);
         ChangeListener<Number> stageHeightListener = (observable, oldValue, newValue) -> {
             double ratio = newValue.doubleValue() / 700.0;
             refreshButtons();
+            refreshSkinImages();
             refreshLabels(ratio, fontSizeLabel, fontSizeHeader1, fontSizeHeader2);
             refreshVerticalAnchors(ratio);
         };
         ChangeListener<Number> stageWidthListener = (observable, oldValue, newValue) -> {
             double ratio = newValue.doubleValue() / 1000.0;
             refreshButtons();
+            refreshSkinImages();
             refreshLabels(ratio, fontSizeLabel, fontSizeHeader1, fontSizeHeader2);
             refreshHorizontalAnchors(ratio);
         };
@@ -131,7 +129,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         stage.heightProperty().addListener(stageHeightListener);
 
         refreshButtons();
-
+        refreshSkinImages();
         skins = new ArrayList<>();
     }
 
@@ -191,6 +189,14 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
             quitButton.setGraphic(new ImageView(new Image("/quitS.png")));
         }
         approveButton.setGraphic(new ImageView("/approve.png"));
+    }
+    void refreshSkinImages() {
+        if (stage.getHeight() > 900.0 || stage.getWidth() > 1300.0) skinSize = "XL";
+        else skinSize = "L";
+        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + "H.png")));
+        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
+        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
+
     }
 
     void refreshLabels(double ratio, AtomicInteger fontSizeLabel, AtomicInteger fontSizeHeader1, AtomicInteger fontSizeHeader2) {
