@@ -15,7 +15,7 @@
         <ImageView fx:id="trash" AnchorPane.rightAnchor="120.0" AnchorPane.BottomAnchor="60.0" />
         <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.TopAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
         <Label fx:id="gameLostLabel1" AnchorPane.leftAnchor="160.0" AnchorPane.TopAnchor="100.0" text="GAME OVER" />
-        <Label fx:id="gameLostLabel2" AnchorPane.leftAnchor="160.0" AnchorPane.TopAnchor="150.0" text="score: 34" />
+        <Label fx:id="gameLostLabel2" AnchorPane.leftAnchor="160.0" AnchorPane.TopAnchor="150.0" text="score: " />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

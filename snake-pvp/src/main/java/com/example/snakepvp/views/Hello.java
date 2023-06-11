@@ -82,12 +82,9 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private void nextSkinAction(ActionEvent event) {
         skin = (++skin) % names.length;
-        skinButton1.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + "H.png")));
-        skinButton2.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
-        skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
+        refreshSkinImages();
         skinNameLabel.setText(names[skin]);
     }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stage = viewModel.getSceneController().getStage();
@@ -132,7 +129,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         refreshSkinImages();
         skins = new ArrayList<>();
     }
-
     void refreshVerticalAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
@@ -155,7 +151,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         }
         spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0 * ratio, 10.0, 700. * ratio);
     }
-
     void refreshHorizontalAnchors(double ratio) {
         if (ratio > 1) {
             for (Map.Entry<Node, Double[]> entry : anchors.entrySet()) {
@@ -198,7 +193,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         skinButton3.setGraphic(new ImageView(new Image("/skin" + skin + skinSize + ".png")));
 
     }
-
     void refreshLabels(double ratio, AtomicInteger fontSizeLabel, AtomicInteger fontSizeHeader1, AtomicInteger fontSizeHeader2) {
         if (stage.getHeight() < 720 || stage.getWidth() < 1050) {
             fontSizeLabel.set(50);

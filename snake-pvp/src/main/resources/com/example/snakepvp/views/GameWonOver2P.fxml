@@ -19,12 +19,12 @@
         <ImageView fx:id="coin2" AnchorPane.LeftAnchor="140.0" AnchorPane.BottomAnchor="140.0" />
         <ImageView fx:id="coin3" AnchorPane.LeftAnchor="240.0" AnchorPane.BottomAnchor="140.0" />
         <Label fx:id="gameWonLabel1" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="100.0" text="GAME WON" style="-fx-font-size: 55px" />
-        <Label fx:id="gameWonLabel2" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: 62" style="-fx-font-size: 55px" />
+        <Label fx:id="gameWonLabel2" AnchorPane.LeftAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: " style="-fx-font-size: 55px" />
 
         <!--        looser          -->
         <ImageView fx:id="trash" AnchorPane.RightAnchor="60.0" AnchorPane.BottomAnchor="70.0" />
         <Label fx:id="gameLostLabel1" AnchorPane.RightAnchor="50.0" AnchorPane.TopAnchor="100.0" text="GAME OVER" style="-fx-font-size: 55px" />
-        <Label fx:id="gameLostLabel2" AnchorPane.RightAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: 34" style="-fx-font-size: 55px" />
+        <Label fx:id="gameLostLabel2" AnchorPane.RightAnchor="50.0" AnchorPane.TopAnchor="145.0" text="score: " style="-fx-font-size: 55px" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

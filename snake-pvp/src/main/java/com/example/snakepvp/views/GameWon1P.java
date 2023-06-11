@@ -44,9 +44,10 @@ public class GameWon1P extends GameEnd {
         coin2.setImage(new Image("/coin1" + imageSize + ".png"));
         coin3.setImage(new Image("/coin1" + imageSize + ".png"));
     }
-    void setLabels(int fontSize) {
+    void refreshLabels(int fontSize) {
         String format = "-fx-font-size: " + fontSize * 80 / 55 + "px";
         gameWonLabel1.setStyle(format);
         gameWonLabel2.setStyle(format);
+        gameWonLabel2.setText("score: " + viewModel.getPoints(0));
     }
 }

@@ -67,7 +67,7 @@ public abstract class GameEnd implements Initializable, FxmlView<GameOverViewMod
             refreshVerticalAnchors(ratio);
             refreshImages(ratio);
             refreshShape(ratio);
-            setLabels(fontSize.get());
+            refreshLabels(fontSize.get());
         };
         ChangeListener<Number> stageWidthListener = (observable, oldValue, newValue) -> {
             double ratio = newValue.doubleValue() / 740.0;
@@ -79,7 +79,7 @@ public abstract class GameEnd implements Initializable, FxmlView<GameOverViewMod
             refreshHorizontalAnchors(ratio);
             refreshImages(ratio);
             refreshShape(ratio);
-            setLabels(fontSize.get());
+            refreshLabels(fontSize.get());
         };
         stage.widthProperty().addListener(stageWidthListener);
         stage.heightProperty().addListener(stageHeightListener);
@@ -177,6 +177,6 @@ public abstract class GameEnd implements Initializable, FxmlView<GameOverViewMod
         }
     }
 
-    void setLabels(int fontSize) {
+    void refreshLabels(int fontSize) {
     }
 }

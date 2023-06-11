@@ -52,11 +52,13 @@ public class GameOverWon2P extends GameEnd {
         spotlight.getPoints().setAll(125.0 * ratio, 0.0, 450.0 * ratio, 0.0, 450.0 * ratio, 700.0 * ratio, 10.0, 700.0 * ratio);
     }
 
-    void setLabels(int fontSize) {
+    void refreshLabels(int fontSize) {
         String format = "-fx-font-size: " + fontSize + "px";
         gameWonLabel1.setStyle(format);
         gameWonLabel2.setStyle(format);
         gameLostLabel1.setStyle(format);
         gameLostLabel2.setStyle(format);
+        gameWonLabel2.setText("score: " + viewModel.getPoints(1));
+        gameLostLabel2.setText("score: " + viewModel.getPoints(0));
     }
 }

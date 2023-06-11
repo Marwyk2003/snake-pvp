@@ -17,7 +17,7 @@
         <ImageView fx:id="coin3" AnchorPane.rightAnchor="320.0" AnchorPane.bottomAnchor="140.0" />
         <Button fx:id="returnButton" mnemonicParsing="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" onAction="#returnButtonAction" onMouseEntered="#mouseAction" />
         <Label fx:id="gameWonLabel1" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="100.0" text="GAME WON" style="-fx-font-size: 80px" />
-        <Label fx:id="gameWonLabel2" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="170.0" text="score: 62" style="-fx-font-size: 80px" />
+        <Label fx:id="gameWonLabel2" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="170.0" text="score: " style="-fx-font-size: 80px" />
     </children>
     <stylesheets>
         <URL value="@../../../../styles.css" />

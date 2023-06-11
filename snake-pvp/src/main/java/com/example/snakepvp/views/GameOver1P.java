@@ -38,8 +38,9 @@ public class GameOver1P extends GameEnd {
         if (stage.getHeight() > 850 || stage.getWidth() > 1200) imageSize = "XXL";
         trash.setImage(new Image("/trash" + imageSize + ".png"));
     }
-    void setLabels(int fontSize) {
+    void refreshLabels(int fontSize) {
         gameLostLabel1.setStyle("-fx-font-size: " + 80 * fontSize/55 + "px");
         gameLostLabel2.setStyle("-fx-font-size: " + 80 * fontSize/55 + "px");
+        gameLostLabel2.setText("score: " + viewModel.getPoints(0));
     }
 }
