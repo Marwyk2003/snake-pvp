@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -146,7 +147,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     private void startGame() throws IOException {
         stage.setFullScreen(true);
-        Scene scene = new Scene(pane);
+        Scene scene = new Scene(pane, 1450, 900);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             Direction newDirection = null;
             switch (event.getCode()) {
@@ -172,8 +173,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         setCounters();
         stage.setScene(scene);
         stage.setFullScreen(true);
-        stage.setMinWidth(1500);
-        stage.setMinHeight(900);
         stage.show();
         viewModel.startGame();
     }
