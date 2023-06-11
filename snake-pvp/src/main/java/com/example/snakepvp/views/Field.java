@@ -25,7 +25,7 @@ public class Field extends Button {
         cell.cellContentProperty().addListener((o, oldVal, newVal) -> {
             cellContent = newVal;
             refreshImage();
-            game.edibleAction(newVal, gameId);
+            game.edibleAction(oldVal, gameId);
         });
         cellContent = cell.cellContentProperty().get();
         refreshImage();

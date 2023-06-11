@@ -63,13 +63,13 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     public void edibleAction(CellContent cellContent, int gameId) {
         Platform.runLater(() -> {
             if (cellContent == CellContent.EDIBLE_GROW || cellContent == CellContent.EDIBLE_DOUBLE) {
-                blink(gameId == 0 ? lengthCounter1 : lengthCounter2);
+                blink(gameId == 1 ? lengthCounter1 : lengthCounter2);
             } else if (cellContent == CellContent.EDIBLE_SPEED) {
-                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "speed up!");
+                runPowerUp(gameId == 1 ? powerUp1 : powerUp2, gameId == 1 ? powerUpLabel1 : powerUpLabel2, "speed up!");
             } else if (cellContent == CellContent.EDIBLE_REVERSE) {
-                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "other way!");
+                runPowerUp(gameId == 1 ? powerUp1 : powerUp2, gameId == 1 ? powerUpLabel1 : powerUpLabel2, "other way!");
             } else if (cellContent == CellContent.EDIBLE_DIRECTION) {
-                runPowerUp(gameId == 0 ? powerUp1 : powerUp2, gameId == 0 ? powerUpLabel1 : powerUpLabel2, "which one is left?");
+                runPowerUp(gameId == 1 ? powerUp1 : powerUp2, gameId == 1 ? powerUpLabel1 : powerUpLabel2, "which one is left?");
             }
         });
     }
