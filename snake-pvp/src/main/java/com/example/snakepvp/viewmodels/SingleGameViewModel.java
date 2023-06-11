@@ -59,7 +59,6 @@ public class SingleGameViewModel implements ViewModel {
         }
         Cell head = boardState.getSnake().getHead();
         for (Cell cell : boardState.getSnake().getCellList()) {
-            System.out.println(cell.getCol() + " " + cell.getRow() + " - setup snake");
             this.cells[cell.getRow()][cell.getCol()].setSnake(true, cell == head);
         }
         for (int row = 0; row < height; ++row) {

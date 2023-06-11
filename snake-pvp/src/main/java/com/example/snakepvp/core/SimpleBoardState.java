@@ -8,6 +8,7 @@ public class SimpleBoardState implements BoardState {
     static private final int TIMEOUT_NORMAL = 500;
     static private final int TIMEOUT_FAST = 250;
     static private final int STANDARD_COOL_DOWN = 20;
+    static private final int SHORT_COOL_DOWN = 5;
 
     private final Map<Edible, Integer> coolDowns = new HashMap<>();
     private final List<Cell> holes = new ArrayList<>();
@@ -83,7 +84,6 @@ public class SimpleBoardState implements BoardState {
         Cell randCell = getRandomUnuesedCell();
         Edible edible = randomEdible();
         randCell.setEdible(edible);
-        System.out.println("new " + edible + " " + randCell.getRow() + " " + randCell.getCol());
         return randCell;
     }
 
@@ -140,7 +140,7 @@ public class SimpleBoardState implements BoardState {
         head.setGoThrough(false);
         Edible eaten = head.getEdible();
         snake.getHead().removeEdible();
-        if (eaten != null) this.score.increment(1); //TODO change score system
+        if (eaten != null) this.score.increment(eaten.getScore()); //TODO change score system
         if (reversed) {
             reversed = false;
             snake.reverse();
@@ -171,17 +171,14 @@ public class SimpleBoardState implements BoardState {
             case SPEED_UP -> {
                 timeout = TIMEOUT_FAST;
                 coolDowns.put(Edible.SPEED_UP, STANDARD_COOL_DOWN);
-                System.out.println("speed up!");
             }
             case REVERSE_DIR -> {
                 isReversed = true;
-                coolDowns.put(Edible.REVERSE_DIR, STANDARD_COOL_DOWN);
-                System.out.println("revers direction");
+                coolDowns.put(Edible.REVERSE_DIR, SHORT_COOL_DOWN);
             }
             case GROW_TWICE -> growCounter += 2;
             case REVERSE -> {
                 reversed = true;
-                System.out.println("reverse snake");
             }
             case POKE_HOLE -> {
                 Cell cell = getRandomUnuesedCell();

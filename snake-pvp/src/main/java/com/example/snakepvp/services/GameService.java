@@ -56,7 +56,6 @@ public class GameService {
         MoveStatus moveStatus = boardState.makeMove(direction);
         Edible eaten = moveStatus.getEdible();
         if (eaten != null) {
-            System.out.println("just ate");
             Cell cell = boardState.generateEdible();
             edibleEvents.emit(new EdibleEvent(cell.getEdible(), eaten, cell.getRow(), cell.getCol(), gameId));
         }
