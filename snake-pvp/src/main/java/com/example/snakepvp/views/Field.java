@@ -44,6 +44,7 @@ public class Field extends Button {
         if (cellContent == CellContent.EDIBLE_DOUBLE) return "/doughnut2S.png";
         if (cellContent == CellContent.EDIBLE_REVERSE) return "/mushroomS.png";
         if (cellContent == CellContent.EDIBLE_DIRECTION) return "/grapeS.png";
+        if (cellContent == CellContent.EDIBLE_HOLE) return "/cheeseS.png";
         return "/fieldS.png";
     }
 }

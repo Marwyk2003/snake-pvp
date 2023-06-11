@@ -10,7 +10,7 @@ public class SimpleBoardState implements BoardState {
     static private final int STANDARD_COOL_DOWN = 20;
 
     private final Map<Edible, Integer> coolDowns = new HashMap<>();
-
+    private final List<Cell> holes = new ArrayList<>();
     private final Board board;
     private final Snake snake;
     private final Score score;
@@ -27,9 +27,7 @@ public class SimpleBoardState implements BoardState {
         coolDowns.put(Edible.SPEED_UP, 0);
         coolDowns.put(Edible.REVERSE_DIR, 0);
         this.growCounter = 0;
-        this.snake = new Snake(Stream.of(1, 2, 3)
-                .map(x -> board.getCell(board.getHeight() / 2, x))
-                .collect(Collectors.toCollection(LinkedList<Cell>::new)));
+        this.snake = new Snake(Stream.of(1, 2, 3).map(x -> board.getCell(board.getHeight() / 2, x)).collect(Collectors.toCollection(LinkedList<Cell>::new)));
         generateEdible();
         generateEdible();
     }
@@ -50,11 +48,8 @@ public class SimpleBoardState implements BoardState {
     }
 
     private Edible randomEdible() {
-        double[] weights = {Edible.SIMPLE_GROWING.getWeight(), Edible.GROW_TWICE.getWeight(),
-                Edible.SPEED_UP.getWeight(), Edible.REVERSE.getWeight(),
-                Edible.POKE_HOLE.getWeight(), Edible.REVERSE_DIR.getWeight()};
-        Edible[] edibles = {Edible.SIMPLE_GROWING, Edible.GROW_TWICE,
-                Edible.SPEED_UP, Edible.REVERSE, Edible.POKE_HOLE, Edible.REVERSE_DIR};
+        double[] weights = {Edible.SIMPLE_GROWING.getWeight(), Edible.GROW_TWICE.getWeight(), Edible.SPEED_UP.getWeight(), Edible.REVERSE.getWeight(), Edible.POKE_HOLE.getWeight(), Edible.REVERSE_DIR.getWeight()};
+        Edible[] edibles = {Edible.SIMPLE_GROWING, Edible.GROW_TWICE, Edible.SPEED_UP, Edible.REVERSE, Edible.POKE_HOLE, Edible.REVERSE_DIR};
         Random generator = new Random();
         double rand = generator.nextDouble();
         double sum = 0.0;
@@ -63,8 +58,7 @@ public class SimpleBoardState implements BoardState {
             sum += weights[i];
         for (int i = 0; i < edibles.length; i++) {
             currentSum += weights[i] / sum;
-            if (rand <= currentSum)
-                return edibles[i];
+            if (rand <= currentSum) return edibles[i];
         }
         return edibles[edibles.length - 1];
     }
@@ -73,8 +67,7 @@ public class SimpleBoardState implements BoardState {
         List<Cell> emptyCells = new ArrayList<>();
         for (int row = 0; row < board.getHeight(); row++) {
             for (int col = 0; col < board.getWidth(); col++) {
-                if (board.getCell(row, col).getEdible() == null && board.getCell(row, col).isGoThrough()
-                        && board.getCell(row, col).getEdible() == null)
+                if (board.getCell(row, col).getEdible() == null && board.getCell(row, col).isGoThrough() && board.getCell(row, col).getEdible() == null)
                     emptyCells.add(board.getCell(row, col));
             }
         }
@@ -141,20 +134,13 @@ public class SimpleBoardState implements BoardState {
         head.setGoThrough(false);
         Edible eaten = head.getEdible();
         snake.getHead().removeEdible();
-        if (eaten != null)
-            this.score.increment(1); //TODO change score system
+        if (eaten != null) this.score.increment(1); //TODO change score system
 
         if (tail == null) {
-            return new MoveStatus(true, eaten, null,
-                    new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()),
-                    new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough()));
-
+            return new MoveStatus(true, eaten, null, new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()), new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough()));
         }
 
-        return new MoveStatus(true, eaten,
-                new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()),
-                new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()),
-                new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
+        return new MoveStatus(true, eaten, new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()), new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()), new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
     }
 
     private void endEffect(Edible edible) {
@@ -184,6 +170,7 @@ public class SimpleBoardState implements BoardState {
             case POKE_HOLE -> {
                 Cell cell = getRandomUnuesedCell();
                 cell.setGoThrough(false);
+                holes.add(cell);
             }
             default -> {
                 return false;
@@ -210,5 +197,9 @@ public class SimpleBoardState implements BoardState {
 
     public Cell getCell(int row, int col) {
         return board.getCell(row, col);
+    }
+
+    public List<Cell> getHoles() {
+        return holes;
     }
 }

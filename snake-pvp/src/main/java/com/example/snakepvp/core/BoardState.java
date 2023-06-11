@@ -1,5 +1,7 @@
 package com.example.snakepvp.core;
 
+import java.util.List;
+
 public interface BoardState {
 
     int getWidth();
@@ -21,4 +23,6 @@ public interface BoardState {
     int getTimeout();
 
     Cell getCell(int row, int col);
+
+    List<Cell> getHoles();
 }

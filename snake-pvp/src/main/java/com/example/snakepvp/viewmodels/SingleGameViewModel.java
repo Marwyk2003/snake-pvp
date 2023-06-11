@@ -9,6 +9,7 @@ import de.saxsys.mvvmfx.ViewModel;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SingleGameViewModel implements ViewModel {
@@ -95,11 +96,19 @@ public class SingleGameViewModel implements ViewModel {
     }
 
     private void processCellEvent(CellEvent event) {
-        SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
+        cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
         gameService.grow(event.getOldEdible());
+        if (event.getOldEdible() == Edible.POKE_HOLE) {
+            List<Cell> holes = gameService.getBoardState().getHoles();
+            for (int i = holes.size() - 1; i >= 0; --i) {
+                Cell cell = holes.get(i);
+                if (!cells[cell.getRow()][cell.getCol()].isGoThrough) break;
+                cells[cell.getRow()][cell.getCol()].setIsGoThrough(false);
+            }
+        }
         length.set(gameService.getSnakeLength());
     }
 
@@ -169,6 +178,7 @@ public class SingleGameViewModel implements ViewModel {
             else if (edible == Edible.GROW_TWICE) cellContent.set(CellContent.EDIBLE_DOUBLE);
             else if (edible == Edible.REVERSE) cellContent.set(CellContent.EDIBLE_REVERSE);
             else if (edible == Edible.REVERSE_DIR) cellContent.set(CellContent.EDIBLE_DIRECTION);
+            else if (edible == Edible.POKE_HOLE) cellContent.set(CellContent.EDIBLE_HOLE);
             else if (!isGoThrough) cellContent.set(CellContent.WALL);
             else cellContent.set(CellContent.EMPTY);
         }
