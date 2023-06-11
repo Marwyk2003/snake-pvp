@@ -18,14 +18,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Hello implements Initializable, FxmlView<HelloViewModel> {
-    private final String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms"}; // TODO (not for now) move to some config file e.g. json
+    private final String[] names = {"Aqua Worm", "Techno Tangle", "Pinky Python", "Scaly Shrooms", "Candy Cobra"}; // TODO (not for now) move to some config file e.g. json
     @InjectViewModel
     private HelloViewModel viewModel;
     private Stage stage;
@@ -181,7 +180,6 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         }
         spotlight.getPoints().setAll(125.0 * ratio, 0.0, 320.0 * ratio, 0.0, 320.0 * ratio, 700.0, 10.0 * ratio, 700.0);
     }
-
     void refreshButtons() {
         if (stage.getHeight() > 800.0 || stage.getWidth() > 1200.0) {
             modeButton1.setGraphic(new ImageView(new Image("/mode1M.png")));
