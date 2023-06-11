@@ -50,6 +50,10 @@ public class Snake {
         return snake.get(snake.size() - 1);
     }
 
+    public Cell getTail() {
+        return snake.get(0);
+    }
+
     public int length() {
         return snake.size();
     }

@@ -18,6 +18,7 @@ public class SimpleBoardState implements BoardState {
     private int growCounter;
     private int timeout = TIMEOUT_NORMAL;
     private boolean isReversed = false;
+    private boolean reversed = false;
 
     public SimpleBoardState(int width, int height) {
         this.isEnded = false;
@@ -111,23 +112,28 @@ public class SimpleBoardState implements BoardState {
                 case LEFT -> nextRow = -1;
             }
         }
+        if (reversed) {
+            nextRow = 0;
+            nextCol = 0;
+        }
         nextRow += snake.getHead().getRow();
         nextCol += snake.getHead().getCol();
 
-        if (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough()) {
+        if (!reversed && (!board.isValid(nextRow, nextCol) || !board.getCell(nextRow, nextCol).isGoThrough())) {
             isEnded = true;
             return new MoveStatus(false, null, null, null, null); // TODO
         }
-        Cell tail;
+        Cell tail = null;
         Cell head;
         Cell neck;
-        if (growCounter > 0) {
-            growCounter--;
-            tail = null;
-            snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
-        } else {
-            tail = snake.moveToCell(board.getCell(nextRow, nextCol));
-            tail.setGoThrough(true);// resets tail to normal cell
+        if (!reversed) {
+            if (growCounter > 0) {
+                growCounter--;
+                snake.moveWithGrowToCell(board.getCell(nextRow, nextCol));
+            } else {
+                tail = snake.moveToCell(board.getCell(nextRow, nextCol));
+                tail.setGoThrough(true);// resets tail to normal cell
+            }
         }
         neck = snake.getNeck();
         head = snake.getHead();
@@ -135,12 +141,19 @@ public class SimpleBoardState implements BoardState {
         Edible eaten = head.getEdible();
         snake.getHead().removeEdible();
         if (eaten != null) this.score.increment(1); //TODO change score system
-
+        if (reversed) {
+            reversed = false;
+            snake.reverse();
+            head = snake.getHead();
+            neck = snake.getTail();
+        }
         if (tail == null) {
             return new MoveStatus(true, eaten, null, new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()), new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough()));
         }
 
-        return new MoveStatus(true, eaten, new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()), new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()), new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
+        return new MoveStatus(true, eaten, new MoveStatus.Cell(tail.getRow(), tail.getCol(), !tail.isGoThrough()),
+                new MoveStatus.Cell(head.getRow(), head.getCol(), !head.isGoThrough()),
+                new MoveStatus.Cell(neck.getRow(), neck.getCol(), !neck.isGoThrough())); // TODO
     }
 
     private void endEffect(Edible edible) {
@@ -166,7 +179,10 @@ public class SimpleBoardState implements BoardState {
                 System.out.println("revers direction");
             }
             case GROW_TWICE -> growCounter += 2;
-            case REVERSE -> snake.reverse();
+            case REVERSE -> {
+                reversed = true;
+                System.out.println("reverse snake");
+            }
             case POKE_HOLE -> {
                 Cell cell = getRandomUnuesedCell();
                 cell.setGoThrough(false);
