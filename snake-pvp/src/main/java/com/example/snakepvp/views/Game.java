@@ -213,18 +213,14 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             timeToStart.decrementAndGet();
             if (timeToStart.get() == 59) {
                 if (AnchorPane.getRightAnchor(message) != null) {
-                    AnchorPane.setRightAnchor(message, (double) (360 + messageText.length()));
+                    AnchorPane.setRightAnchor(message, (double) (455 + messageText.length()));
                 } else {
-                    AnchorPane.setLeftAnchor(message, (double) (360 + messageText.length()));
+                    AnchorPane.setLeftAnchor(message, (double) (455 + messageText.length()));
                 }
                 message.setText(messageText);
                 message.setVisible(true);
                 powerUp.setVisible(true);
                 message.setStyle("-fx-font-size: " + fontSize.get() + "px;" + "-fx-font-family: Gaegu;");
-                DropShadow glow = new DropShadow();
-                glow.setColor(Color.rgb(130, 219, 225));
-                glow.setHeight(60.0);
-                message.setEffect(glow);
             } else if (timeToStart.get() <= 36) {
                 message.setEffect(null);
             }
@@ -287,7 +283,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         labels = new Label[]{pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2, powerUpLabel1, powerUpLabel2};
         for (int i = 0; i < labels.length; i++) {
             labels[i].setStyle("-fx-font-size: 40px;" + "-fx-font-family: Gaegu;");
-            if (i < 2) labels[i].setText("0");
+            if (i < 2) labels[i].setText("100");
             else labels[i].setText("3");
         }
         for (Map.Entry<ImageView, String[]> entry : images.entrySet()) {
