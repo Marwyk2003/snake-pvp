@@ -19,9 +19,9 @@ public class GameWonOver2P extends GameEnd {
         spotlight.setFill(Color.WHITE);
         anchors = new HashMap<>() {{
             put(gameWonLabel1, new Double[]{60.0, 0.0, 100.0, 0.0});      // left, right, top, bottom
-            put(gameWonLabel2, new Double[]{60.0, 0.0, 145.0, 0.0});
+            put(gameWonLabel2, new Double[]{60.0, 0.0, 160.0, 0.0});
             put(gameLostLabel1, new Double[]{0.0, 60.0, 100.0, 00.0});
-            put(gameLostLabel2, new Double[]{0.0, 60.0, 145.0, 0.0});
+            put(gameLostLabel2, new Double[]{0.0, 60.0, 160.0, 0.0});
             put(coin1, new Double[]{50.0, 0.0, 0.0, 140.0});
             put(coin2, new Double[]{140.0, 0.0, 0.0, 140.0});
             put(coin3, new Double[]{230.0, 0.0, 0.0, 140.0});

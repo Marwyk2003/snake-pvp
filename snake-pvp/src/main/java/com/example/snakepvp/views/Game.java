@@ -283,7 +283,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         labels = new Label[]{pointCountLabel1, pointCountLabel2, lengthCountLabel1, lengthCountLabel2, powerUpLabel1, powerUpLabel2};
         for (int i = 0; i < labels.length; i++) {
             labels[i].setStyle("-fx-font-size: 40px;" + "-fx-font-family: Gaegu;");
-            if (i < 2) labels[i].setText("100");
+            if (i < 2) labels[i].setText("0");
             else labels[i].setText("3");
         }
         for (Map.Entry<ImageView, String[]> entry : images.entrySet()) {
