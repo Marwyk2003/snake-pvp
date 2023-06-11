@@ -136,7 +136,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
             put(pointCountLabel2, new Double[]{0.0, 140.0, 80.0, 0.0});
             put(lengthCountLabel1, new Double[]{250.0, 0.0, 80.0, 0.0});
             put(lengthCountLabel2, new Double[]{0.0, 250.0, 80.0, 0.0});
-//            put(rectangle, new Double[]{50.0, 0.0, 60.0, 0.0});
             put(boards[0], new Double[]{20.0, 0.0, 0.0, 50.0});
             put(boards[1], new Double[]{0.0, 20.0, 0.0, 50.0});
         }};
@@ -176,7 +175,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         stage.setScene(scene);
         stage.show();
         viewModel.startGame();
-//        runPowerUp(powerUp2, powerUpLabel2, "speed up!");   // TODO remove this line, it was added just for testing
     }
 
     public void runTimer() {
@@ -208,7 +206,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
 
     public void runPowerUp(ImageView powerUp, Label message, String messageText) {
         AtomicInteger timeToStart = new AtomicInteger(60);
-        AtomicInteger timeValue = new AtomicInteger(4);
         AtomicReference<Double> fontSize = new AtomicReference<>(30.0);
         Timeline timeLine = new Timeline();
         timeLine.setCycleCount(timeToStart.get());
@@ -268,7 +265,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
                     AnchorPane.setBottomAnchor(node, Math.min(AnchorPane.getBottomAnchor(node), original_anchors[3] * ratio));
             }
         }
-//        rectangle.getPoints().setAll(0.0, 0.0, 0.0, 90.0 * ratio, 1050.0 * ratio, 90.0 * ratio, 1050.0 * ratio, 0.0);
     }
 
     public void blink(ImageView imageView) {
@@ -299,11 +295,6 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         powerUp2.setVisible(false);
         powerUpLabel1.setVisible(false);
         powerUpLabel2.setVisible(false);
-
-//        rectangle.getPoints().setAll(0.0, 0.0, 0.0, 90.0, 1050.0, 90.0, 1050.0, 0.0);
-//        rectangle.setFill(Color.WHITE);
-
-//        pane.getChildren().addAll(rectangle);
         pane.getChildren().addAll(labels);
         pane.getChildren().addAll(images.keySet());
     }
