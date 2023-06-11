@@ -30,7 +30,7 @@ public class Program extends Application {
 
         for (int i = 0; i < PLAYER_COUNT; ++i) {
             GameService gameService = gameHostService.connectNewGame();
-            SingleGameViewModel singleGameVM = new SingleGameViewModel(gameService);
+            SingleGameViewModel singleGameVM = new SingleGameViewModel(i, gameService);
             gameHostVM.connectSingleGameVM(singleGameVM);
         }
 

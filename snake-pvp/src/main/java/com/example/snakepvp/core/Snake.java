@@ -8,7 +8,7 @@ public class Snake {
 
     Snake(LinkedList<Cell> snake) {
         this.snake = snake;
-        for (Cell cell: snake)
+        for (Cell cell : snake)
             cell.setGoThrough(false);
     }
 
@@ -48,5 +48,9 @@ public class Snake {
 
     public Cell getHead() {
         return snake.get(snake.size() - 1);
+    }
+
+    public int length() {
+        return snake.size();
     }
 }

@@ -3,9 +3,9 @@ package com.example.snakepvp.services;
 import com.example.snakepvp.core.*;
 
 public class GameService {
+    public final SimpleViewerService viewerService;
     private final int BOARD_WIDTH = 8;
     private final int BOARD_HEIGHT = 8;
-    public final SimpleViewerService viewerService;
     private final int gameId;
 
     private final SimpleEventEmitter<GameStatusEvent> statusEvents;
@@ -42,6 +42,14 @@ public class GameService {
 
     public int getTimeout() {
         return boardState.getTimeout();
+    }
+
+    public Score getScore() {
+        return boardState.getScore();
+    }
+
+    public int getSnakeLength() {
+        return boardState.getSnake().length();
     }
 
     public void makeMove() {

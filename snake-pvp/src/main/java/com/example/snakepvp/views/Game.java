@@ -55,6 +55,7 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
     private Map<Node, Double[]> anchors = null;
     private Board[] boards;
 
+
     @FXML
     private void mouseAction(MouseEvent event) {
         ((Button) event.getSource()).setCursor(Cursor.HAND);
@@ -90,6 +91,17 @@ public class Game implements FxmlView<GameHostViewModel>, Initializable {
         boards = new Board[2];
         for (int i = 0; i < 2; ++i) {
             SingleGameViewModel singleGameVM = viewModel.getSingleGameVM(i);
+            singleGameVM.lengthProperty().addListener((o, oldVal, newVal) -> {
+                int length = (int) newVal;
+                System.out.println(length);
+                Label label = singleGameVM.getId() == 0 ? lengthCountLabel1 : lengthCountLabel2;
+                Platform.runLater(() -> label.setText(String.valueOf(length)));
+            });
+            singleGameVM.scoreProperty().addListener((o, oldVal, newVal) -> {
+                int points = newVal.getPoints();
+                Label label = singleGameVM.getId() == 0 ? pointCountLabel1 : pointCountLabel2;
+                Platform.runLater(() -> label.setText(String.valueOf(points)));
+            });
             boards[i] = new Board(singleGameVM.getHeight(), singleGameVM.getWidth(), singleGameVM.getSkin(), i, this);
             for (int row = 0; row < singleGameVM.getHeight(); ++row) {
                 for (int col = 0; col < singleGameVM.getWidth(); ++col) {

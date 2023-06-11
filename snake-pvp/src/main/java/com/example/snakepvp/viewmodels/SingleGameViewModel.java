@@ -6,6 +6,7 @@ import com.example.snakepvp.services.EdibleEvent;
 import com.example.snakepvp.services.GameService;
 import com.example.snakepvp.services.SimpleViewerService;
 import de.saxsys.mvvmfx.ViewModel;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.concurrent.TimeUnit;
@@ -13,19 +14,39 @@ import java.util.concurrent.TimeUnit;
 public class SingleGameViewModel implements ViewModel {
     private final GameService gameService;
     private final SimpleViewerService viewerService;
+    private final SimpleIntegerProperty length;
+    private final SimpleObjectProperty<Score> score;
+    private final int id;
     private VMCell[][] cells;
     private int height, width;
     private Thread gameThread;
     private int skin;
 
-    public SingleGameViewModel(GameService gameService) {//TODO add viewerService to constructor
+    public SingleGameViewModel(int id, GameService gameService) {//TODO add viewerService to constructor
+        this.id = id;
         this.gameService = gameService;
         this.viewerService = gameService.viewerService;
         this.viewerService.cellEvents().subscribe(this::processCellEvent);
+        this.length = new SimpleIntegerProperty(this, "length", 0);
+        this.score = new SimpleObjectProperty<>(SingleGameViewModel.this, "score", null);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public SimpleIntegerProperty lengthProperty() {
+        return length;
+    }
+
+    public SimpleObjectProperty<Score> scoreProperty() {
+        return score;
     }
 
     public void initialize() {
         gameService.initGame();
+        length.set(gameService.getSnakeLength());
+        score.set(gameService.getScore());
         BoardState boardState = gameService.getBoardState();
         this.height = boardState.getHeight();
         this.width = boardState.getWidth();
@@ -75,6 +96,8 @@ public class SingleGameViewModel implements ViewModel {
 
     private void processCellEvent(CellEvent event) {
         SingleGameViewModel.this.cells[event.getCol()][event.getRow()].setIsSnake(event.isSnake(), event.isSnakeHead());
+        length.set(gameService.getSnakeLength());
+        score.set(gameService.getScore());
     }
 
     public void growSnakeEvent(EdibleEvent event) {
