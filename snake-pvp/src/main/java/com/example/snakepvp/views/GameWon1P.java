@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -21,13 +22,15 @@ public class GameWon1P extends GameEnd {
         returnButton.setGraphic(new ImageView(new Image("/return.png")));
         spotlight.setRadius(250.0);
         spotlight.setFill(Color.WHITE);
-        anchors = new HashMap<>() {{
-            put(gameWonLabel1, new Double[]{0.0, 160.0, 100.0, 0.0});      // left, right, top, bottom
-            put(gameWonLabel2, new Double[]{0.0, 160.0, 170.0, 0.0});
-            put(coin1, new Double[]{80.0, 0.0, 0.0, 140.0});
-            put(coin2, new Double[]{200.0, 0.0, 0.0, 140.0});
-            put(coin3, new Double[]{320.0, 0.0, 0.0, 140.0});
-        }};
+        anchors = new HashMap<>();
+        Node[] nodes = {gameWonLabel1, gameWonLabel2, coin1, coin2, coin3};
+        for (Node node : nodes) {
+            double l = AnchorPane.getLeftAnchor(node) == null ? 0.0 : AnchorPane.getLeftAnchor(node);
+            double r = AnchorPane.getRightAnchor(node) == null ? 0.0 : AnchorPane.getRightAnchor(node);
+            double b = AnchorPane.getBottomAnchor(node) == null ? 0.0 : AnchorPane.getBottomAnchor(node);
+            double t = AnchorPane.getTopAnchor(node) == null ? 0.0 : AnchorPane.getTopAnchor(node);
+            anchors.put(node, new Double[]{l, r, t, b});
+        }
 
         addChangeListener();
         runCoinAnimation("L");

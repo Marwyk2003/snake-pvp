@@ -40,6 +40,7 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
 
     private Map<Node, Double[]> anchors;
     private String skinSize = "L";
+    private int chosen = 0;
 
     @FXML
     private void mouseAction(MouseEvent event) {
@@ -56,7 +57,8 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
     @FXML
     private void chooseSkinAction(ActionEvent event) {
         skins.add(skin);
-        if (skinChoiceLabel.getText().equals("TAP TO CHANGE SKIN 1")) {
+        ++chosen;
+        if (chosen == 1) {
             skinChoiceLabel.setText("TAP TO CHANGE SKIN 2");
         } else {
             approveButton.setVisible(false);
@@ -86,18 +88,15 @@ public class Hello implements Initializable, FxmlView<HelloViewModel> {
         viewModel.getSceneController().resetSkins();
 
         spotlight.getPoints().setAll(125.0, 0.0, 320.0, 0.0, 320.0, 700.0, 10.0, 700.0);
-        anchors = new HashMap<>() {{
-            put(header1, new Double[]{100.0, 0.0, 8.0, 0.0});      // left, right, top, bottom
-            put(header2, new Double[]{100.0, 0.0, 126.0, 0.0});
-            put(gameButton, new Double[]{0.0, 120.0, 0.0, 220.0});
-            put(quitButton, new Double[]{0.0, 120.0, 0.0, 100.0});
-            put(approveButton, new Double[]{440.0, 0.0, 0.0, 160.0});
-            put(skinChoiceLabel, new Double[]{80.0, 0.0, 0.0, 200.0});
-            put(skinButton1, new Double[]{170.0, 0.0, 0.0, 160.0});
-            put(skinButton2, new Double[]{250.0, 0.0, 0.0, 160.0});
-            put(skinButton3, new Double[]{330.0, 0.0, 0.0, 160.0});
-            put(skinNameLabel, new Double[]{150.0, 0.0, 0.0, 40.0});
-        }};
+        anchors = new HashMap<>();
+        Node[] nodes = {header1, header2, gameButton, quitButton, approveButton, skinChoiceLabel, skinNameLabel, skinButton1, skinButton2, skinButton3};
+        for (Node node : nodes) {
+            double l = AnchorPane.getLeftAnchor(node) == null ? 0.0 : AnchorPane.getLeftAnchor(node);
+            double r = AnchorPane.getRightAnchor(node) == null ? 0.0 : AnchorPane.getRightAnchor(node);
+            double b = AnchorPane.getBottomAnchor(node) == null ? 0.0 : AnchorPane.getBottomAnchor(node);
+            double t = AnchorPane.getTopAnchor(node) == null ? 0.0 : AnchorPane.getTopAnchor(node);
+            anchors.put(node, new Double[]{l, r, t, b});
+        }
 
         AtomicInteger fontSizeLabel = new AtomicInteger(50);
         AtomicInteger fontSizeHeader1 = new AtomicInteger(110);

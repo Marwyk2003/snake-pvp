@@ -1,5 +1,6 @@
 package com.example.snakepvp.views;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -17,16 +18,15 @@ public class GameOverWon2P extends GameEnd {
         returnButton.setGraphic(new ImageView(new Image("/return.png")));
         spotlight.getPoints().setAll(125.0, 0.0, 450.0, 0.0, 450.0, 700.0, 10.0, 700.0);
         spotlight.setFill(Color.WHITE);
-        anchors = new HashMap<>() {{
-            put(gameWonLabel1, new Double[]{0.0, 60.0, 100.0, 0.0});      // left, right, top, bottom
-            put(gameWonLabel2, new Double[]{0.0, 60.0, 160.0, 0.0});
-            put(gameLostLabel1, new Double[]{60.0, 0.0, 100.0, 00.0});
-            put(gameLostLabel2, new Double[]{60.0, 0.0, 160.0, 0.0});
-            put(coin1, new Double[]{0.0, 50.0, 0.0, 140.0});
-            put(coin2, new Double[]{0.0, 140.0, 0.0, 140.0});
-            put(coin3, new Double[]{0.0, 230.0, 0.0, 140.0});
-            put(trash, new Double[]{60.0, 0.0, 0.0, 70.0});
-        }};
+        anchors = new HashMap<>();
+        Node[] nodes = {gameWonLabel1, gameWonLabel2, gameLostLabel1, gameLostLabel2, coin1, coin2, coin3, trash};
+        for (Node node : nodes) {
+            double l = AnchorPane.getLeftAnchor(node) == null ? 0.0 : AnchorPane.getLeftAnchor(node);
+            double r = AnchorPane.getRightAnchor(node) == null ? 0.0 : AnchorPane.getRightAnchor(node);
+            double b = AnchorPane.getBottomAnchor(node) == null ? 0.0 : AnchorPane.getBottomAnchor(node);
+            double t = AnchorPane.getTopAnchor(node) == null ? 0.0 : AnchorPane.getTopAnchor(node);
+            anchors.put(node, new Double[]{l, r, t, b});
+        }
 
         addChangeListener();
         runCoinAnimation("M");

@@ -1,8 +1,10 @@
 package com.example.snakepvp.views;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.net.URL;
@@ -20,12 +22,15 @@ public class GameOver1P extends GameEnd {
         returnButton.setGraphic(new ImageView(new Image("/return.png")));
         spotlight.setRadius(250.0);
         spotlight.setFill(Color.WHITE);
-        anchors = new HashMap<>() {{
-            put(gameLostLabel1, new Double[]{160.0, 0.0, 100.0, 0.0});      // left, right, top, bottom
-            put(gameLostLabel2, new Double[]{160.0, 0.0, 150.0, 0.0});
-            put(trash, new Double[]{120.0, 0.0, 0.0, 60.0});
-            put(spotlight, new Double[]{0.0, 50.0, 0.0, 80.0});
-        }};
+        anchors = new HashMap<>();
+        Node[] nodes = {gameLostLabel1, gameLostLabel2,trash, spotlight};
+        for (Node node : nodes) {
+            double l = AnchorPane.getLeftAnchor(node) == null ? 0.0 : AnchorPane.getLeftAnchor(node);
+            double r = AnchorPane.getRightAnchor(node) == null ? 0.0 : AnchorPane.getRightAnchor(node);
+            double b = AnchorPane.getBottomAnchor(node) == null ? 0.0 : AnchorPane.getBottomAnchor(node);
+            double t = AnchorPane.getTopAnchor(node) == null ? 0.0 : AnchorPane.getTopAnchor(node);
+            anchors.put(node, new Double[]{l, r, t, b});
+        }
 
         addChangeListener();
         runTrashAnimation("XL");
